@@ -48,8 +48,8 @@ h1{font-family:var(--display);font-weight:700;font-size:1.9rem;line-height:1.1;m
 h2{font-family:var(--display);font-size:1.2rem;margin:0;text-wrap:balance}
 h3{font-family:var(--display);font-size:1rem;margin:0}
 
-nav{display:grid;grid-template-columns:repeat(4,1fr);gap:.2rem;background:var(--chip);padding:.25rem;border-radius:.6rem;position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
-nav button{border:0;background:transparent;color:var(--muted);font:inherit;font-size:.92rem;font-weight:700;padding:.55rem .25rem;border-radius:.45rem;cursor:pointer}
+nav{display:flex;gap:.2rem;background:var(--chip);padding:.25rem;border-radius:.6rem;position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+nav button{border:0;background:transparent;color:var(--muted);font:inherit;font-size:.86rem;font-weight:700;padding:.55rem .35rem;flex:1 1 auto;white-space:nowrap;border-radius:.45rem;cursor:pointer}
 nav button[aria-selected="true"]{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
 button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
@@ -168,6 +168,22 @@ td.g{font-family:var(--mono);color:var(--muted)}
 .mynote summary{display:flex;justify-content:space-between;gap:.5rem}
 .mynote .body{white-space:pre-wrap;margin:0;max-width:65ch;overflow-wrap:anywhere}
 .stack{display:flex;flex-direction:column;gap:.5rem}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.opt{font:inherit;font-size:1.05rem;padding:.7rem .5rem;border-radius:.45rem;border:1.5px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;min-width:0;overflow-wrap:anywhere}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--good);background:var(--sA);color:var(--sAi);font-weight:700}
+.opt.wrong{border-color:var(--bad);color:var(--bad);text-decoration:line-through}
+.gapslot{display:inline-block;min-width:4.5rem;border-bottom:2px solid var(--accent);text-align:center;font-weight:700;padding:0 .25rem}
+.sentence{font-size:clamp(1.25rem,5vw,1.6rem);line-height:1.45;margin:0;font-weight:700;font-family:var(--display)}
+.built{min-height:3.2rem;display:flex;flex-wrap:wrap;gap:.35rem;padding:.5rem;border:1.5px dashed var(--line);border-radius:.45rem;background:var(--paper);align-items:center}
+.built .ph{color:var(--muted);font-size:.9rem}
+.bank{display:flex;flex-wrap:wrap;gap:.4rem}
+.tok{font:inherit;font-size:1.05rem;padding:.4rem .7rem;border-radius:.4rem;border:1.5px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.tok.in{background:var(--sS);color:var(--sSi);border-color:transparent}
+.tok:disabled{cursor:default}
+.wgroup{background:var(--card);border-radius:.5rem;padding:.7rem 1rem;box-shadow:0 1px 0 var(--line);border:0}
+.wgroup summary{display:flex;justify-content:space-between;gap:.5rem;font-family:var(--display);font-size:1.05rem}
+.wgroup .cnt{font-family:var(--mono);font-weight:400;font-size:.8rem;color:var(--muted)}
 footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);padding-top:.8rem}
 @media (prefers-reduced-motion:reduce){.progress i{transition:none}}
 </style>
@@ -198,6 +214,7 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
   <nav role="tablist" aria-label="Sections">
     <button role="tab" id="tab-cards" aria-selected="true" data-tab="cards">Cards</button>
     <button role="tab" id="tab-forms" aria-selected="false" data-tab="forms">Verbs</button>
+    <button role="tab" id="tab-sent" aria-selected="false" data-tab="sent">Sentences</button>
     <button role="tab" id="tab-words" aria-selected="false" data-tab="words">Words</button>
     <button role="tab" id="tab-notes" aria-selected="false" data-tab="notes">Notes</button>
   </nav>
@@ -230,6 +247,16 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
       <input id="verbsearch" type="search" placeholder="Search, e.g. skriva or write" aria-label="Search verbs">
       <div class="tablewrap"><table><thead><tr><th>Infinitiv</th><th>Presens</th><th>Preteritum</th><th>Supinum</th><th>English</th><th>Grupp</th></tr></thead><tbody id="verbtable"></tbody></table></div>
     </details>
+  </section>
+
+  <!-- SENTENCES -->
+  <section class="panel" id="panel-sent" hidden>
+    <div class="seg" role="group" aria-label="Exercise">
+      <button id="smode-gap" aria-pressed="true" data-smode="gap">Fill the gap</button>
+      <button id="smode-order" aria-pressed="false" data-smode="order">Word order</button>
+    </div>
+    <div class="stats" id="stats-sent"></div>
+    <div id="sent-stage"></div>
   </section>
 
   <!-- MY WORDS -->
@@ -268,16 +295,9 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
     <input id="wsearch" type="search" placeholder="Search my words" aria-label="Search my words">
     <div id="wordlist" class="stack"></div>
 
-    <details>
-      <summary>Built-in partikelverb (<span id="pcount"></span>)</summary>
-      <p class="note">The particle carries the stress: tycka OM, komma IHÅG. These are already in your flashcards.</p>
-      <div class="tablewrap"><table><thead><tr><th>Partikelverb</th><th>English</th><th>Example</th></tr></thead><tbody id="ptable"></tbody></table></div>
-    </details>
-    <details>
-      <summary>Built-in adverbs (<span id="acount"></span>)</summary>
-      <p class="note">Ones marked <span class="tag">satsadverb</span> follow the BIFF rule. See Notes → Adverbs.</p>
-      <div class="tablewrap"><table><thead><tr><th>Adverb</th><th>English</th><th>Example</th></tr></thead><tbody id="atable"></tbody></table></div>
-    </details>
+    <h2>Built-in word lists</h2>
+    <p class="note">These are already in your flashcards. Pick a list under Cards → All groups to practise just that one.</p>
+    <div id="builtins"></div>
   </section>
 
   <!-- NOTES -->
@@ -339,7 +359,26 @@ const VERBS = [
  ["bygga","bygger","byggde","byggt","to build",2],["följa","följer","följde","följt","to follow",2],["sjunga","sjunger","sjöng","sjungit","to sing",4],
  ["bjuda","bjuder","bjöd","bjudit","to invite, treat",4],["finnas","finns","fanns","funnits","to exist, there is",4],["vinna","vinner","vann","vunnit","to win",4],
  ["bära","bär","bar","burit","to carry",4],["dra","drar","drog","dragit","to pull",4],["slå","slår","slog","slagit","to hit",4],
- ["låta","låter","lät","låtit","to sound, let",4],["gråta","gråter","grät","gråtit","to cry",4],["dö","dör","dog","dött","to die",4],["frysa","fryser","frös","frusit","to freeze, be cold",4]
+ ["låta","låter","lät","låtit","to sound, let",4],["gråta","gråter","grät","gråtit","to cry",4],["dö","dör","dog","dött","to die",4],["frysa","fryser","frös","frusit","to freeze, be cold",4],
+ ["åka","åker","åkte","åkt","to go (by vehicle), travel",2],["simma","simmar","simmade","simmat","to swim",1],["tvätta","tvättar","tvättade","tvättat","to wash",1],
+ ["duscha","duschar","duschade","duschat","to shower",1],["byta","byter","bytte","bytt","to change, swap",2],["gilla","gillar","gillade","gillat","to like",1],
+ ["älska","älskar","älskade","älskat","to love",1],["hata","hatar","hatade","hatat","to hate",1],["sätta","sätter","satte","satt","to put, set",4],
+ ["ställa","ställer","ställde","ställt","to put (standing)",2],["hänga","hänger","hängde","hängt","to hang",2],["sluta","slutar","slutade","slutat","to stop, quit",1],
+ ["fortsätta","fortsätter","fortsatte","fortsatt","to continue",4],["lämna","lämnar","lämnade","lämnat","to leave",1],["skratta","skrattar","skrattade","skrattat","to laugh",1],
+ ["le","ler","log","lett","to smile",4],["ljuga","ljuger","ljög","ljugit","to lie (not tell the truth)",4],["bita","biter","bet","bitit","to bite",4],
+ ["njuta","njuter","njöt","njutit","to enjoy",4],["stjäla","stjäl","stal","stulit","to steal",4],["förklara","förklarar","förklarade","förklarat","to explain",1],
+ ["berätta","berättar","berättade","berättat","to tell",1],["lova","lovar","lovade","lovat","to promise",1],["minnas","minns","mindes","mints","to remember",4],
+ ["hoppas","hoppas","hoppades","hoppats","to hope",1],["verka","verkar","verkade","verkat","to seem",1],["märka","märker","märkte","märkt","to notice",2],
+ ["tappa","tappar","tappade","tappat","to drop, lose",1],["låna","lånar","lånade","lånat","to borrow, lend",1],["hyra","hyr","hyrde","hyrt","to rent",2],
+ ["flytta","flyttar","flyttade","flyttat","to move (home)",1],["studera","studerar","studerade","studerat","to study",1],["plugga","pluggar","pluggade","pluggat","to study (informal)",1],
+ ["söka","söker","sökte","sökt","to search, apply for",2],["tjäna","tjänar","tjänade","tjänat","to earn",1],["gifta sig","gifter sig","gifte sig","gift sig","to get married",2],
+ ["tända","tänder","tände","tänt","to light, switch on",2],["vända","vänder","vände","vänt","to turn",2],["skina","skiner","sken","skinit","to shine",4],
+ ["regna","regnar","regnade","regnat","to rain",1],["snöa","snöar","snöade","snöat","to snow",1],["sy","syr","sydde","sytt","to sew",3],
+ ["klä","klär","klädde","klätt","to dress",3],["nå","når","nådde","nått","to reach",3],["skjuta","skjuter","sköt","skjutit","to shoot, push",4],
+ ["försvinna","försvinner","försvann","försvunnit","to disappear",4],["hända","händer","hände","hänt","to happen",2],["skära","skär","skar","skurit","to cut",4],
+ ["bryta","bryter","bröt","brutit","to break",4],["gälla","gäller","gällde","gällt","to apply, be valid",2],["rida","rider","red","ridit","to ride (a horse)",4],
+ ["kliva","kliver","klev","klivit","to step, climb",4],["stiga","stiger","steg","stigit","to rise, step",4],["vila","vilar","vilade","vilat","to rest",1],
+ ["boka","bokar","bokade","bokat","to book",1],["vinka","vinkar","vinkade","vinkat","to wave",1],["gå ut","går ut","gick ut","gått ut","to go out",4]
 ];
 const PVERBS = [
  ["tycka om","to like","Jag tycker om kaffe."],["hålla med","to agree","Jag håller med dig."],["komma ihåg","to remember","Kommer du ihåg hennes namn?"],
@@ -367,7 +406,7 @@ const ADVS = [ // sv, en, example, satsadverb?
  ["ut","out, motion","Hon går ut.",0],["ute","outside, place","Barnen leker ute.",0],["in","in, motion","Kom in!",0],["inne","inside, place","Vi är inne.",0],
  ["här","here","Jag bor här.",0],["där","there","Bor du där?",0],["dit","(to) there, motion","Hur kommer jag dit?",0],["hit","(to) here, motion","Kom hit!",0],["dessutom","besides, also","Dessutom är det billigt.",0],["därför","therefore, that's why","Därför kom jag inte.",0]
 ];
-const TYPES = [["verb","Verb"],["partikelverb","Partikelverb"],["adverb","Adverb"],["noun","Noun"],["adjective","Adjective"],["phrase","Phrase"],["other","Other"]];
+const TYPES = [["verb","Verb"],["partikelverb","Partikelverb"],["adverb","Adverb"],["noun","Noun"],["adjective","Adjective"],["preposition","Preposition"],["conjunction","Linking word"],["question","Question word"],["phrase","Phrase"],["other","Other"]];
 const TYPE_LABEL = Object.fromEntries(TYPES);
 const VBY = Object.fromEntries(VERBS.map(v=>[v[0],v]));
 const PBY = Object.fromEntries(PVERBS.map(v=>[v[0],v]));
@@ -432,6 +471,246 @@ const GUIDE = [
   table:[["hem","hemma","Jag går hem. / Jag är hemma."],["ut","ute","Hon går ut. / Hon är ute."],["in","inne","Kom in! / Vi är inne."],["upp","uppe","Gå upp! / Han är uppe."],["ner","nere","Kom ner! / Hon är nere."],["bort","borta","Gå bort. / Han är borta."],["dit","där","Jag åker dit. / Jag bor där."],["hit","här","Kom hit! / Jag är här."]],
   tips:["Ask yourself: is someone moving? Then use the short form."]}
 ];
+
+/* ---------- built-in word lists (group, type, [sv, en, note]) ---------- */
+const LISTS = [
+ {group:"Partikelverb", type:"partikelverb", items: PVERBS.map(v=>[v[0],v[1],v[2]+"\nStress on the particle."])},
+ {group:"Adverbs", type:"adverb", items: ADVS.map(v=>[v[0],v[1],v[2]+(v[3]?"\nSatsadverb: follows the BIFF rule.":"")])},
+ {group:"Adjectives", type:"adjective", items:[
+  ["stor","big","ett stort hus · stora hus"],["liten","small","ett litet hus · små hus · den lilla bilen"],["ny","new","ett nytt jobb · nya skor"],
+  ["gammal","old","ett gammalt hus · gamla vänner"],["ung","young","ett ungt par · unga människor"],["bra","good","ett bra jobb · bra filmer (never changes)"],
+  ["dålig","bad","ett dåligt väder · dåliga nyheter"],["glad","happy","ett glatt barn · glada barn"],["ledsen","sad","ett ledset barn · ledsna barn"],
+  ["trött","tired","ett trött barn · trötta barn"],["arg","angry","ett argt barn · arga barn"],["varm","warm","ett varmt bad · varma dagar"],
+  ["kall","cold","ett kallt rum · kalla vintrar"],["dyr","expensive","ett dyrt hotell · dyra skor"],["billig","cheap","ett billigt hotell · billiga skor"],
+  ["lätt","easy, light","ett lätt prov · lätta frågor"],["svår","difficult","ett svårt prov · svåra frågor"],["snäll","kind","ett snällt barn · snälla grannar"],
+  ["rolig","fun, funny","ett roligt spel · roliga filmer"],["tråkig","boring","ett tråkigt möte · tråkiga möten"],["vacker","beautiful","ett vackert land · vackra blommor"],
+  ["ful","ugly","ett fult hus · fula skor"],["lång","long, tall","ett långt möte · långa dagar"],["kort","short","ett kort möte · korta dagar"],
+  ["hög","high, tall","ett högt hus · höga berg"],["låg","low","ett lågt pris · låga priser"],["snabb","fast","ett snabbt tåg · snabba bilar"],
+  ["långsam","slow","ett långsamt tåg · långsamma bussar"],["sjuk","sick","ett sjukt barn · sjuka barn"],["frisk","healthy, well","ett friskt barn · friska barn"],
+  ["hungrig","hungry","ett hungrigt barn · hungriga barn"],["nöjd","satisfied","ett nöjt barn · nöjda kunder"],["viktig","important","ett viktigt möte · viktiga frågor"],
+  ["ledig","free, off work","ett ledigt rum · lediga jobb"],["upptagen","busy","ett upptaget rum · upptagna människor"],["röd","red","ett rött äpple · röda äpplen"],
+  ["vit","white","ett vitt hus · vita hus"],["svart","black","ett svart kaffe · svarta katter"],["blå","blue","ett blått hus · blå hus"]]},
+ {group:"Prepositions", type:"preposition", items:[
+  ["i","in","Jag bor i Malmö. Hon är i köket."],["på","on, at","Boken ligger på bordet. Jag är på jobbet."],["under","under, during","Katten ligger under sängen."],
+  ["över","over, above","Lampan hänger över bordet."],["bakom","behind","Cykeln står bakom huset."],["framför","in front of","Bussen stannar framför skolan."],
+  ["bredvid","next to","Jag sitter bredvid Anna."],["mellan","between","Apoteket ligger mellan banken och kaféet."],["hos","at someone's place","Jag är hos min syster."],
+  ["till","to","Jag åker till Lund."],["från","from","Jag kommer från Kanada."],["med","with","Jag åker med bussen."],
+  ["utan","without","Kaffe utan mjölk, tack."],["om","about","Vi pratar om filmen."],["för","for","Tack för hjälpen!"],
+  ["av","of, by","En kopp av glas. Boken är skriven av henne."],["efter","after","Vi ses efter jobbet."],["före","before","Kom före klockan åtta."],
+  ["genom","through","Vi gick genom parken."],["mot","towards, against","Bussen åker mot centrum."],["vid","by, at","Vi bor vid havet."],
+  ["sedan","since","Jag har bott här sedan 2017."]]},
+ {group:"Time words", type:"phrase", items:[
+  ["idag","today",""],["igår","yesterday",""],["imorgon","tomorrow",""],["i förrgår","the day before yesterday",""],["i övermorgon","the day after tomorrow",""],
+  ["i morse","this morning (already past)","Jag drack kaffe i morse."],["ikväll","this evening, tonight","Ska vi ses ikväll?"],["i natt","tonight / last night","Jag sov dåligt i natt."],
+  ["på morgonen","in the morning (in general)","Jag tränar på morgonen."],["i veckan","this week","Jag jobbar mycket i veckan."],["förra veckan","last week",""],
+  ["nästa vecka","next week",""],["i måndags","last Monday","Jag var sjuk i måndags."],["på måndag","next Monday","Vi ses på måndag."],
+  ["på måndagar","on Mondays (every)","Jag har SFI på måndagar."],["för två år sedan","two years ago",""],["om en timme","in an hour (from now)",""],
+  ["i två timmar","for two hours","Jag pluggade i två timmar."],["i somras","last summer",""],["i sommar","this summer (coming)",""],
+  ["i fjol","last year",""],["halv tre","half past two (2:30)","Halv = half an hour BEFORE the hour."],["kvart över två","quarter past two (2:15)",""],
+  ["kvart i tre","quarter to three (2:45)",""],["fem i halv tre","2:25","Five minutes before half past two."]]},
+ {group:"Question words", type:"question", items:[
+  ["vad","what","Vad heter du?"],["vem","who","Vem är det?"],["vems","whose","Vems jacka är det här?"],["var","where (place)","Var bor du?"],
+  ["vart","where to","Vart ska du?"],["varifrån","where from","Varifrån kommer du?"],["när","when","När börjar kursen?"],["hur","how","Hur mår du?"],
+  ["varför","why","Varför är du trött?"],["vilken / vilket / vilka","which","Vilken buss tar du? Vilket rum? Vilka skor?"],
+  ["hur mycket","how much","Hur mycket kostar det?"],["hur många","how many","Hur många barn har du?"],["hur länge","how long","Hur länge har du bott här?"],
+  ["hur dags","what time","Hur dags slutar du?"]]},
+ {group:"Bindeord: adding", type:"conjunction", items:[
+  ["och","and","Jag tränar och sen äter jag."],["dessutom","furthermore, in addition","Adverb: Dessutom är det billigt. (verb before subject)"],
+  ["också","also, too","Satsadverb: Jag talar också spanska."],["samt","as well as","Formal, mostly written: Ta med pass samt biljett."],
+  ["dels … dels","partly … partly","Jag flyttade dels för jobbet, dels för kärleken."],["både … och","both … and","Både jag och min sambo jobbar."],
+  ["inte bara … utan också","not only … but also","Hon är inte bara snäll utan också rolig."]]},
+ {group:"Bindeord: contrast", type:"conjunction", items:[
+  ["men","but","Jag vill komma, men jag har inte tid."],["utan","but (rather), after a no","Jag dricker inte kaffe utan te."],
+  ["dock","however, yet","Det var dock för sent."],["trots att","even though, despite the fact that","Starts a bisats: …trots att det regnade."],
+  ["fastän","although","Starts a bisats: Fastän Malmö är en livlig stad finns det mindre att göra."],["tvärtom","on the contrary","Det var inte tråkigt, tvärtom!"],
+  ["ändå","still, anyway","Det regnade men vi gick ut ändå."],["i stället","instead","Vi tog bussen i stället."]]},
+ {group:"Bindeord: cause & result", type:"conjunction", items:[
+  ["eftersom","because, since","Starts a bisats: …eftersom jag inte hade tid."],["därför att","because","Starts a bisats: …därför att jag var sjuk."],
+  ["för","because (for)","Main clause follows: Jag gick hem, för jag var trött."],["så","so","Main clause follows: Jag var trött, så jag gick hem."],
+  ["därför","therefore, that's why","Adverb, verb comes next: Därför kom jag inte."],["följaktligen","consequently","Formal: Följaktligen höjdes priset."],
+  ["så att","so that","Starts a bisats: Prata långsamt så att alla förstår."]]},
+ {group:"Bindeord: time", type:"conjunction", items:[
+  ["när","when","Starts a bisats: När jag kom hem åt jag."],["sedan / sen","then, after that","Adverb, verb comes next: Sen åt vi middag."],
+  ["innan","before","Starts a bisats: …innan jag går."],["medan","while","Starts a bisats: Jag lyssnar på radio medan jag lagar mat."],
+  ["efter att","after","Starts a bisats: Efter att vi hade ätit gick vi ut."],["tills","until","Starts a bisats: Vänta tills jag kommer."],
+  ["först","first","Först äter vi, sen går vi."],["till slut","in the end","Till slut hittade jag nyckeln."],
+  ["för det första / för det andra","firstly / secondly","För det första är det billigt. (verb before subject)"]]},
+ {group:"Bindeord: condition & other", type:"conjunction", items:[
+  ["om","if, whether","Starts a bisats: Om du har tid, ring mig."],["att","that","Starts a bisats: Jag vet att hon inte kommer."],
+  ["som","who, which, that","Starts a bisats: en person som var ny i Sverige"],["jämfört med","compared to","Malmö är mindre jämfört med Köpenhamn."],
+  ["till exempel (t.ex.)","for example","Jag gillar frukt, till exempel äpplen."]]},
+ {group:"Work", type:"noun", items:[
+  ["ett jobb","a job",""],["en arbetsplats","a workplace",""],["en chef","a boss, manager",""],["en kollega","a colleague","kollegor (plural)"],
+  ["en lön","a salary",""],["en ansökan","an application","Jag skickade min ansökan igår."],["ett CV","a CV",""],["en intervju","an interview",""],
+  ["en arbetsgivare","an employer",""],["en anställning","an employment, a position",""],["heltid","full time","Jag jobbar heltid."],["deltid","part time",""],
+  ["ett möte","a meeting",""],["en uppgift","a task",""],["en semester","a vacation",""],["sjukskriven","on sick leave","Hon är sjukskriven idag."],
+  ["ett kontrakt","a contract",""],["en provanställning","a probationary employment","Usually six months."],["att söka jobb","to apply for jobs",""],
+  ["erfarenhet","experience","Jag har erfarenhet av labbarbete."]]},
+ {group:"Health", type:"noun", items:[
+  ["en vårdcentral","a health centre",""],["en läkare","a doctor",""],["en sjuksköterska","a nurse",""],["ett recept","a prescription, a recipe",""],
+  ["ett apotek","a pharmacy",""],["boka en tid","to book an appointment","Jag vill boka en tid."],["feber","fever","Jag har feber."],
+  ["ont i halsen","a sore throat","Jag har ont i halsen."],["huvudvärk","headache",""],["en förkylning","a cold","Jag är förkyld."],
+  ["hosta","a cough / to cough",""],["en tandläkare","a dentist",""],["en remiss","a referral",""],["en akutmottagning","an emergency room",""],
+  ["ett sjukintyg","a doctor's note",""]]},
+ {group:"Body", type:"noun", items:[
+  ["ett huvud","a head",""],["en arm","an arm",""],["ett ben","a leg, a bone",""],["en mage","a stomach",""],["en rygg","a back",""],
+  ["en hals","a throat, neck",""],["en axel","a shoulder",""],["ett knä","a knee","knän (plural)"],["en fot","a foot","fötter (plural)"],
+  ["en hand","a hand","händer (plural)"],["ett öga","an eye","ögon (plural)"],["ett öra","an ear","öron (plural)"],["en tand","a tooth","tänder (plural)"],
+  ["ett finger","a finger","fingrar (plural)"],["en näsa","a nose",""]]},
+ {group:"Home", type:"noun", items:[
+  ["en lägenhet","an apartment",""],["ett hus","a house",""],["ett kök","a kitchen",""],["ett sovrum","a bedroom",""],["ett vardagsrum","a living room",""],
+  ["ett badrum","a bathroom",""],["en hyra","a rent","Hur mycket är hyran?"],["en hyresvärd","a landlord",""],["ett hyreskontrakt","a rental contract",""],
+  ["en tvättstuga","a shared laundry room","Jag har bokat tvättstugan."],["en balkong","a balcony",""],["ett fönster","a window","fönster (plural)"],
+  ["en dörr","a door",""],["en säng","a bed",""],["ett bord","a table",""],["en stol","a chair",""],["en soffa","a sofa",""],
+  ["en diskmaskin","a dishwasher",""],["ett kylskåp","a fridge",""],["en spis","a stove",""],["en granne","a neighbour","grannar (plural)"]]}
+];
+const BUILT = []; const BBY = {};
+for(const L of LISTS) for(const it of L.items){ const id="b:"+L.group+":"+it[0]; const e={id,sv:it[0],en:it[1],note:it[2]||"",type:L.type,group:L.group}; BUILT.push(e); BBY[id]=e }
+const BUILT_GROUPS = ["Common verbs",...LISTS.map(l=>l.group)];
+
+/* ---------- more grammar pages ---------- */
+GUIDE.push(
+ {id:"substantiv",title:"Nouns: en/ett, the, and plurals",tag:"substantiv",
+  rule:"Every noun is an <b>en-word</b> or an <b>ett-word</b>, and you have to learn which with the word. Most are en-words. “The” is an ending: bil<b>en</b>, hus<b>et</b>. There are five common plural endings.",
+  table:{head:["a / an","the","plural","the (plural)"],rows:[["en bil","bilen","bilar","bilarna"],["en flicka","flickan","flickor","flickorna"],["en katt","katten","katter","katterna"],["en sko","skon","skor","skorna"],["ett äpple","äpplet","äpplen","äpplena"],["ett barn","barnet","barn","barnen"],["en lärare","läraren","lärare","lärarna"],["en man","mannen","män","männen"],["en hand","handen","händer","händerna"]]},
+  tips:["Learn every new noun with en or ett in front: <b>en</b> nyckel, <b>ett</b> kvitto. Add it that way in My words.","Ett-words ending in a consonant have no plural ending: ett hus, två hus."]},
+ {id:"adjektiv",title:"Adjective endings",tag:"adjektiv",
+  rule:"An adjective changes to match the noun. Add <b>-t</b> for ett-words and <b>-a</b> for plural. After <b>den, det, de</b> (and after min, din, hans…) it always ends in <b>-a</b>, and the noun gets its “the” ending too.",
+  table:{head:["en","ett","plural","the"],rows:[["en stor bil","ett stort hus","stora bilar","den stora bilen"],["en ny jacka","ett nytt jobb","nya skor","det nya jobbet"],["en röd bil","ett rött äpple","röda äpplen","de röda äpplena"],["en gammal stol","ett gammalt hus","gamla hus","det gamla huset"],["en liten bil","ett litet hus","små hus","den lilla bilen / de små husen"],["en bra film","ett bra jobb","bra filmer","den bra filmen"]]},
+  tips:["Adjectives after the verb change too: Bilen är stor. Huset är stort. Bilarna är stora.","Min nya jacka, hans gamla bil: after a possessive, use the -a form."]},
+ {id:"komparation",title:"Comparing: större, störst",tag:"komparation",
+  rule:"Most adjectives add <b>-are</b> (more) and <b>-ast</b> (most). Some common ones are irregular. Use <b>än</b> for “than”.",
+  table:{head:["","more","most"],rows:[["varm","varmare","varmast"],["rolig","roligare","roligast"],["stor","större","störst"],["liten","mindre","minst"],["bra","bättre","bäst"],["dålig","sämre","sämst"],["gammal","äldre","äldst"],["ung","yngre","yngst"],["lång","längre","längst"],["hög","högre","högst"],["många","fler","flest"],["mycket","mer","mest"]]},
+  tips:["Hon är längre <b>än</b> jag. Det här är den bäst<b>a</b> filmen. (den + superlative → -a)","Long adjectives use mer and mest: mer intressant, mest intressant."]},
+ {id:"possessiv",title:"Whose? min, hans, sin",tag:"possessiv",
+  rule:"Possessives match the noun like adjectives: min bil, mitt hus, mina skor. Use <b>sin / sitt / sina</b> when the thing belongs to the <b>subject of the same clause</b> (he, she, they themselves).",
+  table:{head:["","en","ett","plural"],rows:[["my","min","mitt","mina"],["your","din","ditt","dina"],["his / her","hans / hennes","hans / hennes","hans / hennes"],["his/her/their own","sin","sitt","sina"],["our","vår","vårt","våra"],["your (plural)","er","ert","era"],["their","deras","deras","deras"]]},
+  rows:[ [[["F","Anna"],["V","tar"],["R","sin cykel."]],"Anna takes her (own) bike."],
+         [[["F","Erik"],["V","tar"],["R","hennes cykel."]],"Erik takes her (Anna's) bike."] ],
+  tips:["Never use sin in the subject itself: <b>Anna och hennes man</b> bor här (not sin man)."]},
+ {id:"reflexiv",title:"Reflexive verbs",tag:"reflexiv",
+  rule:"Some verbs need a word that points back to the subject: jag tvättar <b>mig</b>, hon känner <b>sig</b> trött.",
+  table:{head:["","",""],rows:[["jag","tvättar","mig"],["du","tvättar","dig"],["han / hon","tvättar","sig"],["vi","tvättar","oss"],["ni","tvättar","er"],["de","tvättar","sig"]]},
+  rows:[ [[["F","Idag"],["V","känner"],["S","jag"],["R","mig"],["R","trött."]],"Today I feel tired. The reflexive word stays after the subject."],
+         [[["F","Vi"],["V","måste"],["V2","skynda"],["R","oss."]],"We have to hurry."] ],
+  tips:["Common ones: känna sig, sätta sig, lägga sig, skynda sig, lära sig, gifta sig, bestämma sig, klä på sig, ta på sig."]},
+ {id:"tempus",title:"Tenses and talking about the future",tag:"tempus",
+  rule:"Use <b>preteritum</b> for a finished time (igår, i fredags, 2019). Use <b>perfekt</b> (har + supinum) when no finished time is named, or for something up to now. For the future, use <b>ska</b> for plans and <b>kommer att</b> for predictions.",
+  table:{head:["tense","example","use it for"],rows:[["presens","Jag äter.","now, habits, near future"],["preteritum","Jag åt igår.","a finished time in the past"],["perfekt","Jag har ätit.","no time named, experiences, up to now"],["pluskvamperfekt","Jag hade ätit.","before another past event"],["ska + infinitiv","Jag ska äta kl. 6.","plans, things you decided"],["kommer att + infinitiv","Det kommer att regna.","predictions"],["presens + time","Jag äter imorgon.","the future, very common"]]},
+  tips:["Words like aldrig, någonsin, redan and just often go with perfekt: Har du någonsin varit i Kiruna?"]},
+ {id:"modal",title:"Modal verbs: kan, vill, måste",tag:"hjälpverb",
+  rule:"Modal verbs are followed by a verb in the infinitive <b>without att</b>.",
+  rows:[ [[["F","Jag"],["V","kan"],["V2","simma."]],"I can swim."],
+         [[["F","Jag"],["V","vill"],["A","inte"],["V2","gå"],["R","hem."]],"I don't want to go home."],
+         [[["F","Du"],["V","måste"],["V2","boka"],["R","en tid."]],"You have to book an appointment."],
+         [[["F","Här"],["V","får"],["S","man"],["A","inte"],["V2","röka."]],"You're not allowed to smoke here."] ],
+  tips:["The same goes for: ska, skulle, får, bör, brukar, måste, kan, vill, låter.","But verbs like försöka, sluta and börja usually take att: Jag försöker att lära mig. (att is often dropped in speech.)"]},
+ {id:"tidsprep",title:"Time: i måndags or på måndag?",tag:"prepositioner",
+  rule:"The preposition tells you if a time is past, future, or every time.",
+  table:{head:["Swedish","English","when"],rows:[["på måndag","next Monday","future"],["i måndags","last Monday","past"],["på måndagar","on Mondays","every time"],["i sommar","this summer","future / now"],["i somras","last summer","past"],["om en vecka","in a week","from now"],["för en vecka sedan","a week ago","past"],["i en vecka","for a week","how long"],["på en vecka","within a week","how fast"],["i morse","this morning","past"],["i år / i fjol","this year / last year",""]]},
+  tips:["Ask: is it before now, after now, or every time? Then pick the form."]}
+);
+GUIDE.push({id:"bindeord",title:"Bindeord: how they change word order",tag:"bindeord",
+  rule:"Bindeord link sentences. They come in three kinds, and each kind does something different to the word order. Learn which kind a word is together with its meaning.",
+  table:{head:["kind","examples","what happens next"],rows:[
+   ["conjunction","och, men, eller, så, för","normal main clause: …men jag har inte tid."],
+   ["subjunktion","att, eftersom, när, om, fastän, trots att, medan, innan, tills, så att, som","bisats, BIFF: …eftersom jag inte har tid."],
+   ["adverb","därför, dessutom, sedan, dock, ändå, till slut, för det första","if it comes first, the verb comes next: Därför har jag inte tid."]]},
+  rows:[ [[["x","Jag var trött,"],["K","så","konjunktion"],["F","jag"],["V","gick"],["R","hem."]],"Conjunction: the sentence after it is a normal main clause."],
+         [[["x","Jag gick hem"],["K","eftersom"],["S","jag"],["A","inte"],["V","mådde"],["R","bra."]],"Subjunktion: bisats, inte before the verb."],
+         [[["F","Därför"],["V","gick"],["S","jag"],["R","hem."]],"Adverb first: verb second, subject after it."] ],
+  tips:["By function: <b>adding</b> och, dessutom, också, samt, dels–dels · <b>contrast</b> men, utan, dock, trots att, fastän, tvärtom · <b>cause & result</b> eftersom, därför att, så, därför, följaktligen · <b>time</b> när, sedan, innan, medan, för det första.","All of them are in your flashcards under the Bindeord groups."]});
+const _rikt = GUIDE.find(g=>g.id==="riktning"); _rikt.table={head:["motion","place","example"],rows:_rikt.table};
+
+/* ---------- fill the gap: s(entence with ___), a(nswer), d(istractors), why ---------- */
+const GAPS = [
+ ["Igår ___ jag till jobbet.","cyklade",["cyklar","har cyklat","cykla"],"Igår is a finished time, so use preteritum."],
+ ["Har du någonsin ___ surströmming?","ätit",["åt","äta","äter"],"After har comes supinum: har ätit."],
+ ["Jag vet att han ___ kött.","inte äter",["äter inte","inte äta","inte ätit"],"BIFF: in a bisats, inte comes before the verb."],
+ ["Idag ___ kallt.","är det",["det är","det","är"],"Idag is first, so the verb comes second and the subject after it."],
+ ["Hon har ett ___ hus.","stort",["stor","stora","större"],"Hus is an ett-word, so the adjective gets -t."],
+ ["Vi bor i den ___ lägenheten.","gula",["gul","gult","gulan"],"After den, the adjective ends in -a."],
+ ["Det är ett ___ äpple.","rött",["röd","röda","rödt"],"Ett-word, and adjectives ending in -d change to -tt."],
+ ["Jag har köpt nya ___.","skor",["skon","skorna","skos"],"Nya without de, so the noun has no “the” ending: nya skor."],
+ ["Jag har två ___.","katter",["kattor","katten","kattar"],"Katt → katter."],
+ ["En flicka, två ___.","flickor",["flickar","flickorna","flickan"],"En-words ending in -a get -or in plural."],
+ ["Ett äpple, två ___.","äpplen",["äpplar","äppler","äpplena"],"Ett-words ending in a vowel get -n in plural."],
+ ["Ett barn, två ___.","barn",["barnen","barner","barnar"],"Ett-words ending in a consonant have no plural ending."],
+ ["Vi ses ___ måndag.","på",["i","om","för"],"På + day = the coming day."],
+ ["Jag var sjuk ___ måndags.","i",["på","om","för"],"I måndags = last Monday."],
+ ["Tåget går ___ tio minuter.","om",["på","i","efter"],"Om = in (from now)."],
+ ["Jag träffade henne ___ två år sedan.","för",["om","i","på"],"För … sedan = … ago."],
+ ["Jag pluggade ___ tre timmar igår.","i",["på","för","om"],"I + a length of time = for how long."],
+ ["Anna tog ___ cykel till jobbet.","sin",["hennes","sitt","hans"],"The bike belongs to the subject (Anna), so sin. Cykel is an en-word."],
+ ["Erik pratar med Anna och ___ man.","hennes",["sin","hans","sina"],"The man belongs to Anna, not to the subject Erik, so hennes."],
+ ["Barnen leker med ___ leksaker.","sina",["deras","sin","sitt"],"Their own toys and plural: sina."],
+ ["Jag måste ___ nu.","gå",["att gå","går","gick"],"After måste comes the infinitive without att."],
+ ["Jag tycker ___ att dansa.","om",["på","av","med"],"Tycka om = to like."],
+ ["Kan du stänga ___ lampan?","av",["ut","ner","bort"],"Stänga av = to turn off."],
+ ["Jag går ___ nu.","hem",["hemma","hemmet","till hemma"],"Movement uses the short form: gå hem. Place: vara hemma."],
+ ["Barnen är ___ och leker.","ute",["ut","utan","utåt"],"Being somewhere uses the long form: vara ute."],
+ ["Han är ___ än sin bror.","längre",["långare","längst","mer lång"],"Lång, längre, längst is irregular."],
+ ["Det är den ___ filmen jag har sett.","bästa",["bra","bättre","bäst"],"Den + superlative + noun → -a: den bästa filmen."],
+ ["___ bor du?","Var",["Vart","Vad","Vem"],"Var = where (a place). Vart = where to."],
+ ["___ ska du åka i sommar?","Vart",["Var","Vad","Hur"],"Movement to a place uses vart."],
+ ["Jag stannade hemma ___ jag var sjuk.","eftersom",["därför","så","men"],"Eftersom = because. Därför means therefore."],
+ ["Jag vet inte ___ hon kommer.","om",["att","så","för"],"Om = whether."],
+ ["Hon klär på ___ varmt.","sig",["henne","hon","sin"],"The same person as the subject: sig."],
+ ["Vi måste skynda ___.","oss",["vi","sig","våra"],"Reflexive for vi is oss."],
+ ["När jag kom hem ___ trött.","var jag",["jag var","jag är","är jag"],"A bisats first, so the main clause starts with the verb."],
+ ["Han sa att han ___ komma.","inte kunde",["kunde inte","inte kunna","kan inte"],"BIFF: inte before the verb in the att-clause."],
+ ["Jag har ___ ätit frukost.","redan",["ännu","än","fortfarande"],"Redan = already."],
+ ["Boken ligger ___ bordet, inte i väskan.","på",["i","till","över"],"On a surface: på."],
+ ["Jag ___ på bussen i en halvtimme igår.","väntade",["väntar","har väntat","vänta"],"Igår → preteritum."],
+ ["Imorgon ___ jag till Köpenhamn.","ska åka",["åkte","har åkt","åka"],"A plan for the future: ska + infinitive."],
+ ["Hon ___ att komma ihåg alla ord.","försöker",["försök","försöka","försökt"],"The sentence needs a verb in presens."],
+ ["Det är ___ idag än igår.","varmare",["varmast","varmaste","mer varm"],"Comparing two things: -are + än."],
+ ["Jag har ont ___ huvudet.","i",["på","med","av"],"Ha ont i = to have pain in."],
+ ["Jag är intresserad ___ musik.","av",["för","på","i"],"Intresserad av."],
+ ["Hon är gift ___ en svensk.","med",["till","av","på"],"Gift med."],
+ ["Jag är rädd ___ hundar.","för",["av","på","om"],"Rädd för."],
+ ["Vi pratade ___ filmen hela kvällen.","om",["på","för","av"],"Prata om = talk about."],
+ ["Jag ___ honom inte.","känner",["vet","kan","förstår"],"To know a person: känna."],
+ ["Jag ___ inte var han bor.","vet",["känner","kan","tror"],"To know a fact: veta."],
+ ["Mötet börjar ___ tre.","halv",["halvt","halva","en halv"],"Halv tre = 2:30, half an hour before three."],
+ ["Han ___ inte hem igår.","kom",["kommer","har kommit","komma"],"Igår → preteritum. Komma, kom, kommit."]
+];
+
+/* ---------- word order: w(ords in correct order), end mark, en hint, alt orders ---------- */
+const ORDER = [
+ [["jag","äter","inte","kött"],".","I don't eat meat.",[]],
+ [["idag","äter","jag","inte","kött"],".","Today I'm not eating meat.",[]],
+ [["hon","har","aldrig","varit","i","Kiruna"],".","She has never been to Kiruna.",[]],
+ [["jag","vet","att","hon","aldrig","har","varit","i","Kiruna"],".","I know that she has never been to Kiruna.",[]],
+ [["på","söndag","ska","vi","hälsa","på","mormor"],".","On Sunday we're visiting grandma.",[["vi","ska","hälsa","på","mormor","på","söndag"]]],
+ [["bor","du","fortfarande","i","Lund"],"?","Do you still live in Lund?",[]],
+ [["vad","har","du","gjort","idag"],"?","What have you done today?",[]],
+ [["när","jag","kom","hem","åt","jag","middag"],".","When I got home, I ate dinner.",[["jag","åt","middag","när","jag","kom","hem"]]],
+ [["jag","tycker","inte","om","fisk"],".","I don't like fish.",[]],
+ [["kommer","du","ihåg","hennes","namn"],"?","Do you remember her name?",[]],
+ [["han","kom","inte","eftersom","han","inte","mådde","bra"],".","He didn't come because he wasn't feeling well.",[["eftersom","han","inte","mådde","bra","kom","han","inte"]]],
+ [["jag","har","redan","ätit","frukost"],".","I have already had breakfast.",[]],
+ [["vi","ska","kanske","flytta","till","Lund"],".","We might move to Lund.",[["kanske","ska","vi","flytta","till","Lund"]]],
+ [["igår","cyklade","hon","hem","från","jobbet"],".","Yesterday she cycled home from work.",[["hon","cyklade","hem","från","jobbet","igår"]]],
+ [["jag","undrar","var","han","bor"],".","I wonder where he lives.",[]],
+ [["kan","du","stänga","av","datorn"],"?","Can you turn off the computer?",[]],
+ [["jag","dricker","ofta","kaffe","på","morgonen"],".","I often drink coffee in the morning.",[["på","morgonen","dricker","jag","ofta","kaffe"]]],
+ [["hon","säger","att","hon","inte","kan","komma"],".","She says that she can't come.",[]],
+ [["ring","mig","om","du","inte","hittar","dit"],".","Call me if you can't find it.",[]],
+ [["har","du","någonsin","ätit","surströmming"],"?","Have you ever eaten surströmming?",[]],
+ [["jag","måste","gå","hem","nu"],".","I have to go home now.",[["nu","måste","jag","gå","hem"]]],
+ [["varför","kom","du","inte","igår"],"?","Why didn't you come yesterday?",[]],
+ [["i","Malmö","har","jag","bott","i","nio","år"],".","I've lived in Malmö for nine years.",[["jag","har","bott","i","Malmö","i","nio","år"]]],
+ [["det","vet","jag","inte"],".","I don't know that.",[["jag","vet","inte","det"]]],
+ [["jag","tror","att","han","inte","håller","med"],".","I don't think he agrees.",[]],
+ [["hon","tar","på","sig","jackan"],".","She puts on her jacket.",[]],
+ [["imorgon","ska","jag","åka","till","Köpenhamn"],".","Tomorrow I'm going to Copenhagen.",[["jag","ska","åka","till","Köpenhamn","imorgon"]]],
+ [["tyvärr","kan","jag","inte","komma"],".","Unfortunately I can't come.",[["jag","kan","tyvärr","inte","komma"]]],
+ [["idag","känner","jag","mig","trött"],".","Today I feel tired.",[["jag","känner","mig","trött","idag"]]],
+ [["vilken","buss","tar","du","till","jobbet"],"?","Which bus do you take to work?",[]]
+];
+const hash = s=>{let h=5381;for(const c of s)h=((h<<5)+h+c.charCodeAt(0))|0;return (h>>>0).toString(36)};
+
 
 /* ================= STATE + SAVING ================= */
 const LSKEY = "svenska-varje-dag-v1";
@@ -585,7 +864,7 @@ let tab="cards"; try{ tab=localStorage.getItem(LSKEY+"-tab")||"cards" }catch(e){
 function showTab(t){
   tab=t;
   document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===t));
-  for(const p of ["cards","forms","words","notes"]) document.getElementById("panel-"+p).hidden = p!==t;
+  for(const p of ["cards","forms","sent","words","notes"]) document.getElementById("panel-"+p).hidden = p!==t;
   try{localStorage.setItem(LSKEY+"-tab",t)}catch(e){}
   renderAll();
 }
@@ -595,23 +874,22 @@ document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()
 let dir="sv", ftype="all", fgroup="", onlyMine=false, cs=null;
 function faces(id){
   const k=id.slice(0,1), key=id.slice(2);
-  if(k==="m"){ const v=VBY[key]; return v&&{sv:"att "+v[0],en:v[4],note:`${v[1]} · ${v[2]} · ${v[3]}`,type:"verb",group:"",mine:false} }
-  if(k==="p"){ const v=PBY[key]; return v&&{sv:v[0],en:v[1],note:v[2]+"\nStress on the particle.",type:"partikelverb",group:"",mine:false} }
-  if(k==="a"){ const v=ABY[key]; return v&&{sv:v[0],en:v[1],note:v[2]+(v[3]?"\nSatsadverb: BIFF rule.":""),type:"adverb",group:"",mine:false} }
+  if(k==="m"){ const v=VBY[key]; return v&&{sv:"att "+v[0],en:v[4],note:`${v[1]} · ${v[2]} · ${v[3]}`,type:"verb",group:"Common verbs",mine:false} }
+  if(k==="b"){ const e=BBY[id]; return e&&{...e,mine:false} }
   const w=state.words.find(w=>w.id===key); return w&&{sv:w.sv,en:w.en,note:w.note||"",type:w.type||"other",group:w.group||"",mine:true};
 }
 function poolIds(){
   const out=[];
   for(const w of state.words) out.push("w:"+w.id);
-  if(!onlyMine && !fgroup){ for(const v of VERBS) out.push("m:"+v[0]); for(const v of PVERBS) out.push("p:"+v[0]); for(const v of ADVS) out.push("a:"+v[0]) }
+  if(!onlyMine){ for(const v of VERBS) out.push("m:"+v[0]); for(const e of BUILT) out.push(e.id) }
   return out.filter(id=>{ const f=faces(id); if(!f) return false; if(ftype!=="all"&&f.type!==ftype) return false; if(fgroup&&f.group!==fgroup) return false; return true });
 }
 function renderFilters(){
   $("#typechips").innerHTML = [["all","All"],...TYPES].map(([k,l])=>`<button type="button" data-ft="${k}" aria-pressed="${k===ftype}">${l}</button>`).join("");
   $("#typechips").querySelectorAll("[data-ft]").forEach(b=>b.onclick=()=>{ftype=b.dataset.ft;cs=null;renderCards()});
-  const gs=groups(); if(fgroup&&!gs.includes(fgroup)) fgroup="";
-  $("#groupsel").innerHTML = `<option value="">All groups</option>`+gs.map(g=>`<option value="${esc(g)}"${g===fgroup?" selected":""}>${esc(g)}</option>`).join("");
-  $("#groupsel").hidden = !gs.length;
+  const gs=groups(), bs=onlyMine?[]:BUILT_GROUPS; if(fgroup&&!gs.includes(fgroup)&&!bs.includes(fgroup)) fgroup="";
+  const opt=g=>`<option value="${esc(g)}"${g===fgroup?" selected":""}>${esc(g)}</option>`;
+  $("#groupsel").innerHTML = `<option value="">All groups</option>`+(gs.length?`<optgroup label="My groups">${gs.map(opt).join("")}</optgroup>`:"")+(bs.length?`<optgroup label="Built-in lists">${bs.map(opt).join("")}</optgroup>`:"");
   $("#onlymine").checked = onlyMine;
   document.querySelectorAll("[data-dir]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.dir===dir));
 }
@@ -719,7 +997,7 @@ function renderVerbTable(){ const q=norm($("#verbsearch").value||"");
 $("#verbsearch").addEventListener("input",renderVerbTable);
 
 /* ================= MY WORDS ================= */
-let wby="group", editingWord=null;
+let wby="group", editingWord=null; const openGroups=new Set();
 $("#add-type").innerHTML=typeOptions("other"); $("#bulk-type").innerHTML=typeOptions("other");
 function addWord(sv,en,note,type,group){
   sv=sv.trim(); en=en.trim(); if(!sv||!en) return false;
@@ -757,7 +1035,10 @@ function renderWords(){
   const buckets=new Map();
   for(const w of list){ const key = wby==="group" ? (w.group||"No group") : (TYPE_LABEL[w.type]||"Other"); if(!buckets.has(key)) buckets.set(key,[]); buckets.get(key).push(w) }
   const keys=[...buckets.keys()].sort((a,b)=> a==="No group"?1: b==="No group"?-1: a.localeCompare(b,"sv"));
-  el.innerHTML=keys.map(k=>`<div class="group"><h3>${esc(k)} <span>${buckets.get(k).length}</span></h3>${buckets.get(k).map(w=>wordRow(w)).join("")}</div>`).join("");
+  const editKey = editingWord && list.find(w=>w.id===editingWord);
+  el.innerHTML=keys.map(k=>{ const ws=buckets.get(k), open = q || openGroups.has(k) || (editKey && ws.includes(editKey));
+    return `<details class="wgroup" data-g="${esc(k)}"${open?" open":""}><summary><span>${esc(k)}</span><span class="cnt">${ws.length}</span></summary><div class="group">${ws.map(w=>wordRow(w)).join("")}</div></details>` }).join("");
+  el.querySelectorAll("details.wgroup").forEach(d=>d.addEventListener("toggle",()=>{ d.open?openGroups.add(d.dataset.g):openGroups.delete(d.dataset.g) }));
   el.querySelectorAll("[data-wedit]").forEach(b=>b.onclick=()=>{editingWord=b.dataset.wedit;renderWords();const i=$("#e-sv");i&&i.focus()});
   el.querySelectorAll("[data-wdel]").forEach(b=>b.onclick=()=>armDelete(b,()=>{const id=b.dataset.wdel;state.words=state.words.filter(w=>w.id!==id);delete state.cards["w:"+id];save("p");renderWords()}));
   const ef=$("#editword");
@@ -777,9 +1058,7 @@ function wordRow(w){
     <span class="acts"><button class="link" data-wedit="${w.id}">Edit</button><button class="link del" data-wdel="${w.id}" aria-label="Delete ${esc(w.sv)}">Delete</button></span>
     <span class="sub">${other?`<span class="tag">${esc(other)}</span>`:""}<span class="tag">${wordLevel(w)}</span>${w.note?`<span class="n">${esc(w.note)}</span>`:""}</span></div>`;
 }
-$("#pcount").textContent=PVERBS.length; $("#acount").textContent=ADVS.length;
-$("#ptable").innerHTML=PVERBS.map(v=>`<tr><td class="nw"><b>${esc(v[0])}</b></td><td>${esc(v[1])}</td><td>${esc(v[2])}</td></tr>`).join("");
-$("#atable").innerHTML=ADVS.map(v=>`<tr><td class="nw"><b>${esc(v[0])}</b>${v[3]?' <span class="tag">satsadverb</span>':""}</td><td>${esc(v[1])}</td><td>${esc(v[2])}</td></tr>`).join("");
+$("#builtins").innerHTML = LISTS.map(L=>`<details><summary>${esc(L.group)} (${L.items.length})</summary><div class="tablewrap"><table><thead><tr><th>Svenska</th><th>English</th><th>Example / note</th></tr></thead><tbody>${L.items.map(it=>`<tr><td class="nw"><b>${esc(it[0])}</b></td><td>${esc(it[1])}</td><td>${esc(it[2]||"").replace(/\n/g,"<br>")}</td></tr>`).join("")}</tbody></table></div></details>`).join("");
 
 /* ================= NOTES ================= */
 let editingNote=null;
@@ -787,9 +1066,9 @@ const chip=(s,t,cap)=>`<span class="w s-${s}"><b>${esc(t)}</b><small>${esc(cap??
 $("#legend").innerHTML=["F","V","S","A","V2","P","K","R"].map(s=>`<span class="w s-${s}"><small>${SLOT[s]}</small></span>`).join("");
 function guidePage(g, open){
   const rows=(g.rows||[]).map(([parts,en])=>`<div class="sent"><div class="slots">${parts.map(p=>chip(p[0],p[1],p[2])).join("")}</div><span class="en">${esc(en)}</span></div>`).join("");
-  const table=g.table?`<div class="tablewrap"><table><thead><tr><th>Motion</th><th>Place</th><th>Example</th></tr></thead><tbody>${g.table.map(r=>`<tr><td><b>${esc(r[0])}</b></td><td><b>${esc(r[1])}</b></td><td>${esc(r[2])}</td></tr>`).join("")}</tbody></table></div>`:"";
+  const table=g.table?`<div class="tablewrap"><table>${g.table.head.some(Boolean)?`<thead><tr>${g.table.head.map(h=>`<th>${esc(h)}</th>`).join("")}</tr></thead>`:""}<tbody>${g.table.rows.map(r=>`<tr>${r.map((c,i)=>`<td${i===0?' class="nw"':""}>${i===0?"<b>"+esc(c)+"</b>":esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`:"";
   return `<details class="gpage"${open?" open":""}><summary><span>${esc(g.title)}</span><span class="tag">${esc(g.tag)}</span></summary><div>
-    <p class="rule">${g.rule}</p>${g.schema?`<div class="schema">${esc(g.schema)}</div>`:""}<div>${rows}</div>${table}
+    <p class="rule">${g.rule}</p>${g.schema?`<div class="schema">${esc(g.schema)}</div>`:""}${table}${rows?`<div>${rows}</div>`:""}
     ${g.tips?`<ul class="tips">${g.tips.map(t=>`<li>${t}</li>`).join("")}</ul>`:""}</div></details>`;
 }
 function renderNotes(){
@@ -830,10 +1109,78 @@ $("#neditor").addEventListener("submit",e=>{
 });
 $("#nsearch").addEventListener("input",renderNotes);
 
+/* ================= SENTENCES ================= */
+let smode="gap", ss=null;
+const gapId=g=>"g:"+hash(g[0]), ordId=o=>"o:"+hash(o[0].join(" "));
+const GBY=Object.fromEntries(GAPS.map(g=>[gapId(g),g])), OBY=Object.fromEntries(ORDER.map(o=>[ordId(o),o]));
+const sentIds=()=>smode==="gap"?GAPS.map(gapId):ORDER.map(ordId);
+const cap=t=>t.charAt(0).toUpperCase()+t.slice(1);
+document.querySelectorAll("[data-smode]").forEach(b=>b.onclick=()=>{smode=b.dataset.smode;ss=null;renderSent()});
+function prepItem(){
+  const id=ss.queue[ss.i];
+  if(smode==="gap"){ const g=GBY[id]; ss.opts=shuffle([g[1],...g[2]]); ss.choice=null }
+  else { const o=OBY[id]; ss.bank=shuffle(o[0].map((_,i)=>i)); ss.picked=[]; ss.checked=false }
+}
+function renderSent(){
+  document.querySelectorAll("[data-smode]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.smode===smode));
+  const ids=sentIds(); stats($("#stats-sent"),counts(ids));
+  const st=$("#sent-stage");
+  if(!ss){
+    const n=buildQueue(ids).length;
+    st.innerHTML=`<div class="empty"><h2>${smode==="gap"?"Fill the gap":"Put the words in order"}</h2>
+      <p style="margin:0">${smode==="gap"?"Pick the right word for the sentence. All four choices look possible, so think about the grammar: tense, en/ett, prepositions and word order.":"Tap the words to build the sentence. Watch where the verb goes, and where inte and other satsadverb go."}</p>
+      <button class="btn" id="sstart" ${n?"":"disabled"}>${n?"Start ("+n+" sentences)":"All done for now"}</button></div>`;
+    if(n) $("#sstart").onclick=()=>{ss={queue:buildQueue(ids),i:0,right:0,wrong:0};prepItem();renderSent()};
+    return;
+  }
+  if(ss.i>=ss.queue.length){
+    st.innerHTML=`<div class="card"><div class="meta"><span>Session done</span><span></span></div><p class="big">Toppen!</p>
+      <p class="gloss">${ss.right} right first time, ${ss.wrong} to practise again. The misses come back tomorrow.</p>
+      <div class="row"><button class="btn" id="sback">Back to overview</button></div></div>`;
+    $("#sback").onclick=()=>{ss=null;renderSent()}; return;
+  }
+  const id=ss.queue[ss.i], meta=`<div class="meta"><span>${ss.i+1} / ${ss.queue.length}${!state.cards[id]?" · new":""}</span><span>${smode==="gap"?"fill the gap":"word order"}</span></div>`;
+  if(smode==="gap"){
+    const g=GBY[id], [a,b]=g[0].split("___"), done=ss.choice!==null;
+    st.innerHTML=`${bar(ss.i,ss.queue.length)}<div class="card">${meta}
+      <p class="sentence">${esc(a)}<span class="gapslot">${done?esc(g[1]):"&nbsp;"}</span>${esc(b)}</p>
+      <div class="opts">${ss.opts.map((o,i)=>`<button class="opt${done&&o===g[1]?" right":""}${done&&o===ss.choice&&o!==g[1]?" wrong":""}" data-opt="${i}" ${done?"disabled":""}>${esc(o)}</button>`).join("")}</div>
+      ${done?`<p class="verdict ${ss.choice===g[1]?"ok":"no"}">${ss.choice===g[1]?"Rätt!":"Not quite."}</p><p class="hint" style="font-size:.95rem">${esc(g[3])}</p><div class="row end"><button class="btn" id="snext">Next</button></div>`:""}
+    </div>`;
+    if(!done) st.querySelectorAll("[data-opt]").forEach(btn=>btn.onclick=()=>{ ss.choice=ss.opts[+btn.dataset.opt]; scoreSent(id, ss.choice===g[1]); renderSent() });
+    else { $("#snext").onclick=nextSent; $("#snext").focus({preventScroll:true}) }
+  } else {
+    const o=OBY[id], w=o[0];
+    const okForms=[w,...o[3]].map(x=>x.join(" ").toLowerCase());
+    const given=ss.picked.map(i=>w[i]).join(" ").toLowerCase();
+    const isRight=okForms.includes(given);
+    st.innerHTML=`${bar(ss.i,ss.queue.length)}<div class="card">${meta}
+      <p class="gloss">${esc(o[2])}</p>
+      <div class="built" aria-label="Your sentence">${ss.picked.length?ss.picked.map((i,k)=>`<button class="tok in" data-un="${k}" ${ss.checked?"disabled":""}>${esc(k===0?cap(w[i]):w[i])}</button>`).join("")+`<span>${esc(o[1])}</span>`:`<span class="ph">Tap the words below in the right order</span>`}</div>
+      ${ss.checked?"":`<div class="bank">${ss.bank.filter(i=>!ss.picked.includes(i)).map(i=>`<button class="tok" data-pick="${i}">${esc(w[i])}</button>`).join("")}</div>
+      <div class="row end"><button class="btn ghost small" id="sclear" type="button" ${ss.picked.length?"":"disabled"}>Clear</button><button class="btn" id="scheck" type="button" ${ss.picked.length===w.length?"":"disabled"}>Check</button></div>`}
+      ${ss.checked?`<p class="verdict ${isRight?"ok":"no"}">${isRight?"Rätt!":"Not quite. The right order is:"}</p>
+        ${isRight?"":`<p class="frame"><b>${esc(cap(w.join(" "))+o[1])}</b></p>`}
+        ${o[3].length?`<p class="hint">Also correct: ${o[3].map(x=>esc(cap(x.join(" "))+o[1])).join(" · ")}</p>`:""}
+        <div class="row end"><button class="btn" id="snext">Next</button></div>`:""}
+    </div>`;
+    st.querySelectorAll("[data-pick]").forEach(b=>b.onclick=()=>{ss.picked.push(+b.dataset.pick);renderSent()});
+    st.querySelectorAll("[data-un]").forEach(b=>b.onclick=()=>{ss.picked.splice(+b.dataset.un,1);renderSent()});
+    const c=$("#sclear"); if(c) c.onclick=()=>{ss.picked=[];renderSent()};
+    const k=$("#scheck"); if(k) k.onclick=()=>{ ss.checked=true; scoreSent(id,isRight); renderSent() };
+    const n=$("#snext"); if(n){ n.onclick=nextSent; n.focus({preventScroll:true}) }
+  }
+}
+function scoreSent(id,ok){
+  if(!ss.queue.slice(0,ss.i).includes(id)){ ok?ss.right++:ss.wrong++ }
+  grade(id,ok); if(!ok) ss.queue.splice(Math.min(ss.i+4,ss.queue.length),0,id);
+}
+function nextSent(){ ss.i++; if(ss.i<ss.queue.length) prepItem(); renderSent() }
+
 /* ================= BOOT ================= */
-function renderAll(){ if(tab==="cards") renderCards(); else if(tab==="forms") renderForms(); else if(tab==="words") renderWords(); else renderNotes() }
+function renderAll(){ if(tab==="cards") renderCards(); else if(tab==="forms") renderForms(); else if(tab==="sent") renderSent(); else if(tab==="words") renderWords(); else renderNotes() }
 renderVerbTable();
-showTab(["cards","forms","words","notes"].includes(tab)?tab:"cards");
+showTab(["cards","forms","sent","words","notes"].includes(tab)?tab:"cards");
 </script>
 </body>
 </html>
