@@ -255,6 +255,12 @@ td.g{font-family:var(--mono);color:var(--muted)}
 }
 @media (min-width:110rem){ #wordlist,#builtins,#guide,#mynotes{columns:3 26rem} }
 
+.badges{display:flex;flex-wrap:wrap;gap:.35rem}
+.badge{border:0;font:inherit;font-size:.75rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:.25rem .55rem;border-radius:.35rem;cursor:pointer}
+.badge span{font-weight:400;opacity:.8}
+.badge.hintbtn{background:var(--chip);color:var(--muted);text-transform:none;letter-spacing:0;font-size:.85rem}
+.badge.on{box-shadow:inset 0 0 0 2px currentColor}
+.taghint{margin:0;font-size:.92rem;background:var(--paper);border-radius:.4rem;padding:.45rem .65rem;color:var(--ink)}
 footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);padding-top:.8rem}
 @media (prefers-reduced-motion:reduce){.progress i{transition:none}}
 </style>
@@ -804,6 +810,20 @@ GUIDE.unshift({id:"verbgrupper",title:"Verbgrupper: 1, 2a, 2b, 3, 4",tag:"verb g
    ["oregelbundna","säga","säg!","säger","sa","sagt"]]},
   tips:["<b>Infinitiv</b>: after a hjälpverb (kan, vill, ska…) or att. <b>Imperativ</b>: instructions, requests, orders. <b>Presens</b>: something you do now or regularly. <b>Preteritum</b>: the time is finished (igår, i fredags). <b>Supinum</b>: after har or hade.",
         "Group 4 verbs are strong: the vowel changes instead of adding -de or -te. Say the three forms out loud as a little rhythm: skriva, skrev, skrivit."]});
+GUIDE.splice(GUIDE.findIndex(g=>g.id==="fragor")+1,0,{id:"svara",title:"Svara ja, nej eller jo",tag:"yes / no answers",
+  rule:"Swedes often answer a yes/no question with a short answer: <b>Ja/Nej + det + verb + jag</b> (+ <b>inte</b>). Reuse the verb from the question if it is <b>är, har, kan, ska, vill, var, hade, måste…</b>. With any other verb, use <b>gör</b> (presens) or <b>gjorde</b> (preteritum). Answer <b>jo</b> instead of ja when the question has <b>inte</b> in it.",
+  table:{head:["fråga","ja","nej"],rows:[
+   ["Är du trött?","Ja, det är jag.","Nej, det är jag inte."],
+   ["Har du ätit?","Ja, det har jag.","Nej, det har jag inte."],
+   ["Kan du simma?","Ja, det kan jag.","Nej, det kan jag inte."],
+   ["Röker du?","Ja, det gör jag.","Nej, det gör jag inte."],
+   ["Bodde du i Kanada?","Ja, det gjorde jag.","Nej, det gjorde jag inte."],
+   ["Kommer du inte?","Jo, det gör jag!","Nej, det gör jag inte."]]},
+  rows:[ [[["x","Nej,"],["F","det"],["V","gör"],["S","jag"],["A","inte."]],"Det comes first, so the verb is second and jag comes after it (inversion)."],
+         [[["x","Jo,"],["F","det"],["V","har"],["S","jag!"]],"Har du inte varit där? Jo, det har jag! = Yes, I have."] ],
+  tips:["Ja = yes to a normal question. <b>Jo</b> = yes to a question with inte: Är du inte hungrig? Jo! (Ja would sound confusing here.)",
+        "In everyday speech a short Ja! / Nej! / Jo! is fine too. Other handy answers: Ja, gärna! (yes please), Nej tack (no thanks), Kanske (maybe), Absolut! (absolutely).",
+        "Jaha = I see, oh okay. Jaså? = Really? Is that so?"]});
 const _rikt = GUIDE.find(g=>g.id==="riktning"); _rikt.table={head:["motion","place","example"],rows:_rikt.table};
 
 /* ---------- fill the gap: s(entence with ___), a(nswer), d(istractors), why ---------- */
@@ -857,7 +877,19 @@ const GAPS = [
  ["Jag ___ honom inte.","känner",["vet","kan","förstår"],"To know a person: känna."],
  ["Jag ___ inte var han bor.","vet",["känner","kan","tror"],"To know a fact: veta."],
  ["Mötet börjar ___ tre.","halv",["halvt","halva","en halv"],"Halv tre = 2:30, half an hour before three."],
- ["Han ___ inte hem igår.","kom",["kommer","har kommit","komma"],"Igår → preteritum. Komma, kom, kommit."]
+ ["Han ___ inte hem igår.","kom",["kommer","har kommit","komma"],"Igår → preteritum. Komma, kom, kommit."],
+ ["Röker du? – Nej, det ___ jag inte.","gör",["röker","är","har"],"Röka is a normal verb, so the short answer uses göra: det gör jag inte."],
+ ["Har du ätit? – Ja, det ___ jag.","har",["gör","är","ätit"],"The question uses har, so the answer reuses har."],
+ ["Är du trött? – Ja, det ___ jag.","är",["gör","har","blir"],"The question uses är, so the answer reuses är."],
+ ["Kan du simma? – Nej, det ___ jag inte.","kan",["gör","simmar","vill"],"Kan is a hjälpverb, so reuse it: det kan jag inte."],
+ ["Kommer du inte ikväll? – ___, det gör jag!","Jo",["Ja","Nej","Jaha"],"The question has inte and you mean yes, so answer jo."],
+ ["Bor du i Malmö? – Ja, det ___ jag.","gör",["bor","är","har"],"Bo is a normal verb, so use göra: det gör jag."],
+ ["Ska du jobba imorgon? – Nej, det ___ jag inte.","ska",["gör","jobbar","vill"],"The question uses ska, so reuse ska."],
+ ["Har du inte varit i Kiruna? – ___, det har jag faktiskt!","Jo",["Ja","Nej","Jaså"],"Yes to a question with inte: jo."],
+ ["Gillar du kaffe? – Ja, det ___ jag.","gör",["gillar","är","kan"],"Gilla is a normal verb, so use göra."],
+ ["Var du hemma igår? – Nej, det ___ jag inte.","var",["gjorde","är","hade"],"The question uses var (past of vara), so reuse var."],
+ ["Bodde du i Kanada förut? – Ja, det ___ jag.","gjorde",["bodde","gör","var"],"A normal verb in preteritum, so use gjorde."],
+ ["Vill du ha kaffe? – Ja, ___!","gärna",["varsågod","förlåt","ursäkta"],"Ja, gärna = yes please. Varsågod is what you say when you give something."],
 ];
 
 /* ---------- word order: w(ords in correct order), end mark, en hint, alt orders ---------- */
@@ -891,7 +923,11 @@ const ORDER = [
  [["imorgon","ska","jag","åka","till","Köpenhamn"],".","Tomorrow I'm going to Copenhagen.",[["jag","ska","åka","till","Köpenhamn","imorgon"]]],
  [["tyvärr","kan","jag","inte","komma"],".","Unfortunately I can't come.",[["jag","kan","tyvärr","inte","komma"]]],
  [["idag","känner","jag","mig","trött"],".","Today I feel tired.",[["jag","känner","mig","trött","idag"]]],
- [["vilken","buss","tar","du","till","jobbet"],"?","Which bus do you take to work?",[]]
+ [["vilken","buss","tar","du","till","jobbet"],"?","Which bus do you take to work?",[]],
+ [["nej","det","gör","jag","inte"],".","Do you smoke? No, I don't.",[]],
+ [["ja","det","har","jag"],".","Have you eaten? Yes, I have.",[]],
+ [["jo","det","kan","jag"],"!","Can't you swim? Yes, I can!",[]],
+ [["nej","det","var","jag","inte"],".","Were you at home? No, I wasn't.",[]]
 ];
 const hash = s=>{let h=5381;for(const c of s)h=((h<<5)+h+c.charCodeAt(0))|0;return (h>>>0).toString(36)};
 
@@ -1401,8 +1437,31 @@ const GBY=Object.fromEntries(GAPS.map(g=>[gapId(g),g])), OBY=Object.fromEntries(
 const sentIds=()=>smode==="gap"?GAPS.map(gapId):ORDER.map(ordId);
 const cap=t=>t.charAt(0).toUpperCase()+t.slice(1);
 document.querySelectorAll("[data-smode]").forEach(b=>b.onclick=()=>{smode=b.dataset.smode;ss=null;renderSent()});
+/* sentence-type badges */
+const TAGS={
+ R:{name:"Rak ordföljd",cls:"S",hint:"Subject first, then the verb: Jag äter inte kött."},
+ O:{name:"Omvänd ordföljd",cls:"F",hint:"Something else comes first, so the verb comes before the subject: Idag äter jag…"},
+ B:{name:"Bisats",cls:"K",hint:"In the bisats, inte and other satsadverb go before the verb (BIFF): …att jag inte äter…"},
+ F:{name:"Fråga",cls:"V",hint:"Yes/no question: verb first (Bor du…?). With a question word: question word, then verb (Var bor du?)."},
+ I:{name:"Imperativ",cls:"A",hint:"A command: the verb comes first (Ring mig!)."},
+ K:{name:"Kort svar",cls:"R",hint:"Ja / Nej / Jo + det + verb + jag (+ inte): Nej, det gör jag inte."}};
+const ORDER_TAGS=[["R"],["O"],["R"],["R","B"],["O"],["F"],["F"],["B","O"],["R"],["F"],["R","B"],["R"],["R"],["O"],["R","B"],["F"],["R"],["R","B"],["I","B"],["F"],["R"],["F"],["O"],["O"],["R","B"],["R"],["O"],["O"],["O"],["F"],["K"],["K"],["K"],["K"]];
+const GAP_TAGS=[["Idag ___ kallt","O"],["När jag kom hem ___","B","O"],["Jag vet att han ___","B"],["Han sa att han ___","B"],["Jag vet inte ___ hon","B"],["Jag stannade hemma ___","B"],["___ bor du","F"],["___ ska du åka","F"]];
+function tagsFor(id){
+  if(id.startsWith("o:")){ const i=ORDER.findIndex(o=>ordId(o)===id); return (ORDER_TAGS[i]||[]) }
+  const g=GBY[id]; if(!g) return [];
+  if(/ – (Ja|Nej|Jo|___)/.test(g[0])) return ["K"];
+  const hit=GAP_TAGS.find(t=>g[0].startsWith(t[0])); return hit?hit.slice(1):[];
+}
+function badgesHTML(id){
+  const t=tagsFor(id); if(!t.length) return "";
+  const answered = smode==="gap" ? ss.choice!==null : ss.checked;
+  if(!answered && !ss.showHint) return `<div class="badges"><button type="button" class="badge hintbtn" data-showhint="1">💡 ${L("Ledtråd","Hint")}</button></div>`;
+  return `<div class="badges">${t.map(k=>`<button type="button" class="badge s-${TAGS[k].cls}${ss.tagOpen===k?" on":""}" data-tag="${k}">${TAGS[k].name} <span aria-hidden="true">ⓘ</span></button>`).join("")}</div>${ss.tagOpen&&t.includes(ss.tagOpen)?`<p class="taghint">${esc(TAGS[ss.tagOpen].hint)}</p>`:""}`;
+}
+function wireBadges(st){ st.querySelectorAll("[data-showhint]").forEach(b=>b.onclick=()=>{ ss.showHint=true; renderSent() }); st.querySelectorAll("[data-tag]").forEach(b=>b.onclick=()=>{ ss.tagOpen = ss.tagOpen===b.dataset.tag ? null : b.dataset.tag; renderSent() }) }
 function prepItem(){
-  const id=ss.queue[ss.i];
+  const id=ss.queue[ss.i]; ss.tagOpen=null; ss.showHint=false;
   if(smode==="gap"){ const g=GBY[id]; ss.opts=shuffle([g[1],...g[2]]); ss.choice=null }
   else { const o=OBY[id]; ss.bank=shuffle(o[0].map((_,i)=>i)); ss.picked=[]; ss.checked=false }
 }
@@ -1428,6 +1487,7 @@ function renderSent(){
   if(smode==="gap"){
     const g=GBY[id], [a,b]=g[0].split("___"), done=ss.choice!==null;
     st.innerHTML=`${bar(ss.i,ss.queue.length)}<div class="card">${meta}
+      ${badgesHTML(id)}
       <p class="sentence">${esc(a)}<span class="gapslot">${done?esc(g[1]):"&nbsp;"}</span>${esc(b)}</p>
       <div class="opts">${ss.opts.map((o,i)=>`<button class="opt${done&&o===g[1]?" right":""}${done&&o===ss.choice&&o!==g[1]?" wrong":""}" data-opt="${i}" ${done?"disabled":""}>${esc(o)}</button>`).join("")}</div>
       ${done?`<p class="verdict ${ss.choice===g[1]?"ok":"no"}">${ss.choice===g[1]?L("Rätt!","Correct!"):L("Inte riktigt.","Not quite.")}</p><p class="hint" style="font-size:.95rem">${esc(g[3])}</p><div class="row end"><button class="btn" id="snext">${L("Nästa","Next")}</button></div>`:""}
@@ -1440,6 +1500,7 @@ function renderSent(){
     const given=ss.picked.map(i=>w[i]).join(" ").toLowerCase();
     const isRight=okForms.includes(given);
     st.innerHTML=`${bar(ss.i,ss.queue.length)}<div class="card">${meta}
+      ${badgesHTML(id)}
       <p class="gloss">${esc(o[2])}</p>
       <div class="built" aria-label="Your sentence">${ss.picked.length?ss.picked.map((i,k)=>`<button class="tok in" data-un="${k}" ${ss.checked?"disabled":""}>${esc(k===0?cap(w[i]):w[i])}</button>`).join("")+`<span>${esc(o[1])}</span>`:`<span class="ph">${L("Tryck på orden i rätt ordning","Tap the words below in the right order")}</span>`}</div>
       ${ss.checked?"":`<div class="bank">${ss.bank.filter(i=>!ss.picked.includes(i)).map(i=>`<button class="tok" data-pick="${i}">${esc(w[i])}</button>`).join("")}</div>
@@ -1456,6 +1517,8 @@ function renderSent(){
     const n=$("#snext"); if(n){ n.onclick=nextSent; n.focus({preventScroll:true}) }
   }
 }
+const _renderSent=renderSent;
+renderSent=function(){ _renderSent(); const st=document.getElementById("sent-stage"); if(st) wireBadges(st) };
 function scoreSent(id,ok){
   if(!ss.queue.slice(0,ss.i).includes(id)){ ok?ss.right++:ss.wrong++ }
   grade(id,ok); if(!ok) ss.queue.splice(Math.min(ss.i+4,ss.queue.length),0,id);
