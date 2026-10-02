@@ -91,6 +91,15 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .stat b{font-family:var(--mono);font-weight:500;font-size:1.35rem;font-variant-numeric:tabular-nums}
 .stat span{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
 .stat.due b{color:var(--accent)}
+button.stat{font:inherit;color:inherit;background:transparent;border:0;border-top:2px solid var(--accent);text-align:left;cursor:pointer;border-radius:0}
+button.stat:hover span{color:var(--ink)}
+.duebox{background:var(--card);border-radius:.5rem;padding:.9rem 1rem;box-shadow:0 1px 0 var(--line);display:flex;flex-direction:column;gap:.5rem}
+.duebox h3{margin:0}
+.duelist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;max-height:22rem;overflow-y:auto}
+.duelist li{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:.6rem;padding:.4rem 0;border-bottom:1px solid var(--line);align-items:baseline}
+.duelist .sv{font-weight:700;overflow-wrap:anywhere}
+.duelist .en{color:var(--muted);font-size:.9rem;overflow-wrap:anywhere}
+.duelist .miss{font-family:var(--mono);font-size:.8rem;color:var(--bad)}
 
 .btn{border:0;border-radius:.5rem;font:inherit;font-weight:700;padding:.65rem 1.05rem;cursor:pointer;background:var(--accent);color:var(--accent-ink)}
 .btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
@@ -123,7 +132,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .keys button{font:inherit;font-size:1.1rem;font-weight:700;width:2.6rem;height:2.6rem;border-radius:.4rem;border:1.5px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
 .verdict{margin:0;font-weight:700}
 .verdict.ok{color:var(--good)} .verdict.no{color:var(--bad)}
-.forms{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.25rem .75rem;font-size:.95rem}
+.forms{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.25rem .75rem;font-size:.95rem}
 .forms div{display:flex;flex-direction:column;min-width:0}
 .forms small{font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
 .forms strong{overflow-wrap:anywhere}
@@ -256,40 +265,43 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
     <div class="titlebar"><h1>LärSig</h1>
       <button class="cog" id="synctoggle" type="button" aria-expanded="false" aria-controls="syncbox" aria-label="Inställningar" title="Inställningar">
         <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        <span>Inställningar</span>
+        <span data-en="Settings">Inställningar</span>
       </button>
     </div>
   </header>
 
   <section class="fbox" id="syncbox" hidden role="dialog" aria-modal="true" aria-label="Inställningar">
-    <div class="row"><h2 class="grow" style="font-size:1.6rem">Inställningar</h2><button class="btn" id="closesettings" type="button">Klar</button></div>
-    <h3>Utseende</h3>
-    <div class="seg" role="group" aria-label="Colour theme" style="align-self:flex-start"><button type="button" data-theme-btn="auto" aria-pressed="true">Auto</button><button type="button" data-theme-btn="light" aria-pressed="false">Ljust</button><button type="button" data-theme-btn="dark" aria-pressed="false">Mörkt</button></div>
+    <div class="row"><h2 class="grow" style="font-size:1.6rem" data-en="Settings">Inställningar</h2><button class="btn" id="closesettings" type="button" data-en="Done">Klar</button></div>
+    <h3 data-en="Appearance">Utseende</h3>
+    <div class="seg" role="group" aria-label="Colour theme" style="align-self:flex-start"><button type="button" data-theme-btn="auto" aria-pressed="true">Auto</button><button type="button" data-theme-btn="light" aria-pressed="false" data-en="Light">Ljust</button><button type="button" data-theme-btn="dark" aria-pressed="false" data-en="Dark">Mörkt</button></div>
     <p class="note">Auto follows your phone or Mac.</p>
-    <div class="seg" role="group" aria-label="Colours" style="align-self:flex-start"><button type="button" data-palette-btn="blue" aria-pressed="true">Blå</button><button type="button" data-palette-btn="ume" aria-pressed="false">Ume</button></div>
+    <div class="seg" role="group" aria-label="Colours" style="align-self:flex-start"><button type="button" data-palette-btn="blue" aria-pressed="true" data-en="Blue">Blå</button><button type="button" data-palette-btn="ume" aria-pressed="false">Ume</button></div>
     <p class="note">Ume (umenezumi) uses traditional Japanese colours: plum-brown, grey-green and mustard.</p>
-    <h3>Synka med GitHub</h3>
+    <h3 data-en="Language">Språk</h3>
+    <div class="seg" role="group" aria-label="Language" style="align-self:flex-start"><button type="button" data-lang-btn="sv" aria-pressed="true">Svenska</button><button type="button" data-lang-btn="en" aria-pressed="false">English</button></div>
+    <p class="note">Changes the buttons, tabs and labels. Explanations stay in English.</p>
+    <h3 data-en="Sync with GitHub">Synka med GitHub</h3>
     <div id="sync-off" class="stack">
       <p class="note">Paste your GitHub access key (it starts with <b>ghp_</b>) to keep your words, notes and progress the same on your Mac and phone. They're saved in a private gist in your account. You do this once on each device.</p>
-      <div class="row"><input id="gh-token" type="password" placeholder="ghp_…" aria-label="GitHub access key" autocomplete="off" style="flex:1;width:auto"><button class="btn" id="gh-connect" type="button">Anslut</button></div>
+      <div class="row"><input id="gh-token" type="password" placeholder="ghp_…" aria-label="GitHub access key" autocomplete="off" style="flex:1;width:auto"><button class="btn" id="gh-connect" type="button" data-en="Connect">Anslut</button></div>
     </div>
     <div id="sync-on" class="stack" hidden>
       <p class="note" id="gh-info"></p>
-      <div class="row"><button class="btn small" id="gh-now" type="button">Synka nu</button><button class="btn ghost small" id="gh-off" type="button">Koppla från enheten</button></div>
+      <div class="row"><button class="btn small" id="gh-now" type="button" data-en="Sync now">Synka nu</button><button class="btn ghost small" id="gh-off" type="button" data-en="Disconnect this device">Koppla från enheten</button></div>
     </div>
-    <h3>Säkerhetskopia</h3>
+    <h3 data-en="Backup">Säkerhetskopia</h3>
     <p class="note">Save everything as a file, or load one back in. Loading a backup adds anything missing and never deletes.</p>
-    <div class="row"><button class="btn ghost small" id="exportbtn" type="button">Exportera</button><label class="btn ghost small" for="importfile" style="cursor:pointer">Importera</label><input id="importfile" type="file" accept=".json,application/json" hidden></div>
+    <div class="row"><button class="btn ghost small" id="exportbtn" type="button" data-en="Export backup">Exportera</button><label class="btn ghost small" for="importfile" style="cursor:pointer" data-en="Import backup">Importera</label><input id="importfile" type="file" accept=".json,application/json" hidden></div>
     <p class="note" id="backupmsg" aria-live="polite"></p>
   </section>
 
   <nav role="tablist" aria-label="Sections">
-    <button role="tab" id="tab-cards" aria-selected="true" data-tab="cards">Kort</button>
-    <button role="tab" id="tab-forms" aria-selected="false" data-tab="forms">Verb</button>
-    <button role="tab" id="tab-sent" aria-selected="false" data-tab="sent">Meningar</button>
-    <button role="tab" id="tab-words" aria-selected="false" data-tab="words">Ord</button>
-    <button role="tab" id="tab-grammar" aria-selected="false" data-tab="grammar">Grammatik</button>
-    <button role="tab" id="tab-notes" aria-selected="false" data-tab="notes">Anteckningar</button>
+    <button role="tab" id="tab-cards" aria-selected="true" data-tab="cards" data-en="Cards">Kort</button>
+    <button role="tab" id="tab-forms" aria-selected="false" data-tab="forms" data-en="Verbs">Verb</button>
+    <button role="tab" id="tab-sent" aria-selected="false" data-tab="sent" data-en="Sentences">Meningar</button>
+    <button role="tab" id="tab-words" aria-selected="false" data-tab="words" data-en="Words">Ord</button>
+    <button role="tab" id="tab-grammar" aria-selected="false" data-tab="grammar" data-en="Grammar">Grammatik</button>
+    <button role="tab" id="tab-notes" aria-selected="false" data-tab="notes" data-en="Notes">Anteckningar</button>
   </nav>
 
   <!-- FLASHCARDS -->
@@ -299,7 +311,7 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
       <div class="chips" id="typechips" role="group" aria-label="Word type"></div>
       <div class="row">
         <select id="groupsel" aria-label="Group" style="width:auto;max-width:100%"></select>
-        <label class="check"><input type="checkbox" id="onlymine" style="width:auto"> Bara mina ord</label>
+        <label class="check"><input type="checkbox" id="onlymine" style="width:auto"> <span data-en="Only my words">Bara mina ord</span></label>
         <span class="grow"></span>
         <div class="seg" role="group" aria-label="Card direction">
           <button id="dir-sv" aria-pressed="true" data-dir="sv">SV → EN</button>
@@ -312,27 +324,31 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
 
   <!-- VERB FORMS -->
   <section class="panel" id="panel-forms" hidden>
-    <div class="row"><span class="note">Öva:</span>
+    <div class="seg" role="group" aria-label="Exercise" style="align-self:flex-start">
+      <button id="vmode-forms" aria-pressed="true" data-vmode="forms" data-en="Forms">Former</button>
+      <button id="vmode-meaning" aria-pressed="false" data-vmode="meaning" data-en="Meaning">Betydelse</button>
+    </div>
+    <div class="row"><span class="note" data-en="Practise:">Öva:</span>
       <div class="seg" role="group" aria-label="Which verbs to practise">
-        <button id="vset-common" aria-pressed="true" data-vset="common">Vanliga verb (<span id="ccount"></span>)</button>
-        <button id="vset-all" aria-pressed="false" data-vset="all">Alla verb (<span id="verbcount"></span>)</button>
+        <button id="vset-common" aria-pressed="true" data-vset="common"><span data-en="Common verbs">Vanliga verb</span> (<span id="ccount"></span>)</button>
+        <button id="vset-all" aria-pressed="false" data-vset="all"><span data-en="All verbs">Alla verb</span> (<span id="verbcount"></span>)</button>
       </div></div>
     <div class="stats" id="stats-forms"></div>
     <div id="forms-stage"></div>
-    <h2>Verblista</h2>
-    <p class="note">Grupp 1: -ar, -ade. Grupp 2: -er, -de or -te. Grupp 3: short verbs, -dde. Grupp 4: strong or irregular, learn by heart.</p>
-    <input id="verbsearch" type="search" placeholder="Sök, t.ex. skriva eller write" aria-label="Search verbs">
-    <details class="wgroup" id="vcommon" open><summary><span>Vanliga verb</span><span class="cnt" id="vcn"></span></summary>
-      <div class="tablewrap"><table><thead><tr><th>Infinitiv</th><th>Presens</th><th>Preteritum</th><th>Supinum</th><th>Engelska</th><th>Grupp</th></tr></thead><tbody id="verbtable"></tbody></table></div></details>
-    <details class="wgroup" id="vmore"><summary><span>Fler verb</span><span class="cnt" id="vmn"></span></summary>
-      <div class="tablewrap"><table><thead><tr><th>Infinitiv</th><th>Presens</th><th>Preteritum</th><th>Supinum</th><th>Engelska</th><th>Grupp</th></tr></thead><tbody id="verbtable2"></tbody></table></div></details>
+    <h2 data-en="Verb list">Verblista</h2>
+    <details class="wgroup" id="vgroups"><summary><span data-en="How the verb groups work">Så fungerar verbgrupperna</span><span class="cnt">1 · 2a · 2b · 3 · 4</span></summary><div id="vgroups-body" class="stack"></div></details>
+    <input id="verbsearch" type="search" placeholder="Sök, t.ex. skriva eller write" data-en-ph="Search, e.g. skriva or write" aria-label="Search verbs">
+    <details class="wgroup" id="vcommon" open><summary><span data-en="Common verbs">Vanliga verb</span><span class="cnt" id="vcn"></span></summary>
+      <div class="tablewrap"><table><thead><tr><th>Infinitiv</th><th>Presens</th><th>Preteritum</th><th>Supinum</th><th>Imperativ</th><th data-en="English">Engelska</th><th data-en="Group">Grupp</th></tr></thead><tbody id="verbtable"></tbody></table></div></details>
+    <details class="wgroup" id="vmore"><summary><span data-en="More verbs">Fler verb</span><span class="cnt" id="vmn"></span></summary>
+      <div class="tablewrap"><table><thead><tr><th>Infinitiv</th><th>Presens</th><th>Preteritum</th><th>Supinum</th><th>Imperativ</th><th data-en="English">Engelska</th><th data-en="Group">Grupp</th></tr></thead><tbody id="verbtable2"></tbody></table></div></details>
   </section>
 
   <!-- SENTENCES -->
   <section class="panel" id="panel-sent" hidden>
     <div class="seg" role="group" aria-label="Exercise">
-      <button id="smode-gap" aria-pressed="true" data-smode="gap">Fyll i luckan</button>
-      <button id="smode-order" aria-pressed="false" data-smode="order">Ordföljd</button>
+      <button id="smode-gap" aria-pressed="true" data-smode="gap" data-en="Fill the gap">Fyll i luckan</button>
+      <button id="smode-order" aria-pressed="false" data-smode="order" data-en="Word order">Ordföljd</button>
     </div>
     <div class="stats" id="stats-sent"></div>
     <div id="sent-stage"></div>
@@ -341,42 +357,42 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
   <!-- MY WORDS -->
   <section class="panel" id="panel-words" hidden>
     <div class="seg" role="group" aria-label="Which words">
-      <button id="wview-mine" aria-pressed="true" data-wview="mine">Mina ord · <span id="wordcount2">0</span></button>
-      <button id="wview-built" aria-pressed="false" data-wview="built">Färdiga listor</button>
+      <button id="wview-mine" aria-pressed="true" data-wview="mine"><span data-en="My words">Mina ord</span> · <span id="wordcount2">0</span></button>
+      <button id="wview-built" aria-pressed="false" data-wview="built" data-en="Built-in lists">Färdiga listor</button>
     </div>
     <div id="wmine" class="panel">
     <form class="fbox" id="addform" autocomplete="off">
-      <h2>Lägg till ett ord</h2>
+      <h2 data-en="Add a word">Lägg till ett ord</h2>
       <div class="fgrid">
-        <input id="add-sv" placeholder="Svenska, t.ex. glad" aria-label="Swedish" required>
-        <input id="add-en" placeholder="Engelska, t.ex. happy" aria-label="English" required>
+        <input id="add-sv" placeholder="Svenska, t.ex. glad" data-en-ph="Swedish, e.g. glad" aria-label="Swedish" required>
+        <input id="add-en" placeholder="Engelska, t.ex. happy" data-en-ph="English, e.g. happy" aria-label="English" required>
         <select id="add-type" aria-label="Word type"></select>
-        <input id="add-group" list="grouplist" placeholder="Grupp, t.ex. Beskrivande ord" aria-label="Group">
-        <textarea id="add-note" class="full" style="min-height:3.5rem" placeholder="Anteckning eller exempel (valfritt), t.ex. Jag är glad idag." aria-label="Note"></textarea>
+        <input id="add-group" list="grouplist" placeholder="Grupp, t.ex. Beskrivande ord" data-en-ph="Group, e.g. Describing words" aria-label="Group">
+        <textarea id="add-note" class="full" style="min-height:3.5rem" placeholder="Anteckning eller exempel (valfritt), t.ex. Jag är glad idag." data-en-ph="Note or example (optional), e.g. Jag är glad idag." aria-label="Note"></textarea>
       </div>
-      <div class="row end"><span class="note grow" id="addmsg" aria-live="polite"></span><button class="btn" type="submit">Lägg till</button></div>
+      <div class="row end"><span class="note grow" id="addmsg" aria-live="polite"></span><button class="btn" type="submit" data-en="Add word">Lägg till</button></div>
     </form>
     <datalist id="grouplist"></datalist>
 
     <details>
-      <summary>Klistra in en hel lista</summary>
+      <summary data-en="Paste a whole list">Klistra in en hel lista</summary>
       <p class="note">One word per line: <b>svenska = english</b>. You can add a note after a second =, like <b>glad = happy = Jag är glad.</b> Tabs or semicolons work too.</p>
       <div class="fgrid">
         <select id="bulk-type" aria-label="Word type for the list"></select>
-        <input id="bulk-group" list="grouplist" placeholder="Grupp för hela listan" aria-label="Group for the list">
+        <input id="bulk-group" list="grouplist" placeholder="Grupp för hela listan" data-en-ph="Group for the whole list" aria-label="Group for the list">
       </div>
       <textarea id="bulk" aria-label="Word list" placeholder="glad = happy&#10;trött = tired&#10;arg = angry = Varför är du arg?"></textarea>
-      <div class="row end"><span class="note grow" id="bulkmsg"></span><button class="btn" id="bulkadd" type="button">Lägg till listan</button></div>
+      <div class="row end"><span class="note grow" id="bulkmsg"></span><button class="btn" id="bulkadd" type="button" data-en="Add list">Lägg till listan</button></div>
     </details>
 
     <div class="row">
-      <h2 class="grow">Mina ord · <span id="wordcount">0</span></h2>
+      <h2 class="grow"><span data-en="My words">Mina ord</span> · <span id="wordcount">0</span></h2>
       <div class="seg" role="group" aria-label="Sort words by">
-        <button id="by-group" aria-pressed="true" data-by="group">Grupp</button>
-        <button id="by-type" aria-pressed="false" data-by="type">Ordklass</button>
+        <button id="by-group" aria-pressed="true" data-by="group" data-en="Group">Grupp</button>
+        <button id="by-type" aria-pressed="false" data-by="type" data-en="Word type">Ordklass</button>
       </div>
     </div>
-    <input id="wsearch" type="search" placeholder="Sök bland mina ord" aria-label="Search my words">
+    <input id="wsearch" type="search" placeholder="Sök bland mina ord" data-en-ph="Search my words" aria-label="Search my words">
     <div id="wordlist" class="stack"></div>
     </div>
     <div id="wbuilt" class="panel" hidden>
@@ -388,28 +404,28 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
   <!-- NOTES -->
   <section class="panel" id="panel-notes" hidden>
     <div class="row">
-      <input id="nsearch" class="grow" type="search" placeholder="Sök i mina anteckningar" aria-label="Search notes" style="width:auto">
-      <button class="btn" id="newnote" type="button">Ny anteckning</button>
+      <input id="nsearch" class="grow" type="search" placeholder="Sök i mina anteckningar" data-en-ph="Search my notes" aria-label="Search notes" style="width:auto">
+      <button class="btn" id="newnote" type="button" data-en="New note">Ny anteckning</button>
     </div>
     <form class="fbox" id="neditor" hidden autocomplete="off">
       <h2 id="neditor-title">Ny anteckning</h2>
       <div class="fgrid">
-        <input id="n-title" placeholder="Rubrik, t.ex. Prepositioner för tid" aria-label="Title" required>
-        <input id="n-topic" list="topiclist" placeholder="Ämne, t.ex. Grammatik" aria-label="Topic">
-        <textarea id="n-body" class="full" style="min-height:10rem" placeholder="Skriv vad som helst: en regel från lektionen, exempelmeningar, ord att slå upp." aria-label="Note text"></textarea>
+        <input id="n-title" placeholder="Rubrik, t.ex. Prepositioner för tid" data-en-ph="Title, e.g. Prepositions for time" aria-label="Title" required>
+        <input id="n-topic" list="topiclist" placeholder="Ämne, t.ex. Grammatik" data-en-ph="Topic, e.g. Grammar" aria-label="Topic">
+        <textarea id="n-body" class="full" style="min-height:10rem" placeholder="Skriv vad som helst: en regel från lektionen, exempelmeningar, ord att slå upp." data-en-ph="Write anything: a rule from class, example sentences, words to look up later." aria-label="Note text"></textarea>
       </div>
-      <div class="row end"><button class="btn ghost" type="button" id="ncancel">Avbryt</button><button class="btn" type="submit">Spara</button></div>
+      <div class="row end"><button class="btn ghost" type="button" id="ncancel" data-en="Cancel">Avbryt</button><button class="btn" type="submit" data-en="Save note">Spara</button></div>
     </form>
     <datalist id="topiclist"></datalist>
 
-    <h2>Mina anteckningar</h2>
+    <h2 data-en="My notes">Mina anteckningar</h2>
     <div id="mynotes" class="stack"></div>
 
   </section>
 
   <!-- GRAMMAR -->
   <section class="panel" id="panel-grammar" hidden>
-    <input id="gsearch" type="search" placeholder="Sök, t.ex. BIFF, adjektiv, sin" aria-label="Search grammar">
+    <input id="gsearch" type="search" placeholder="Sök, t.ex. BIFF, adjektiv, sin" data-en-ph="Search, e.g. BIFF, adjectives, sin" aria-label="Search grammar">
     <div class="legend" id="legend"></div>
     <div id="guide" class="stack"></div>
   </section>
@@ -418,6 +434,9 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
 </div>
 
 <script>
+/* ================= LANGUAGE ================= */
+let lang="sv"; try{ lang=localStorage.getItem("svenska-varje-dag-v1-lang")||"sv" }catch(e){}
+const L=(sv,en)=>lang==="en"?en:sv;
 /* ================= DATA ================= */
 const VERBS = [
  ["vara","är","var","varit","to be",4],["ha","har","hade","haft","to have",4],["göra","gör","gjorde","gjort","to do, make",4],
@@ -497,10 +516,31 @@ const ADVS = [ // sv, en, example, satsadverb?
 ];
 const TYPES = [["verb","Verb"],["partikelverb","Partikelverb"],["adverb","Adverb"],["noun","Substantiv"],["adjective","Adjektiv"],["preposition","Preposition"],["conjunction","Bindeord"],["question","Frågeord"],["phrase","Fras"],["other","Övrigt"]];
 const TYPE_LABEL = Object.fromEntries(TYPES);
+const TYPE_EN = {verb:"Verb",partikelverb:"Phrasal verb",adverb:"Adverb",noun:"Noun",adjective:"Adjective",preposition:"Preposition",conjunction:"Linking word",question:"Question word",phrase:"Phrase",other:"Other"};
+const typeLabel = k => lang==="en" ? (TYPE_EN[k]||"Other") : (TYPE_LABEL[k]||"Övrigt");
 const VBY = Object.fromEntries(VERBS.map(v=>[v[0],v]));
 const PBY = Object.fromEntries(PVERBS.map(v=>[v[0],v]));
 const ABY = Object.fromEntries(ADVS.map(v=>[v[0],v]));
-const FORMS = {pres:{i:1,label:"presens",frame:["Nu ","jag."]},past:{i:2,label:"preteritum",frame:["Igår ","jag."]},sup:{i:3,label:"supinum",frame:["Jag har ",""]}};
+const FORMS = {pres:{i:1,label:"presens",frame:["Nu ","jag."]},past:{i:2,label:"preteritum",frame:["Igår ","jag."]},sup:{i:3,label:"supinum",frame:["Jag har ",""]},imp:{i:6,label:"imperativ",frame:["",""]}};
+/* Imperativ: grupp 1 and 3 = the infinitive (Tala! Bo!). Grupp 2 and 4 drop the -a (Läs! Skriv!), and a final -mm becomes -m (Glöm! Kom!).
+   "–" = no normal imperative (modal or impersonal verbs). */
+const IMP_EXCEPT = {vara:"var",ha:"ha",ta:"ta",dra:"dra","gifta sig":"gift dig","gå ut":"gå ut",
+  kunna:"–",vilja:"–",veta:"–",heta:"–",finnas:"–",hända:"–",gälla:"–",minnas:"–",hoppas:"–",kosta:"–",verka:"–",regna:"–",snöa:"–",dö:"–"};
+function imperativ(v){
+  const inf=v[0]; if(IMP_EXCEPT[inf]!==undefined) return IMP_EXCEPT[inf];
+  if(v[5]===1||v[5]===3||!inf.endsWith("a")) return inf;
+  return inf.slice(0,-1).replace(/mm$/,"m");
+}
+function vgroup(v){ if(v[5]!==2) return String(v[5]); return /te$/.test(v[2].split("/")[0].replace(/ sig$/,"")) ? "2b" : "2a" }
+function groupHint(v){
+  const g=vgroup(v);
+  if(g==="1") return "Grupp 1: the verb keeps its -a. Presens +r, preteritum +de, supinum +t (öppnar, öppnade, öppnat).";
+  if(g==="2b") return `Grupp 2b: the stem (${imperativ(v)}) ends in a voiceless consonant (k, p, t, s, x), so preteritum takes -te: ${v[2]}.`;
+  if(g==="2a") return v[1]===imperativ(v) ? `Grupp 2a: the stem ends in -r, so presens has no extra ending (${v[1]}). Preteritum takes -de: ${v[2]}.` : `Grupp 2a: the stem (${imperativ(v)}) ends in a voiced consonant (b, d, g, j, l, m, n, r, v), so preteritum takes -de: ${v[2]}.`;
+  if(g==="3") return "Grupp 3: a short verb ending in a vowel. Presens +r, preteritum +dde, supinum +tt (bor, bodde, bott).";
+  return `Grupp 4: a strong or irregular verb. The vowel changes: ${v[0]} – ${v[2]} – ${v[3]}. Say it out loud a few times.`;
+}
+const formOf=(v,k)=> k==="imp" ? imperativ(v) : v[FORMS[k].i];
 const DAY = 864e5, INT = [0,1,2,4,8,16,35], NEW_PER_SESSION = 9, SESSION_MAX = 30;
 
 /* slot types for the grammar guide */
@@ -646,6 +686,20 @@ const LISTS = [
   ["en hals","a throat, neck",""],["en axel","a shoulder",""],["ett knä","a knee","knän (plural)"],["en fot","a foot","fötter (plural)"],
   ["en hand","a hand","händer (plural)"],["ett öga","an eye","ögon (plural)"],["ett öra","an ear","öron (plural)"],["en tand","a tooth","tänder (plural)"],
   ["ett finger","a finger","fingrar (plural)"],["en näsa","a nose",""]]},
+ {key:"Greetings", group:"Hälsningsfraser (greetings)", type:"phrase", items:[
+  ["Hej!","Hi!",""],["Hejsan!","Hi there!",""],["Tjena! / Tja!","Hey! (informal)","With friends."],["God morgon!","Good morning!",""],
+  ["God dag!","Good day! (formal)",""],["God kväll!","Good evening!",""],["Hur mår du?","How are you?","Svar: Bra, tack! Och du?"],
+  ["Hur är det?","How's it going?","Svar: Det är bra, tack."],["Läget?","What's up? (informal)",""],["Bara bra, tack. Och du?","Fine, thanks. And you?",""],
+  ["Trevligt att träffas!","Nice to meet you!",""],["Välkommen!","Welcome!","välkomna to several people"],["Hej allihop!","Hi everyone!",""],
+  ["Kära …,","Dear …, (letter)","Kära Anna,"],["Hej …!","Hi …! (message, email)","Hej Julia!"],["Hoppas allt är bra.","I hope all is well.","Good first line in a letter."],
+  ["Tack för senast!","Thanks for last time!","Very Swedish: said the next time you meet someone."],["Länge sedan!","Long time no see!",""]]},
+ {key:"Closings", group:"Hälsningsfraser i slutet (closing phrases)", type:"phrase", items:[
+  ["Hej då!","Bye!",""],["Ha det bra!","Take care!",""],["Ha det så bra!","Take care! (warmer)",""],["Vi ses!","See you!",""],
+  ["Vi ses snart!","See you soon!",""],["Vi hörs!","Talk soon!",""],["Ha en trevlig helg!","Have a nice weekend!",""],["Ha en bra dag!","Have a good day!",""],
+  ["Sköt om dig!","Take care of yourself!",""],["Krya på dig!","Get well soon!",""],["Hoppas vi ses snart!","Hope to see you soon!",""],
+  ["Tack på förhand!","Thanks in advance!","Formal emails."],["Tack för hjälpen!","Thanks for the help!",""],
+  ["Kram / Kramar","Hug / Hugs","To friends and family."],["Puss","Kiss","Close friends and family."],["Hälsningar","Regards","Neutral."],
+  ["Med vänlig hälsning","Kind regards (formal)","Often shortened MVH. Also: Med vänliga hälsningar."],["Bästa hälsningar","Best regards",""],["Allt gott","All the best",""]]},
  {key:"Home", group:"Hemmet (home)", type:"noun", items:[
   ["en lägenhet","an apartment",""],["ett hus","a house",""],["ett kök","a kitchen",""],["ett sovrum","a bedroom",""],["ett vardagsrum","a living room",""],
   ["ett badrum","a bathroom",""],["en hyra","a rent","Hur mycket är hyran?"],["en hyresvärd","a landlord",""],["ett hyreskontrakt","a rental contract",""],
@@ -659,10 +713,26 @@ const BUILT_GROUPS = ["Vanliga verb (common verbs)",...LISTS.map(l=>l.group)];
 
 /* ---------- more grammar pages ---------- */
 GUIDE.push(
- {id:"substantiv",title:"Substantiv: en/ett, bestämd form och plural",tag:"nouns",
-  rule:"Every noun is an <b>en-word</b> or an <b>ett-word</b>, and you have to learn which with the word. Most are en-words. “The” is an ending: bil<b>en</b>, hus<b>et</b>. There are five common plural endings.",
-  table:{head:["a / an","the","plural","the (plural)"],rows:[["en bil","bilen","bilar","bilarna"],["en flicka","flickan","flickor","flickorna"],["en katt","katten","katter","katterna"],["en sko","skon","skor","skorna"],["ett äpple","äpplet","äpplen","äpplena"],["ett barn","barnet","barn","barnen"],["en lärare","läraren","lärare","lärarna"],["en man","mannen","män","männen"],["en hand","handen","händer","händerna"]]},
-  tips:["Learn every new noun with en or ett in front: <b>en</b> nyckel, <b>ett</b> kvitto. Add it that way in My words.","Ett-words ending in a consonant have no plural ending: ett hus, två hus."]},
+ {id:"substantiv",title:"Substantiv plural: fem grupper",tag:"noun plurals",
+  rule:"Plural endings come in five groups. The ending depends on <b>en or ett</b> and on how the word <b>ends</b>. For “the” in plural, add <b>-na</b> (flickorna, bilarna), or <b>-a</b> after -n (mötena), or <b>-en</b> when there is no plural ending (husen).",
+  table:{head:["grupp","which words","examples"],rows:[
+   ["1 · -or(na)","en-words ending in -a","en flicka – flickor, en lampa – lampor, en tavla – tavlor. OBS! en ros – rosor, en toffel – tofflor"],
+   ["2 · -ar(na)","short en-words; words ending in -ing, -ning; unstressed -e, -el, -en, -er, -ar, -on","en bil – bilar, en hund – hundar, en tidning – tidningar, en pojke – pojkar, en fågel – fåglar, en sommar – somrar, en dotter – döttrar"],
+   ["3 · -er(na)","many loanwords, words ending in -het and -else, and words with a vowel change (a→ä, o→ö)","en film – filmer, en student – studenter, en lägenhet – lägenheter, en berättelse – berättelser, en hand – händer, en bok – böcker. OBS! ett café – caféer, ett land – länder, ett fängelse – fängelser"],
+   ["4 · -n(a)","ett-words ending in a vowel","ett möte – möten, ett kvitto – kvitton, ett hjärta – hjärtan. OBS! ett öga – ögon, ett öra – öron"],
+   ["5 · no ending","ett-words ending in a consonant; en-words ending in -are, -er, -ier","ett hus – hus, ett barn – barn, en lärare – lärare (lärarna), en mekaniker – mekaniker"]]},
+  rows:[[[["F","Bilen"],["V","är"],["R","ny."]],"the car (singular, en → -en)"],[[["F","Bilarna"],["V","är"],["R","nya."]],"the cars (plural + -na)"]],
+  tips:["Learn every new noun with en or ett and its plural: <b>en</b> nyckel – nycklar. Add it that way in Mina ord.","Unstressed -e, -el, -er often lose a vowel in plural: en fågel – fåglar, en sommar – somrar."]},
+ {id:"enett",title:"En eller ett?",tag:"en or ett",
+  rule:"About <b>80%</b> of nouns are en-words and 20% are ett-words. These groups are usually <b>en</b>, but each has a few ett-words to watch out for.",
+  table:{head:["usually en","examples","OBS! ett"],rows:[
+   ["nouns ending in -a","en tröja, en lampa, en jacka, en penna, en karta","ett hjärta, ett schema, ett öga, ett öra"],
+   ["people","en man, en kvinna, en syster, en kusin, en bror","ett barn, ett syskon"],
+   ["jobs","en lärare, en ingenjör, en sjuksköterska, en pilot","ett vårdbiträde, ett köksbiträde"],
+   ["nouns ending in -ing, -ning","en mening, en räkning, en tidning, en forskning",""],
+   ["animals","en katt, en hund, en kanin, en björn, en häst","ett djur, ett lejon, ett lamm, ett får"],
+   ["transport","en cykel, en bil, en buss, en båt, en spårvagn","ett tåg, ett flygplan, ett skepp"]]},
+  tips:["If you know the definite form, you know the article: bok<b>en</b> → en bok, skåp<b>et</b> → ett skåp, väg<b>en</b> → en väg."]},
  {id:"adjektiv",title:"Adjektivets böjning",tag:"adjective endings",
   rule:"An adjective changes to match the noun. Add <b>-t</b> for ett-words and <b>-a</b> for plural. After <b>den, det, de</b> (and after min, din, hans…) it always ends in <b>-a</b>, and the noun gets its “the” ending too.",
   table:{head:["en","ett","plural","the"],rows:[["en stor bil","ett stort hus","stora bilar","den stora bilen"],["en ny jacka","ett nytt jobb","nya skor","det nya jobbet"],["en röd bil","ett rött äpple","röda äpplen","de röda äpplena"],["en gammal stol","ett gammalt hus","gamla hus","det gamla huset"],["en liten bil","ett litet hus","små hus","den lilla bilen / de små husen"],["en bra film","ett bra jobb","bra filmer","den bra filmen"]]},
@@ -709,6 +779,31 @@ GUIDE.push({id:"bindeord",title:"Bindeord och ordföljd",tag:"linking words",
          [[["x","Jag gick hem"],["K","eftersom"],["S","jag"],["A","inte"],["V","mådde"],["R","bra."]],"Subjunktion: bisats, inte before the verb."],
          [[["F","Därför"],["V","gick"],["S","jag"],["R","hem."]],"Adverb first: verb second, subject after it."] ],
   tips:["By function: <b>adding</b> och, dessutom, också, samt, dels–dels · <b>contrast</b> men, utan, dock, trots att, fastän, tvärtom · <b>cause & result</b> eftersom, därför att, så, därför, följaktligen · <b>time</b> när, sedan, innan, medan, för det första.","All of them are in your flashcards under the Bindeord groups."]});
+GUIDE.push({id:"imperativ",title:"Imperativ: Skriv! Kom! Glöm inte!",tag:"commands",
+  rule:"The imperativ is the command form, used for instructions, requests and signs. <b>Grupp 1 and 3</b>: the same as the infinitive. <b>Grupp 2 and 4</b>: take away the <b>-a</b>. If the word then ends in <b>-mm</b>, drop one m.",
+  table:{head:["infinitiv","imperativ","grupp"],rows:[["tala","Tala!","1"],["bo","Bo!","3"],["läsa","Läs!","2"],["ringa","Ring!","2"],["skriva","Skriv!","4"],["glömma","Glöm!","2"],["komma","Kom!","4"],["vara","Var!","4"],["gå / ta / se","Gå! Ta! Se!","4"]]},
+  rows:[ [[["V","Stäng"],["P","av"],["R","datorn!"]],"Turn off the computer! The verb comes first."],
+         [[["V","Glöm"],["A","inte"],["R","nyckeln!"]],"Don't forget the key! inte comes right after the verb."],
+         [[["V","Var"],["R","snäll och"],["V2","hjälp"],["R","mig."]],"Please help me. A polite way to ask."] ],
+  tips:["To sound polite, Swedes often ask instead: <b>Kan du stänga dörren?</b>","Reflexive verbs keep their small word: <b>Skynda dig!</b> <b>Sätt dig!</b>","Modal verbs like kunna and vilja have no imperativ."]});
+GUIDE.unshift({id:"verbgrupper",title:"Verbgrupper: 1, 2a, 2b, 3, 4",tag:"verb groups",
+  rule:"Swedish verbs follow a few patterns. <b>1</b>: the verb keeps its -a. <b>2a, 2b</b>: drop the -a to get the stem. <b>3</b>: short verbs. <b>4</b>: the vowel changes. For group 2, look at the <b>stem</b> (the verb without -a: ring-, köp-). Whether the last sound is <b>tonande</b> (voiced: your throat buzzes, like b, d, g, j, l, m, n, r, v) or <b>tonlös</b> (voiceless: just air, like k, p, t, s, x) decides if preteritum ends in <b>-de</b> or <b>-te</b>.",
+  table:{head:["grupp","infinitiv","imperativ","presens","preteritum","supinum"],rows:[
+   ["1 · keeps -a","öppna","öppna!","öppnar","öppnade","öppnat"],
+   ["2a · tonande → -de","ringa","ring!","ringer","ringde","ringt"],
+   ["2a · stem ends in -r","köra","kör!","kör","körde","kört"],
+   ["2b · tonlös k p t s x → -te","köpa","köp!","köper","köpte","köpt"],
+   ["3 · short verb → -dde","bo","bo!","bor","bodde","bott"],
+   ["4 · långt i: i → e → i","skriva","skriv!","skriver","skrev","skrivit"],
+   ["4 · kort i: i → a → u","springa","spring!","springer","sprang","sprungit"],
+   ["4 · långt u: u → ö → u","bjuda","bjud!","bjuder","bjöd","bjudit"],
+   ["4 · långt y: y → ö → u","flyga","flyg!","flyger","flög","flugit"],
+   ["4 · kort u: u → ö → u","sjunga","sjung!","sjunger","sjöng","sjungit"],
+   ["oregelbundna","gå","gå!","går","gick","gått"],
+   ["oregelbundna","se","se!","ser","såg","sett"],
+   ["oregelbundna","säga","säg!","säger","sa","sagt"]]},
+  tips:["<b>Infinitiv</b>: after a hjälpverb (kan, vill, ska…) or att. <b>Imperativ</b>: instructions, requests, orders. <b>Presens</b>: something you do now or regularly. <b>Preteritum</b>: the time is finished (igår, i fredags). <b>Supinum</b>: after har or hade.",
+        "Group 4 verbs are strong: the vowel changes instead of adding -de or -te. Say the three forms out loud as a little rhythm: skriva, skrev, skrivit."]});
 const _rikt = GUIDE.find(g=>g.id==="riktning"); _rikt.table={head:["motion","place","example"],rows:_rikt.table};
 
 /* ---------- fill the gap: s(entence with ___), a(nswer), d(istractors), why ---------- */
@@ -828,8 +923,8 @@ const setSync = t=>syncEl.textContent=t;
 let syncTimer=null, chain=Promise.resolve(), lastSync=0;
 function save(kind){
   state["t"+kind]=Date.now(); lsSet();
-  if(gh.token){ clearTimeout(syncTimer); setSync("Sparar…"); syncTimer=setTimeout(()=>{syncTimer=null;sync()},2500) }
-  else setSync("Sparat på den här enheten");
+  if(gh.token){ clearTimeout(syncTimer); setSync(L("Sparar…","Saving…")); syncTimer=setTimeout(()=>{syncTimer=null;sync()},2500) }
+  else setSync(L("Sparat på den här enheten","Saved on this device"));
 }
 function payload(){ return {app:"svenska-varje-dag",v:2,tp:state.tp,tn:state.tn,cards:state.cards,words:state.words,notes:state.notes} }
 async function api(path, opts={}){
@@ -867,7 +962,7 @@ async function doSync(){
     if(changed){ for(const w of state.words){ if(!w.type) w.type="other"; if(w.group==null) w.group="" } if(migrateGroups()) push=true; lsSet(); renderAll() }
     if(push) await api("/gists/"+gh.gist,{method:"PATCH",body:JSON.stringify({files:{[FILE]:{content:JSON.stringify(payload())}}})});
     lastSync=Date.now();
-    setSync("Synkat med GitHub "+new Date().toLocaleTimeString("sv-SE",{hour:"2-digit",minute:"2-digit"}));
+    setSync(L("Synkat med GitHub ","Synced with GitHub ")+new Date().toLocaleTimeString("sv-SE",{hour:"2-digit",minute:"2-digit"}));
   }catch(e){
     if(e.status===401){ setSync("Your GitHub key stopped working. Open Inställningar to paste a new one."); gh.token=""; ghSave(); renderSyncBox() }
     else if(e.status===404 && gh.gist){ gh.gist=""; ghSave(); setSync("Couldn't find your sync file. Tap Synka nu to set it up again.") }
@@ -889,12 +984,12 @@ document.addEventListener("keydown",e=>{ if(e.key==="Escape" && !document.getEle
 document.getElementById("gh-connect").onclick=async()=>{
   const t=document.getElementById("gh-token").value.trim();
   if(!t){ setSync("Paste your key first."); return }
-  gh={token:t,gist:""}; ghSave(); setSync("Ansluter till GitHub…");
+  gh={token:t,gist:""}; ghSave(); setSync(L("Ansluter till GitHub…","Connecting to GitHub…"));
   await sync();
   if(gh.token) document.getElementById("gh-token").value="";
 };
-document.getElementById("gh-now").onclick=()=>{ setSync("Synkar…"); sync() };
-document.getElementById("gh-off").onclick=()=>{ gh={}; ghSave(); setSync("Synkar inte. Sparat på den här enheten."); renderSyncBox() };
+document.getElementById("gh-now").onclick=()=>{ setSync(L("Synkar…","Syncing…")); sync() };
+document.getElementById("gh-off").onclick=()=>{ gh={}; ghSave(); setSync(L("Synkar inte. Sparat på den här enheten.","Not syncing. Saved on this device.")); renderSyncBox() };
 window.addEventListener("online",()=>sync());
 document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible" && !syncTimer && Date.now()-lastSync>20000) sync() });
 
@@ -921,7 +1016,7 @@ document.getElementById("importfile").onchange=async e=>{
   }catch(err){ msg.textContent="That file isn't a backup from this app. Choose a file named larsig-backup-….json." }
 };
 
-setSync(gh.token ? "Synkar…" : "Sparat på den här enheten");
+setSync(gh.token ? L("Synkar…","Syncing…") : L("Sparat på den här enheten","Saved on this device"));
 if(gh.token) sync();
 if("serviceWorker" in navigator && location.protocol==="https:") navigator.serviceWorker.register("sw.js").catch(()=>{});
 
@@ -933,7 +1028,7 @@ const strip = s=>norm(s).replace(/[åä]/g,"a").replace(/ö/g,"o");
 const uidGen = ()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 const shuffle = a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const bar = (d,t)=>`<div class="progress" aria-hidden="true"><i style="width:${t?Math.round(d/t*100):0}%"></i></div>`;
-const typeOptions = sel=>TYPES.map(([k,l])=>`<option value="${k}"${k===sel?" selected":""}>${l}</option>`).join("");
+const typeOptions = sel=>TYPES.map(([k])=>`<option value="${k}"${k===sel?" selected":""}>${typeLabel(k)}</option>`).join("");
 const groups = ()=>[...new Set(state.words.map(w=>(w.group||"").trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"sv"));
 function refreshLists(){
   $("#grouplist").innerHTML = groups().map(g=>`<option value="${esc(g)}">`).join("");
@@ -942,14 +1037,14 @@ function refreshLists(){
 // two-tap delete
 function armDelete(btn, fn){
   if(btn.classList.contains("armed")){ fn(); return }
-  btn.classList.add("armed"); btn.textContent="Tryck igen för att ta bort";
-  setTimeout(()=>{ if(btn.isConnected){ btn.classList.remove("armed"); btn.textContent="Ta bort" } },3000);
+  btn.classList.add("armed"); btn.textContent=L("Tryck igen för att ta bort","Tap again to delete");
+  setTimeout(()=>{ if(btn.isConnected){ btn.classList.remove("armed"); btn.textContent=L("Ta bort","Delete") } },3000);
 }
 
 /* ================= SCHEDULING ================= */
 function grade(id, ok){
   const c = state.cards[id] || {b:0,d:0};
-  if(ok){ c.b=Math.min(c.b+1,INT.length-1); c.d=Date.now()+INT[c.b]*DAY-3*36e5 } else { c.b=0; c.d=Date.now() }
+  if(ok){ c.b=Math.min(c.b+1,INT.length-1); c.d=Date.now()+INT[c.b]*DAY-3*36e5 } else { c.b=0; c.d=Date.now(); c.m=(c.m||0)+1; c.lm=Date.now() }
   state.cards[id]=c; save("p");
 }
 function counts(ids){ let due=0,fresh=0,known=0; const t=Date.now();
@@ -958,7 +1053,34 @@ function buildQueue(ids){ const t=Date.now();
   const due=shuffle(ids.filter(id=>state.cards[id]&&state.cards[id].d<=t));
   const fresh=ids.filter(id=>!state.cards[id]).slice(0,NEW_PER_SESSION);
   return due.slice(0,SESSION_MAX-fresh.length).concat(fresh) }
-function stats(el,c){ el.innerHTML=`<div class="stat due"><b>${c.due}</b><span>Att repetera</span></div><div class="stat"><b>${c.fresh}</b><span>Nya</span></div><div class="stat"><b>${c.known}</b><span>Kan bra</span></div>` }
+function stats(el,c,ids){
+  el.innerHTML=`<button type="button" class="stat due" aria-expanded="false"><b>${c.due}</b><span>${L("Att repetera","Due now")} ▾</span></button><div class="stat"><b>${c.fresh}</b><span>${L("Nya","Not seen yet")}</span></div><div class="stat"><b>${c.known}</b><span>${L("Kan bra","Know well")}</span></div>`;
+  let box=el.nextElementSibling; if(!box||!box.classList.contains("duebox")){ box=document.createElement("div"); box.className="duebox"; box.hidden=true; el.after(box) }
+  const btn=el.querySelector(".due"); btn.setAttribute("aria-expanded",String(!box.hidden));
+  const fill=()=>{ box.innerHTML=dueListHTML(ids||[]) };
+  if(!box.hidden) fill();
+  btn.onclick=()=>{ box.hidden=!box.hidden; btn.setAttribute("aria-expanded",String(!box.hidden)); if(!box.hidden) fill() };
+}
+/* a readable line for any practice item */
+function describe(id){
+  const [k,...rest]=id.split(":");
+  if(k==="f"){ const v=VBY[rest[0]], form=rest[1]; if(!v) return null; const F=FORMS[form]; const val=formOf(v,form)+(form==="imp"?"!":"");
+    return {sv:`${v[0]} → ${val}`, en:`${F.label} · ${v[4]}`} }
+  if(k==="g"){ const g=GBY&&GBY[id]; return g&&{sv:g[0].replace("___",`[${g[1]}]`), en:g[3]} }
+  if(k==="o"){ const o=OBY&&OBY[id]; return o&&{sv:cap(o[0].join(" "))+o[1], en:o[2]} }
+  const f=faces(id); return f&&{sv:f.sv, en:f.en};
+}
+function dueListHTML(ids){
+  const t=Date.now(), set=new Set(ids);
+  const due=ids.filter(id=>state.cards[id]&&state.cards[id].d<=t).map(id=>[id,describe(id)]).filter(x=>x[1]);
+  const hard=[...set].filter(id=>state.cards[id]&&state.cards[id].m).sort((a,b)=>state.cards[b].m-state.cards[a].m||state.cards[b].lm-state.cards[a].lm).slice(0,20).map(id=>[id,describe(id)]).filter(x=>x[1]);
+  const li=([id,d],extra)=>`<li><span class="sv">${esc(d.sv)}</span><span class="en">${esc(d.en)}</span>${extra||""}</li>`;
+  return `<h3>${L("Att repetera","Due now")} (${due.length})</h3>`+
+    (due.length?`<ul class="duelist">${due.map(x=>li(x)).join("")}</ul>`:`<p class="note">${L("Inget att repetera just nu. Bra jobbat!","Nothing due right now.")}</p>`)+
+    `<h3>${L("Ofta glömda","Often forgotten")}</h3>`+
+    (hard.length?`<ul class="duelist">${hard.map(x=>li(x,`<span class="miss">${state.cards[x[0]].m}×</span>`)).join("")}</ul>`:`<p class="note">${L("Inga missar än.","No misses yet.")}</p>`)+
+    `<p class="note">${L("Tryck på Starta så kommer de här först.","Press Start and these come first.")}</p>`;
+}
 
 /* ================= TABS ================= */
 let tab="cards"; try{ tab=localStorage.getItem(LSKEY+"-tab")||"cards" }catch(e){}
@@ -985,7 +1107,7 @@ function mineMatch(sv){ const ks=keysOf(sv); return state.words.find(w=>keysOf(w
 let dir="sv", ftype="all", fgroup="", onlyMine=false, cs=null;
 function faces(id){
   const k=id.slice(0,1), key=id.slice(2);
-  if(k==="m"){ const v=VBY[key]; return v&&{sv:"att "+v[0],en:v[4],note:`${v[1]} · ${v[2]} · ${v[3]}`,type:"verb",group:"Vanliga verb (common verbs)",mine:false} }
+  if(k==="m"){ const v=VBY[key]; return v&&{sv:"att "+v[0],en:v[4],note:`${v[1]} · ${v[2]} · ${v[3]}`+(imperativ(v)!=="–"?` · ${imperativ(v)}!`:""),type:"verb",group:"Vanliga verb (common verbs)",mine:false} }
   if(k==="b"){ const e=BBY[id]; return e&&{...e,mine:false} }
   const w=state.words.find(w=>w.id===key); return w&&{sv:w.sv,en:w.en,note:w.note||"",type:w.type||"other",group:w.group||"",mine:true};
 }
@@ -998,11 +1120,11 @@ function poolIds(){
   return out.filter(id=>{ const f=faces(id); if(!f) return false; if(ftype!=="all"&&f.type!==ftype) return false; if(fgroup&&f.group!==fgroup) return false; return true });
 }
 function renderFilters(){
-  $("#typechips").innerHTML = [["all","Alla"],...TYPES].map(([k,l])=>`<button type="button" data-ft="${k}" aria-pressed="${k===ftype}">${l}</button>`).join("");
+  $("#typechips").innerHTML = [["all",L("Alla","All")],...TYPES.map(([k])=>[k,typeLabel(k)])].map(([k,l])=>`<button type="button" data-ft="${k}" aria-pressed="${k===ftype}">${l}</button>`).join("");
   $("#typechips").querySelectorAll("[data-ft]").forEach(b=>b.onclick=()=>{ftype=b.dataset.ft;cs=null;renderCards()});
   const gs=groups(), bs=onlyMine?[]:BUILT_GROUPS; if(fgroup&&!gs.includes(fgroup)&&!bs.includes(fgroup)) fgroup="";
   const opt=g=>`<option value="${esc(g)}"${g===fgroup?" selected":""}>${esc(g)}</option>`;
-  $("#groupsel").innerHTML = `<option value="">Alla grupper</option>`+(gs.length?`<optgroup label="Mina grupper">${gs.map(opt).join("")}</optgroup>`:"")+(bs.length?`<optgroup label="Färdiga listor">${bs.map(opt).join("")}</optgroup>`:"");
+  $("#groupsel").innerHTML = `<option value="">${L("Alla grupper","All groups")}</option>`+(gs.length?`<optgroup label="${L("Mina grupper","My groups")}">${gs.map(opt).join("")}</optgroup>`:"")+(bs.length?`<optgroup label="${L("Färdiga listor","Built-in lists")}">${bs.map(opt).join("")}</optgroup>`:"");
   $("#onlymine").checked = onlyMine;
   document.querySelectorAll("[data-dir]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.dir===dir));
 }
@@ -1011,30 +1133,30 @@ $("#onlymine").onchange=e=>{onlyMine=e.target.checked;cs=null;renderCards()};
 document.querySelectorAll("[data-dir]").forEach(b=>b.onclick=()=>{dir=b.dataset.dir;renderCards()});
 function renderCards(){
   renderFilters();
-  const ids=poolIds(); stats($("#stats-cards"),counts(ids));
+  const ids=poolIds(); stats($("#stats-cards"),counts(ids),ids);
   const st=$("#cards-stage");
   if(!cs){
     const n=buildQueue(ids).length;
-    if(!ids.length){ st.innerHTML=`<div class="empty"><h2>Inga kort här än</h2><p style="margin:0">Nothing matches this filter. Add words under Words, or pick another type or group.</p><button class="btn" id="gowords">Lägg till ord</button></div>`; $("#gowords").onclick=()=>showTab("words"); return }
-    st.innerHTML=`<div class="empty"><h2>${n?"Dags att öva":"Klart för idag"}</h2><p style="margin:0">See the word, say the meaning out loud, then flip it. Be honest: cards you mark “Glömde” come back first.</p>
-      <button class="btn" id="cstart" ${n?"":"disabled"}>${n?"Starta ("+n+" kort)":"Kom tillbaka imorgon"}</button></div>`;
+    if(!ids.length){ st.innerHTML=`<div class="empty"><h2>${L("Inga kort här än","No cards here yet")}</h2><p style="margin:0">Nothing matches this filter. Add words under Words, or pick another type or group.</p><button class="btn" id="gowords">${L("Lägg till ord","Add words")}</button></div>`; $("#gowords").onclick=()=>showTab("words"); return }
+    st.innerHTML=`<div class="empty"><h2>${n?L("Dags att öva","Ready when you are"):L("Klart för idag","All done for now")}</h2><p style="margin:0">See the word, say the meaning out loud, then flip it. Be honest: cards you mark “${L("Glömde","Forgot")}” come back first.</p>
+      <button class="btn" id="cstart" ${n?"":"disabled"}>${n?L("Starta ("+n+" kort)","Start ("+n+" cards)"):L("Kom tillbaka imorgon","Come back tomorrow")}</button></div>`;
     const b=$("#cstart"); if(n) b.onclick=()=>{cs={queue:buildQueue(ids),i:0,flipped:false,right:0,wrong:0};renderCards()};
     return;
   }
   while(cs.i<cs.queue.length && !faces(cs.queue[cs.i])) cs.i++;
   if(cs.i>=cs.queue.length){
-    st.innerHTML=`<div class="card"><div class="meta"><span>Klart!</span><span></span></div><p class="big">Snyggt!</p>
-      <p class="gloss">${cs.right} kunde du, ${cs.wrong} glömde du. De du glömde kommer tillbaka imorgon.</p>
-      <div class="row"><button class="btn" id="cback">Tillbaka</button></div></div>`;
+    st.innerHTML=`<div class="card"><div class="meta"><span>${L("Klart!","Session done")}</span><span></span></div><p class="big">Snyggt!</p>
+      <p class="gloss">${L(`${cs.right} kunde du, ${cs.wrong} glömde du. De du glömde kommer tillbaka imorgon.`,`${cs.right} remembered, ${cs.wrong} forgotten. Forgotten cards come back tomorrow.`)}</p>
+      <div class="row"><button class="btn" id="cback">${L("Tillbaka","Back to overview")}</button></div></div>`;
     $("#cback").onclick=()=>{cs=null;renderCards()}; return;
   }
   const id=cs.queue[cs.i], f=faces(id), front=dir==="sv"?f.sv:f.en, back=dir==="sv"?f.en:f.sv;
   st.innerHTML=`${bar(cs.i,cs.queue.length)}<div class="card">
-    <div class="meta"><span>${cs.i+1} / ${cs.queue.length}${!state.cards[id]?" · ny":""}</span><span>${esc(TYPE_LABEL[f.type]||"")}${f.group?" · "+esc(f.group.replace(/ \(.*\)$/,"")):""}</span></div>
+    <div class="meta"><span>${cs.i+1} / ${cs.queue.length}${!state.cards[id]?L(" · ny"," · new"):""}</span><span>${esc(typeLabel(f.type))}${f.group?" · "+esc(f.group.replace(/ \(.*\)$/,"")):""}</span></div>
     <p class="big">${esc(front)}</p>
     ${cs.flipped?`<p class="gloss" style="font-size:1.3rem;color:var(--ink)">${esc(back)}</p>${f.note?`<p class="backnote">${esc(f.note)}</p>`:""}
-      <div class="row"><button class="btn bad grow" id="cno">Glömde</button><button class="btn good grow" id="cyes">Kunde</button></div>`
-    :`<div class="row"><button class="btn grow" id="cflip">Visa svar</button></div>`}
+      <div class="row"><button class="btn bad grow" id="cno">${L("Glömde","Forgot")}</button><button class="btn good grow" id="cyes">${L("Kunde","Got it")}</button></div>`
+    :`<div class="row"><button class="btn grow" id="cflip">${L("Visa svar","Show answer")}</button></div>`}
   </div>`;
   if(cs.flipped){ $("#cno").onclick=()=>rateCard(id,false); $("#cyes").onclick=()=>rateCard(id,true) }
   else $("#cflip").onclick=()=>{cs.flipped=true;renderCards()};
@@ -1054,40 +1176,48 @@ document.addEventListener("keydown",e=>{
 let fs=null;
 let vset="common"; try{ vset=localStorage.getItem(LSKEY+"-vset")||"common" }catch(e){}
 document.querySelectorAll("[data-vset]").forEach(b=>b.onclick=()=>{ vset=b.dataset.vset; try{localStorage.setItem(LSKEY+"-vset",vset)}catch(e){} fs=null; renderForms() });
-const formIds=()=>{const o=[];for(const v of VERBS){ if(vset==="common"&&!COMMON.has(v[0])) continue; for(const k of ["pres","past","sup"])o.push("f:"+v[0]+":"+k) }return o};
+let vmode="forms"; try{ vmode=localStorage.getItem(LSKEY+"-vmode")||"forms" }catch(e){}
+document.querySelectorAll("[data-vmode]").forEach(b=>b.onclick=()=>{ vmode=b.dataset.vmode; try{localStorage.setItem(LSKEY+"-vmode",vmode)}catch(e){} fs=null; renderForms() });
+const meaningIds=()=>VERBS.filter(v=>vset!=="common"||COMMON.has(v[0])).map(v=>"m:"+v[0]);
+const verbIds=()=> vmode==="meaning" ? meaningIds() : formIds();
+const formIds=()=>{const o=[];for(const v of VERBS){ if(vset==="common"&&!COMMON.has(v[0])) continue; for(const k of ["pres","past","sup","imp"]){ if(k==="imp"&&imperativ(v)==="–") continue; o.push("f:"+v[0]+":"+k) } }return o};
 function renderForms(){
   document.querySelectorAll("[data-vset]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.vset===vset));
-  stats($("#stats-forms"),counts(formIds()));
+  document.querySelectorAll("[data-vmode]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.vmode===vmode));
+  stats($("#stats-forms"),counts(verbIds()),verbIds());
   const st=$("#forms-stage");
   if(!fs){
-    const c=counts(formIds()), n=buildQueue(formIds()).length;
-    st.innerHTML=`<div class="empty"><h2>${c.due?c.due+" verbformer att repetera":"Öva verbformer"}</h2>
-      <p style="margin:0">You get a verb and type one form: presens (nu), preteritum (igår) or supinum (har). New verbs come a few at a time, most common first.</p>
-      <button class="btn" id="fstart" ${n?"":"disabled"}>${n?"Starta ("+n+" kort)":"Klart för idag"}</button></div>`;
-    if(n) $("#fstart").onclick=()=>{fs={queue:buildQueue(formIds()),i:0,right:0,wrong:0,answered:false};renderForms()};
+    const c=counts(verbIds()), n=buildQueue(verbIds()).length;
+    st.innerHTML= `<div class="empty">${vmode==="meaning" ? `<h2>${c.due?c.due+L(" verb att repetera"," verbs to review"):L("Vad betyder verbet?","What does the verb mean?")}</h2>
+      <p style="margin:0">You see a Swedish verb. Say what it means in English, then flip the card and be honest: Glömde or Kunde. Progress here is shared with the verb cards in Kort.</p>` : `<h2>${c.due?c.due+L(" verbformer att repetera"," verb forms to review"):L("Öva verbformer","Practise verb forms")}</h2>
+      <p style="margin:0">You get a verb and type one form: presens (nu), preteritum (igår), supinum (har) or imperativ (a command, like Skriv!). New verbs come a few at a time, most common first.</p>`}
+      <button class="btn" id="fstart" ${n?"":"disabled"}>${n?L("Starta ("+n+" kort)","Start ("+n+" cards)"):L("Klart för idag","All done for now")}</button></div>`;
+    if(n) $("#fstart").onclick=()=>{fs={queue:buildQueue(verbIds()),i:0,right:0,wrong:0,answered:false,flipped:false};renderForms()};
     return;
   }
   if(fs.i>=fs.queue.length){
-    st.innerHTML=`<div class="card"><div class="meta"><span>Klart!</span><span></span></div><p class="big">Bra jobbat!</p>
-      <p class="gloss">${fs.right} rätt direkt, ${fs.wrong} att öva mer. Missarna kommer tillbaka imorgon.</p>
-      <div class="row"><button class="btn" id="fagain">Tillbaka</button></div></div>`;
+    st.innerHTML=`<div class="card"><div class="meta"><span>${L("Klart!","Session done")}</span><span></span></div><p class="big">Bra jobbat!</p>
+      <p class="gloss">${L(`${fs.right} rätt direkt, ${fs.wrong} att öva mer. Missarna kommer tillbaka imorgon.`,`${fs.right} right first time, ${fs.wrong} to practise again. The misses come back tomorrow.`)}</p>
+      <div class="row"><button class="btn" id="fagain">${L("Tillbaka","Back to overview")}</button></div></div>`;
     $("#fagain").onclick=()=>{fs=null;renderForms()}; return;
   }
-  const id=fs.queue[fs.i], [,inf,k]=id.split(":"), v=VBY[inf], F=FORMS[k];
+  const id=fs.queue[fs.i];
+  if(id.startsWith("m:")){ renderMeaningCard(st,id); return }
+  const [,inf,k]=id.split(":"), v=VBY[inf], F=FORMS[k];
   let html=`${bar(fs.i,fs.queue.length)}<div class="card">
-    <div class="meta"><span>${fs.i+1} / ${fs.queue.length}${!state.cards[id]?" · ny":""}</span><span>grupp ${v[5]}</span></div>
+    <div class="meta"><span>${fs.i+1} / ${fs.queue.length}${!state.cards[id]?L(" · ny"," · new"):""}</span><span>grupp ${vgroup(v)}</span></div>
     <div><p class="big">att ${esc(v[0])}</p><p class="gloss">${esc(v[4])}</p></div>
-    <p class="frame"><span class="formname">${F.label}</span>&nbsp; ${esc(F.frame[0])}<span class="blank"></span> ${esc(F.frame[1])}</p>`;
+    <p class="frame"><span class="formname">${F.label}</span>&nbsp; ${k==="imp" ? `<span class="blank"></span>! <span class="hint">(${L("säg åt någon att","tell someone to")} ${esc(v[0])})</span>` : `${esc(F.frame[0])}<span class="blank"></span> ${esc(F.frame[1])}`}</p>`;
   if(!fs.answered){
-    html+=`<form class="answer" id="fform" autocomplete="off"><input id="fin" aria-label="Your answer" autocapitalize="off" spellcheck="false" placeholder="skriv ${F.label}">
-      <button class="btn" type="submit">Rätta</button></form>
+    html+=`<form class="answer" id="fform" autocomplete="off"><input id="fin" aria-label="Your answer" autocapitalize="off" spellcheck="false" placeholder="${L("skriv "+F.label,"type the "+F.label+" form")}">
+      <button class="btn" type="submit">${L("Rätta","Check")}</button></form>
       <div class="row"><div class="keys">${["å","ä","ö"].map(ch=>`<button type="button" data-ch="${ch}" aria-label="insert ${ch}">${ch}</button>`).join("")}</div>
-      <span class="grow"></span><button class="btn ghost" type="button" id="fshow">Jag vet inte</button></div>`;
+      <span class="grow"></span><button class="btn ghost" type="button" id="fshow">${L("Jag vet inte","I don't know")}</button></div>`;
   } else {
     html+=`<p class="verdict ${fs.lastOk?"ok":"no"}">${fs.lastOk?"Rätt!":esc(fs.lastMsg)}</p>
-      <div class="forms">${["infinitiv","presens","preteritum","supinum"].map((x,j)=>`<div><small>${x}</small><strong class="${j===F.i?"hit":""}">${esc(v[j])}</strong></div>`).join("")}</div>
-      <p class="hint">${["","Grupp 1: -ar, -ade, -at. Very regular.","Grupp 2: -er, then -de/-t, or -te/-t after k, p, s, t.","Grupp 3: short verbs ending in a vowel: -r, -dde, -tt.","Grupp 4: strong verb. The vowel changes, so say this one out loud a few times."][v[5]]}</p>
-      <div class="row end"><button class="btn" id="fnext">Nästa</button></div>`;
+      <div class="forms">${[["infinitiv",v[0],-1],["presens",v[1],1],["preteritum",v[2],2],["supinum",v[3],3],["imperativ",imperativ(v)==="–"?"–":imperativ(v)+"!",6]].map(([x,val,j])=>`<div><small>${x}</small><strong class="${j===F.i?"hit":""}">${esc(val)}</strong></div>`).join("")}</div>
+      <p class="hint">${esc(groupHint(v))}</p>
+      <div class="row end"><button class="btn" id="fnext">${L("Nästa","Next")}</button></div>`;
   }
   st.innerHTML=html+`</div>`;
   if(!fs.answered){
@@ -1098,26 +1228,40 @@ function renderForms(){
   } else { const n=$("#fnext"); n.onclick=()=>{fs.i++;fs.answered=false;renderForms()}; n.focus({preventScroll:true}) }
 }
 function answerForm(id,v,F,given){
-  const acc=v[F.i].split("/").map(norm); let ok=false,msg="";
-  if(given===null) msg="Här är svaret. Du får se det igen snart.";
+  const acc=formOf(v,id.split(":")[2]).split("/").map(norm); let ok=false,msg="";
+  if(given===null) msg=L("Här är svaret. Du får se det igen snart.","Here it is. You'll see it again soon.");
   else if(acc.includes(norm(given))) ok=true;
-  else if(acc.map(strip).includes(strip(given))) msg="Nästan! Kolla å, ä och ö.";
-  else msg=`Inte riktigt. Du skrev “${given.trim()}”.`;
+  else if(acc.map(strip).includes(strip(given))) msg=L("Nästan! Kolla å, ä och ö.","Almost! Check the å, ä and ö.");
+  else msg=L(`Inte riktigt. Du skrev “${given.trim()}”.`,`Not quite. You wrote “${given.trim()}”.`);
   if(!fs.queue.slice(0,fs.i).includes(id)){ ok?fs.right++:fs.wrong++ }
   grade(id,ok); if(!ok) fs.queue.splice(Math.min(fs.i+4,fs.queue.length),0,id);
   fs.answered=true; fs.lastOk=ok; fs.lastMsg=msg; renderForms();
 }
 $("#verbcount").textContent=VERBS.length;
 function renderVerbTable(){ const q=norm($("#verbsearch").value||"");
-  const row=v=>`<tr><td class="nw"><b>${esc(v[0])}</b></td><td class="nw">${esc(v[1])}</td><td class="nw">${esc(v[2])}</td><td class="nw">${esc(v[3])}</td><td>${esc(v[4])}</td><td class="g">${v[5]}</td></tr>`;
+  const row=v=>`<tr><td class="nw"><b>${esc(v[0])}</b></td><td class="nw">${esc(v[1])}</td><td class="nw">${esc(v[2])}</td><td class="nw">${esc(v[3])}</td><td class="nw">${imperativ(v)==="–"?"–":esc(imperativ(v))+"!"}</td><td>${esc(v[4])}</td><td class="g">${vgroup(v)}</td></tr>`;
   const hit=v=>!q||v.some(x=>String(x).toLowerCase().includes(q));
   const c=VERBS.filter(v=>COMMON.has(v[0])&&hit(v)), m=VERBS.filter(v=>!COMMON.has(v[0])&&hit(v));
-  $("#verbtable").innerHTML=c.map(row).join("")||`<tr><td colspan="6" class="note">Ingen träff</td></tr>`;
-  $("#verbtable2").innerHTML=m.map(row).join("")||`<tr><td colspan="6" class="note">Ingen träff</td></tr>`;
+  $("#verbtable").innerHTML=c.map(row).join("")||`<tr><td colspan="7" class="note">${L("Ingen träff","No match")}</td></tr>`;
+  $("#verbtable2").innerHTML=m.map(row).join("")||`<tr><td colspan="7" class="note">${L("Ingen träff","No match")}</td></tr>`;
   $("#vcn").textContent=c.length; $("#vmn").textContent=m.length;
   if(q){ $("#vcommon").open=c.length>0; $("#vmore").open=m.length>0 }
   $("#ccount").textContent=VERBS.filter(v=>COMMON.has(v[0])).length; }
 $("#verbsearch").addEventListener("input",renderVerbTable);
+
+function renderMeaningCard(st,id){
+  const v=VBY[id.slice(2)], imp=imperativ(v);
+  st.innerHTML=`${bar(fs.i,fs.queue.length)}<div class="card">
+    <div class="meta"><span>${fs.i+1} / ${fs.queue.length}${!state.cards[id]?L(" · ny"," · new"):""}</span><span>grupp ${vgroup(v)}</span></div>
+    <p class="big">att ${esc(v[0])}</p>
+    ${fs.flipped ? `<p class="gloss" style="font-size:1.3rem;color:var(--ink)">${esc(v[4])}</p>
+      <div class="forms">${[["presens",v[1]],["preteritum",v[2]],["supinum",v[3]],["imperativ",imp==="–"?"–":imp+"!"]].map(([x,val])=>`<div><small>${x}</small><strong>${esc(val)}</strong></div>`).join("")}</div>
+      <div class="row"><button class="btn bad grow" id="mno">${L("Glömde","Forgot")}</button><button class="btn good grow" id="myes">${L("Kunde","Got it")}</button></div>`
+    : `<p class="hint">${L("Vad betyder det på engelska?","What does it mean in English?")}</p><div class="row"><button class="btn grow" id="mflip">${L("Visa svar","Show answer")}</button></div>`}
+  </div>`;
+  const rate=ok=>{ if(!fs.queue.slice(0,fs.i).includes(id)){ ok?fs.right++:fs.wrong++ } grade(id,ok); if(!ok) fs.queue.splice(Math.min(fs.i+4,fs.queue.length),0,id); fs.i++; fs.flipped=false; renderForms() };
+  if(fs.flipped){ $("#mno").onclick=()=>rate(false); $("#myes").onclick=()=>rate(true) } else $("#mflip").onclick=()=>{ fs.flipped=true; renderForms() };
+}
 
 /* ================= MY WORDS ================= */
 let wview="mine"; let wby="group", editingWord=null; const openGroups=new Set();
@@ -1132,7 +1276,7 @@ $("#addform").addEventListener("submit",e=>{
   e.preventDefault();
   const sv=$("#add-sv").value.trim(), r=addWord(sv,$("#add-en").value,$("#add-note").value,$("#add-type").value,$("#add-group").value);
   const msg=$("#addmsg");
-  if(r===true){ save("p"); $("#add-sv").value=""; $("#add-en").value=""; $("#add-note").value=""; msg.textContent=`Lade till “${sv}”.`; renderWords() }  // keep type + group for the next word
+  if(r===true){ save("p"); $("#add-sv").value=""; $("#add-en").value=""; $("#add-note").value=""; msg.textContent=L(`Lade till “${sv}”.`,`Added “${sv}”.`); renderWords() }  // keep type + group for the next word
   else if(typeof r==="string"&&r.startsWith("built:")) msg.textContent=`“${sv}” is already in the built-in list ${r.slice(6)}, so it's in your flashcards. Not added again.`;
   else if(typeof r==="string"&&r.startsWith("mine:")) msg.textContent=`“${sv}” is already in My words (${r.slice(5)}). Use Edit on it to change the meaning or note.`;
   $("#add-sv").focus();
@@ -1145,7 +1289,7 @@ $("#bulkadd").onclick=()=>{
     const r=addWord(p[0],p[1],p.slice(2).join(" "),t,g);
     if(r===true) n++; else if(String(r).startsWith("built:")) inBuilt.push(p[0].trim()); else if(String(r).startsWith("mine:")) inMine.push(p[0].trim()); else bad++ }
   if(n){ save("p"); $("#bulk").value="" }
-  const parts=[`Lade till ${n} ord.`];
+  const parts=[L(`Lade till ${n} ord.`,`Added ${n} word${n===1?"":"s"}.`)];
   if(inBuilt.length) parts.push(`Already built in: ${inBuilt.join(", ")}.`);
   if(inMine.length) parts.push(`Already in My words: ${inMine.join(", ")}.`);
   if(bad) parts.push(`${bad} line${bad===1?"":"s"} had no = sign.`);
@@ -1155,7 +1299,7 @@ $("#bulkadd").onclick=()=>{
 document.querySelectorAll("[data-by]").forEach(b=>b.onclick=()=>{wby=b.dataset.by;renderWords()});
 document.querySelectorAll("[data-wview]").forEach(b=>b.onclick=()=>{wview=b.dataset.wview;renderWords()});
 $("#wsearch").addEventListener("input",()=>renderWords());
-function wordLevel(w){const c=state.cards["w:"+w.id]; return !c?"ny":c.b>=4?"kan bra":"lär mig"}
+function wordLevel(w){const c=state.cards["w:"+w.id]; return !c?L("ny","new"):c.b>=4?L("kan bra","know well"):L("lär mig","learning")}
 function renderWords(){
   refreshLists();
   document.querySelectorAll("[data-by]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.by===wby));
@@ -1168,7 +1312,7 @@ function renderWords(){
   if(!state.words.length){ el.innerHTML=`<p class="note">Nothing here yet. Add a few words from your last lesson and give them a group, like “Descriptive words”, so you can find them again.</p>`; return }
   if(!list.length){ el.innerHTML=`<p class="note">No words match “${esc(q)}”.</p>`; return }
   const buckets=new Map();
-  for(const w of list){ const key = wby==="group" ? (w.group||"Utan grupp (no group)") : (TYPE_LABEL[w.type]||"Övrigt"); if(!buckets.has(key)) buckets.set(key,[]); buckets.get(key).push(w) }
+  for(const w of list){ const key = wby==="group" ? (w.group||"Utan grupp (no group)") : typeLabel(w.type); if(!buckets.has(key)) buckets.set(key,[]); buckets.get(key).push(w) }
   const keys=[...buckets.keys()].sort((a,b)=> a==="Utan grupp (no group)"?1: b==="Utan grupp (no group)"?-1: a.localeCompare(b,"sv"));
   const editKey = editingWord && list.find(w=>w.id===editingWord);
   el.innerHTML=keys.map(k=>{ const ws=buckets.get(k), open = q || openGroups.has(k) || (editKey && ws.includes(editKey));
@@ -1185,15 +1329,16 @@ function renderWords(){
 function wordRow(w){
   if(w.id===editingWord) return `<div class="item editing"><form id="editword" class="stack" autocomplete="off"><div class="fgrid">
       <input id="e-sv" value="${esc(w.sv)}" aria-label="Swedish" required><input id="e-en" value="${esc(w.en)}" aria-label="English" required>
-      <select id="e-type" aria-label="Word type">${typeOptions(w.type)}</select><input id="e-group" list="grouplist" value="${esc(w.group)}" placeholder="Grupp" aria-label="Group">
-      <textarea id="e-note" class="full" style="min-height:4rem" placeholder="Anteckning eller exempel" aria-label="Note">${esc(w.note)}</textarea></div>
-      <div class="row end"><button class="btn ghost small" type="button" id="ecancel">Avbryt</button><button class="btn small" type="submit">Spara</button></div></form></div>`;
-  const other = wby==="group" ? (TYPE_LABEL[w.type]||"") : (w.group||"");
+      <select id="e-type" aria-label="Word type">${typeOptions(w.type)}</select><input id="e-group" list="grouplist" value="${esc(w.group)}" placeholder="${L("Grupp","Group")}" aria-label="Group">
+      <textarea id="e-note" class="full" style="min-height:4rem" placeholder="${L("Anteckning eller exempel","Note or example")}" aria-label="Note">${esc(w.note)}</textarea></div>
+      <div class="row end"><button class="btn ghost small" type="button" id="ecancel">${L("Avbryt","Cancel")}</button><button class="btn small" type="submit">${L("Spara","Save")}</button></div></form></div>`;
+  const other = wby==="group" ? typeLabel(w.type) : (w.group||"");
   return `<div class="item"><span class="sv">${esc(w.sv)}</span><span class="en">${esc(w.en)}</span>
-    <span class="acts"><button class="link" data-wedit="${w.id}">Ändra</button><button class="link del" data-wdel="${w.id}" aria-label="Delete ${esc(w.sv)}">Ta bort</button></span>
+    <span class="acts"><button class="link" data-wedit="${w.id}">${L("Ändra","Edit")}</button><button class="link del" data-wdel="${w.id}" aria-label="Delete ${esc(w.sv)}">${L("Ta bort","Delete")}</button></span>
     <span class="sub">${other?`<span class="tag">${esc(other)}</span>`:""}<span class="tag">${wordLevel(w)}</span>${w.note?`<span class="n">${esc(w.note)}</span>`:""}</span></div>`;
 }
-$("#builtins").innerHTML = LISTS.map(L=>`<details class="wgroup"><summary><span>${esc(L.group)}</span><span class="cnt">${L.items.length}</span></summary><div class="tablewrap"><table><thead><tr><th>Svenska</th><th>Engelska</th><th>Exempel / anteckning</th></tr></thead><tbody>${L.items.map(it=>`<tr><td class="nw"><b>${esc(it[0])}</b></td><td>${esc(it[1])}</td><td>${esc(it[2]||"").replace(/\n/g,"<br>")}</td></tr>`).join("")}</tbody></table></div></details>`).join("");
+function renderBuiltins(){ $("#builtins").innerHTML = LISTS.map(LL=>`<details class="wgroup"><summary><span>${esc(LL.group)}</span><span class="cnt">${LL.items.length}</span></summary><div class="tablewrap"><table><thead><tr><th>${L("Svenska","Swedish")}</th><th>${L("Engelska","English")}</th><th>${L("Exempel / anteckning","Example / note")}</th></tr></thead><tbody>${LL.items.map(it=>`<tr><td class="nw"><b>${esc(it[0])}</b></td><td>${esc(it[1])}</td><td>${esc(it[2]||"").replace(/\n/g,"<br>")}</td></tr>`).join("")}</tbody></table></div></details>`).join(""); }
+renderBuiltins();
 
 /* ================= NOTES ================= */
 let editingNote=null;
@@ -1201,7 +1346,7 @@ const chip=(s,t,cap)=>`<span class="w s-${s}"><b>${esc(t)}</b><small>${esc(cap??
 $("#legend").innerHTML=["F","V","S","A","V2","P","K","R"].map(s=>`<span class="w s-${s}"><small>${SLOT[s]}</small></span>`).join("");
 function guidePage(g, open){
   const rows=(g.rows||[]).map(([parts,en])=>`<div class="sent"><div class="slots">${parts.map(p=>chip(p[0],p[1],p[2])).join("")}</div><span class="en">${esc(en)}</span></div>`).join("");
-  const table=g.table?`<div class="tablewrap"><table>${g.table.head.some(Boolean)?`<thead><tr>${g.table.head.map(h=>`<th>${esc(h)}</th>`).join("")}</tr></thead>`:""}<tbody>${g.table.rows.map(r=>`<tr>${r.map((c,i)=>`<td${i===0?' class="nw"':""}>${i===0?"<b>"+esc(c)+"</b>":esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`:"";
+  const table=g.table?`<div class="tablewrap"><table>${g.table.head.some(Boolean)?`<thead><tr>${g.table.head.map(h=>`<th>${esc(h)}</th>`).join("")}</tr></thead>`:""}<tbody>${g.table.rows.map(r=>`<tr>${r.map((c,i)=>`<td${(i===0||g.table.head.length>=6)?' class="nw"':""}>${i===0?"<b>"+esc(c)+"</b>":esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`:"";
   return `<details class="gpage"${open?" open":""}><summary><span>${esc(g.title)}</span><span class="tag">${esc(g.tag)}</span></summary><div>
     <p class="rule">${g.rule}</p>${g.schema?`<div class="schema">${esc(g.schema)}</div>`:""}${table}${rows?`<div>${rows}</div>`:""}
     ${g.tips?`<ul class="tips">${g.tips.map(t=>`<li>${t}</li>`).join("")}</ul>`:""}</div></details>`;
@@ -1215,12 +1360,12 @@ function renderNotes(){
   if(!state.notes.length) el.innerHTML=`<p class="note">No notes yet. Tap New note to write down a rule from class, example sentences, or words to look up later. Give it a topic so related notes stay together.</p>`;
   else if(!notes.length) el.innerHTML=`<p class="note">None of your notes match “${esc(q)}”.</p>`;
   else {
-    const by=new Map(); for(const n of notes){const k=n.topic||"Utan ämne"; if(!by.has(k)) by.set(k,[]); by.get(k).push(n)}
-    const keys=[...by.keys()].sort((a,b)=>a==="Utan ämne"?1:b==="Utan ämne"?-1:a.localeCompare(b,"sv"));
+    const by=new Map(); for(const n of notes){const k=n.topic||L("Utan ämne","No topic"); if(!by.has(k)) by.set(k,[]); by.get(k).push(n)}
+    const keys=[...by.keys()].sort((a,b)=>a===L("Utan ämne","No topic")?1:b===L("Utan ämne","No topic")?-1:a.localeCompare(b,"sv"));
     el.innerHTML=keys.map(k=>`<div class="group stack"><h3>${esc(k)} <span>${by.get(k).length}</span></h3>${by.get(k).sort((a,b)=>b.u-a.u).map(n=>`
       <details class="mynote"${q?" open":""}><summary><span>${esc(n.title)}</span><span class="note">${new Date(n.u).toLocaleDateString("sv-SE")}</span></summary>
-      <p class="body">${esc(n.body)||'<span class="note">Tom anteckning</span>'}</p>
-      <div class="row end"><button class="link" data-nedit="${n.id}">Ändra</button><button class="link del" data-ndel="${n.id}">Ta bort</button></div></details>`).join("")}</div>`).join("");
+      <p class="body">${esc(n.body)||'<span class="note">${L("Tom anteckning","Empty note")}</span>'}</p>
+      <div class="row end"><button class="link" data-nedit="${n.id}">${L("Ändra","Edit")}</button><button class="link del" data-ndel="${n.id}">${L("Ta bort","Delete")}</button></div></details>`).join("")}</div>`).join("");
     el.querySelectorAll("[data-nedit]").forEach(b=>b.onclick=()=>openEditor(b.dataset.nedit));
     el.querySelectorAll("[data-ndel]").forEach(b=>b.onclick=()=>armDelete(b,()=>{state.notes=state.notes.filter(n=>n.id!==b.dataset.ndel);save("n");renderNotes()}));
   }
@@ -1228,7 +1373,7 @@ function renderNotes(){
 }
 function openEditor(id){
   editingNote=id||null; const n=id?state.notes.find(n=>n.id===id):null;
-  $("#neditor-title").textContent = n?"Ändra anteckning":"Ny anteckning";
+  $("#neditor-title").textContent = n?L("Ändra anteckning","Edit note"):L("Ny anteckning","New note");
   $("#n-title").value=n?n.title:""; $("#n-topic").value=n?n.topic:""; $("#n-body").value=n?n.body:"";
   $("#neditor").hidden=false; $("#n-title").focus();
 }
@@ -1241,6 +1386,7 @@ $("#neditor").addEventListener("submit",e=>{
   save("n"); $("#neditor").hidden=true; editingNote=null; renderNotes();
 });
 $("#nsearch").addEventListener("input",renderNotes);
+function renderVgroups(){ const g=GUIDE.find(x=>x.id==="verbgrupper"); const b=$("#vgroups-body"); if(b&&g){ const d=document.createElement("div"); d.innerHTML=guidePage(g,true); b.innerHTML=d.querySelector(".gpage > div").innerHTML } }
 function renderGrammar(){
   const q=($("#gsearch").value||"").toLowerCase().trim();
   const gs=GUIDE.filter(g=>!q||JSON.stringify(g).toLowerCase().includes(q));
@@ -1262,29 +1408,29 @@ function prepItem(){
 }
 function renderSent(){
   document.querySelectorAll("[data-smode]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.smode===smode));
-  const ids=sentIds(); stats($("#stats-sent"),counts(ids));
+  const ids=sentIds(); stats($("#stats-sent"),counts(ids),ids);
   const st=$("#sent-stage");
   if(!ss){
     const n=buildQueue(ids).length;
-    st.innerHTML=`<div class="empty"><h2>${smode==="gap"?"Fyll i luckan":"Sätt orden i rätt ordning"}</h2>
+    st.innerHTML=`<div class="empty"><h2>${smode==="gap"?L("Fyll i luckan","Fill the gap"):L("Sätt orden i rätt ordning","Put the words in order")}</h2>
       <p style="margin:0">${smode==="gap"?"Pick the right word for the sentence. All four choices look possible, so think about the grammar: tense, en/ett, prepositions and word order.":"Tap the words to build the sentence. Watch where the verb goes, and where inte and other satsadverb go."}</p>
-      <button class="btn" id="sstart" ${n?"":"disabled"}>${n?"Starta ("+n+" meningar)":"Klart för idag"}</button></div>`;
+      <button class="btn" id="sstart" ${n?"":"disabled"}>${n?L("Starta ("+n+" meningar)","Start ("+n+" sentences)"):L("Klart för idag","All done for now")}</button></div>`;
     if(n) $("#sstart").onclick=()=>{ss={queue:buildQueue(ids),i:0,right:0,wrong:0};prepItem();renderSent()};
     return;
   }
   if(ss.i>=ss.queue.length){
-    st.innerHTML=`<div class="card"><div class="meta"><span>Klart!</span><span></span></div><p class="big">Toppen!</p>
-      <p class="gloss">${ss.right} rätt direkt, ${ss.wrong} att öva mer. Missarna kommer tillbaka imorgon.</p>
-      <div class="row"><button class="btn" id="sback">Tillbaka</button></div></div>`;
+    st.innerHTML=`<div class="card"><div class="meta"><span>${L("Klart!","Session done")}</span><span></span></div><p class="big">Toppen!</p>
+      <p class="gloss">${L(`${ss.right} rätt direkt, ${ss.wrong} att öva mer. Missarna kommer tillbaka imorgon.`,`${ss.right} right first time, ${ss.wrong} to practise again. The misses come back tomorrow.`)}</p>
+      <div class="row"><button class="btn" id="sback">${L("Tillbaka","Back to overview")}</button></div></div>`;
     $("#sback").onclick=()=>{ss=null;renderSent()}; return;
   }
-  const id=ss.queue[ss.i], meta=`<div class="meta"><span>${ss.i+1} / ${ss.queue.length}${!state.cards[id]?" · ny":""}</span><span>${smode==="gap"?"fyll i luckan":"ordföljd"}</span></div>`;
+  const id=ss.queue[ss.i], meta=`<div class="meta"><span>${ss.i+1} / ${ss.queue.length}${!state.cards[id]?L(" · ny"," · new"):""}</span><span>${smode==="gap"?L("fyll i luckan","fill the gap"):L("ordföljd","word order")}</span></div>`;
   if(smode==="gap"){
     const g=GBY[id], [a,b]=g[0].split("___"), done=ss.choice!==null;
     st.innerHTML=`${bar(ss.i,ss.queue.length)}<div class="card">${meta}
       <p class="sentence">${esc(a)}<span class="gapslot">${done?esc(g[1]):"&nbsp;"}</span>${esc(b)}</p>
       <div class="opts">${ss.opts.map((o,i)=>`<button class="opt${done&&o===g[1]?" right":""}${done&&o===ss.choice&&o!==g[1]?" wrong":""}" data-opt="${i}" ${done?"disabled":""}>${esc(o)}</button>`).join("")}</div>
-      ${done?`<p class="verdict ${ss.choice===g[1]?"ok":"no"}">${ss.choice===g[1]?"Rätt!":"Inte riktigt."}</p><p class="hint" style="font-size:.95rem">${esc(g[3])}</p><div class="row end"><button class="btn" id="snext">Nästa</button></div>`:""}
+      ${done?`<p class="verdict ${ss.choice===g[1]?"ok":"no"}">${ss.choice===g[1]?L("Rätt!","Correct!"):L("Inte riktigt.","Not quite.")}</p><p class="hint" style="font-size:.95rem">${esc(g[3])}</p><div class="row end"><button class="btn" id="snext">${L("Nästa","Next")}</button></div>`:""}
     </div>`;
     if(!done) st.querySelectorAll("[data-opt]").forEach(btn=>btn.onclick=()=>{ ss.choice=ss.opts[+btn.dataset.opt]; scoreSent(id, ss.choice===g[1]); renderSent() });
     else { $("#snext").onclick=nextSent; $("#snext").focus({preventScroll:true}) }
@@ -1295,13 +1441,13 @@ function renderSent(){
     const isRight=okForms.includes(given);
     st.innerHTML=`${bar(ss.i,ss.queue.length)}<div class="card">${meta}
       <p class="gloss">${esc(o[2])}</p>
-      <div class="built" aria-label="Your sentence">${ss.picked.length?ss.picked.map((i,k)=>`<button class="tok in" data-un="${k}" ${ss.checked?"disabled":""}>${esc(k===0?cap(w[i]):w[i])}</button>`).join("")+`<span>${esc(o[1])}</span>`:`<span class="ph">Tryck på orden i rätt ordning</span>`}</div>
+      <div class="built" aria-label="Your sentence">${ss.picked.length?ss.picked.map((i,k)=>`<button class="tok in" data-un="${k}" ${ss.checked?"disabled":""}>${esc(k===0?cap(w[i]):w[i])}</button>`).join("")+`<span>${esc(o[1])}</span>`:`<span class="ph">${L("Tryck på orden i rätt ordning","Tap the words below in the right order")}</span>`}</div>
       ${ss.checked?"":`<div class="bank">${ss.bank.filter(i=>!ss.picked.includes(i)).map(i=>`<button class="tok" data-pick="${i}">${esc(w[i])}</button>`).join("")}</div>
-      <div class="row end"><button class="btn ghost small" id="sclear" type="button" ${ss.picked.length?"":"disabled"}>Rensa</button><button class="btn" id="scheck" type="button" ${ss.picked.length===w.length?"":"disabled"}>Rätta</button></div>`}
-      ${ss.checked?`<p class="verdict ${isRight?"ok":"no"}">${isRight?"Rätt!":"Inte riktigt. Rätt ordföljd är:"}</p>
+      <div class="row end"><button class="btn ghost small" id="sclear" type="button" ${ss.picked.length?"":"disabled"}>${L("Rensa","Clear")}</button><button class="btn" id="scheck" type="button" ${ss.picked.length===w.length?"":"disabled"}>${L("Rätta","Check")}</button></div>`}
+      ${ss.checked?`<p class="verdict ${isRight?"ok":"no"}">${isRight?L("Rätt!","Correct!"):L("Inte riktigt. Rätt ordföljd är:","Not quite. The right order is:")}</p>
         ${isRight?"":`<p class="frame"><b>${esc(cap(w.join(" "))+o[1])}</b></p>`}
-        ${o[3].length?`<p class="hint">Också rätt: ${o[3].map(x=>esc(cap(x.join(" "))+o[1])).join(" · ")}</p>`:""}
-        <div class="row end"><button class="btn" id="snext">Nästa</button></div>`:""}
+        ${o[3].length?`<p class="hint">${L("Också rätt: ","Also correct: ")}${o[3].map(x=>esc(cap(x.join(" "))+o[1])).join(" · ")}</p>`:""}
+        <div class="row end"><button class="btn" id="snext">${L("Nästa","Next")}</button></div>`:""}
     </div>`;
     st.querySelectorAll("[data-pick]").forEach(b=>b.onclick=()=>{ss.picked.push(+b.dataset.pick);renderSent()});
     st.querySelectorAll("[data-un]").forEach(b=>b.onclick=()=>{ss.picked.splice(+b.dataset.un,1);renderSent()});
@@ -1335,9 +1481,21 @@ let theme="auto"; try{ theme=localStorage.getItem(LSKEY+"-theme")||"auto" }catch
 applyTheme(theme);
 document.querySelectorAll("[data-theme-btn]").forEach(b=>b.onclick=()=>{ theme=b.dataset.themeBtn; try{localStorage.setItem(LSKEY+"-theme",theme)}catch(e){} applyTheme(theme) });
 
+/* ================= APPLY LANGUAGE ================= */
+function applyLang(){
+  document.documentElement.lang = lang==="en" ? "en" : "sv";
+  document.querySelectorAll("[data-en]").forEach(el=>{ if(el.dataset.sv===undefined) el.dataset.sv=el.textContent; el.textContent = lang==="en" ? el.dataset.en : el.dataset.sv });
+  document.querySelectorAll("[data-en-ph]").forEach(el=>{ if(el.dataset.svPh===undefined) el.dataset.svPh=el.placeholder; el.placeholder = lang==="en" ? el.dataset.enPh : el.dataset.svPh });
+  document.querySelectorAll("[data-lang-btn]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.langBtn===lang));
+  const cog=document.getElementById("synctoggle"); cog.setAttribute("aria-label",L("Inställningar","Settings")); cog.title=L("Inställningar","Settings");
+  $("#add-type").innerHTML=typeOptions($("#add-type").value||"other"); $("#bulk-type").innerHTML=typeOptions($("#bulk-type").value||"other");
+}
+document.querySelectorAll("[data-lang-btn]").forEach(b=>b.onclick=()=>{ lang=b.dataset.langBtn; try{localStorage.setItem(LSKEY+"-lang",lang)}catch(e){} applyLang(); renderVerbTable(); renderBuiltins(); renderAll(); renderSyncBox() });
+applyLang();
+
 /* ================= BOOT ================= */
 function renderAll(){ if(tab==="cards") renderCards(); else if(tab==="forms") renderForms(); else if(tab==="sent") renderSent(); else if(tab==="words") renderWords(); else if(tab==="grammar") renderGrammar(); else renderNotes() }
-renderVerbTable();
+renderVerbTable(); renderVgroups();
 showTab(["cards","forms","sent","words","grammar","notes"].includes(tab)?tab:"cards");
 </script>
 </body>
