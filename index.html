@@ -6,7 +6,7 @@
 <title>LärSig</title>
 <meta name="theme-color" content="#2446A8">
 <link rel="manifest" href="manifest.webmanifest">
-<script>try{var t=localStorage.getItem("svenska-varje-dag-v1-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<script>try{var t=localStorage.getItem("svenska-varje-dag-v1-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);var c=localStorage.getItem("svenska-varje-dag-v1-palette");if(c==="ume")document.documentElement.setAttribute("data-palette","ume")}catch(e){}</script>
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -18,7 +18,7 @@
 :root{
   --paper:#EEF1F5; --card:#FFFFFF; --ink:#18223A; --muted:#5B6785;
   --rule:#D3DEEE; --margin:#D9534F; --accent:#2446A8; --accent-ink:#FFFFFF;
-  --good:#1F7A4D; --bad:#B53A2E; --chip:#E1E7F1; --line:#D5DCE8;
+  --good:#1F7A4D; --bad:#B53A2E; --chip:#E1E7F1; --line:#D5DCE8; --hi:#2446A8;
   --sF:#E7E0FA; --sFi:#4B2E9E; --sV:#FCE6BF; --sVi:#7A4A00; --sS:#D6E6FB; --sSi:#16457F;
   --sA:#D3F0E0; --sAi:#165C38; --sK:#F8DCE6; --sKi:#8A1E47; --sR:#E6E9EF; --sRi:#3B4560;
   --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
@@ -28,15 +28,35 @@
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --paper:#11151F; --card:#1B2130; --ink:#E6EBF5; --muted:#9AA6C2;
   --rule:#273145; --margin:#C8645E; --accent:#8FA8F5; --accent-ink:#0E1424;
-  --good:#5CC48F; --bad:#EE8577; --chip:#242C3E; --line:#2B3448;
+  --good:#5CC48F; --bad:#EE8577; --chip:#242C3E; --line:#2B3448; --hi:#8FA8F5;
   --sF:#33295A; --sFi:#D3C6FF; --sV:#4A3713; --sVi:#FFD48A; --sS:#1C3354; --sSi:#B4D3FF;
   --sA:#173D2A; --sAi:#9FE3BE; --sK:#4A1F30; --sKi:#FFB8D0; --sR:#2A3142; --sRi:#C9D1E3; color-scheme:dark}}
 :root[data-theme="dark"]{
   --paper:#11151F; --card:#1B2130; --ink:#E6EBF5; --muted:#9AA6C2;
   --rule:#273145; --margin:#C8645E; --accent:#8FA8F5; --accent-ink:#0E1424;
-  --good:#5CC48F; --bad:#EE8577; --chip:#242C3E; --line:#2B3448;
+  --good:#5CC48F; --bad:#EE8577; --chip:#242C3E; --line:#2B3448; --hi:#8FA8F5;
   --sF:#33295A; --sFi:#D3C6FF; --sV:#4A3713; --sVi:#FFD48A; --sS:#1C3354; --sSi:#B4D3FF;
   --sA:#173D2A; --sAi:#9FE3BE; --sK:#4A1F30; --sKi:#FFB8D0; --sR:#2A3142; --sRi:#C9D1E3; color-scheme:dark}
+
+/* Ume palette: umenezumi (plum-brown), urahairo (grey-green), usuaokuchiba (mustard), madder brown */
+:root[data-palette="ume"]{
+  --paper:#EEF2F1; --card:#FFFDFA; --ink:#2B2224; --muted:#6B5C5D;
+  --rule:#D3DFDF; --margin:#8E3B36; --accent:#7A5A59; --accent-ink:#FFFFFF;
+  --good:#3F6E5A; --bad:#8E2F2B; --chip:#DCE6E6; --line:#D2DBDA; --hi:#C3A33A;
+  --sF:#EADFE0; --sFi:#6B3F42; --sV:#F4E7BE; --sVi:#6E5510; --sS:#DCE8E9; --sSi:#2F5559;
+  --sA:#DDEADF; --sAi:#2F5A40; --sK:#F1DCD9; --sKi:#7E2E29; --sR:#E8EAE8; --sRi:#454A4A}
+@media (prefers-color-scheme: dark){:root[data-palette="ume"]:not([data-theme="light"]){
+  --paper:#1D1A1B; --card:#292426; --ink:#F0E9E7; --muted:#B5A6A5;
+  --rule:#383133; --margin:#A85A54; --accent:#CBA6A3; --accent-ink:#231C1D;
+  --good:#8CC3A6; --bad:#E89088; --chip:#342D2F; --line:#3D3537; --hi:#D9B84A;
+  --sF:#3D2C2E; --sFi:#E9CFD1; --sV:#45391A; --sVi:#EFD58A; --sS:#25393B; --sSi:#B9D7DA;
+  --sA:#233A2C; --sAi:#A9D9BB; --sK:#46282A; --sKi:#F2B8B2; --sR:#302B2C; --sRi:#D6CFCF; color-scheme:dark}}
+:root[data-palette="ume"][data-theme="dark"]{
+  --paper:#1D1A1B; --card:#292426; --ink:#F0E9E7; --muted:#B5A6A5;
+  --rule:#383133; --margin:#A85A54; --accent:#CBA6A3; --accent-ink:#231C1D;
+  --good:#8CC3A6; --bad:#E89088; --chip:#342D2F; --line:#3D3537; --hi:#D9B84A;
+  --sF:#3D2C2E; --sFi:#E9CFD1; --sV:#45391A; --sVi:#EFD58A; --sS:#25393B; --sSi:#B9D7DA;
+  --sA:#233A2C; --sAi:#A9D9BB; --sK:#46282A; --sKi:#F2B8B2; --sR:#302B2C; --sRi:#D6CFCF; color-scheme:dark}
 
 *{box-sizing:border-box}
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -44,6 +64,10 @@
 body{margin:0;-webkit-text-size-adjust:100%;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:1rem;line-height:1.5}
 .wrap{max-width:42rem;margin:0 auto;padding-inline:16px;padding-block:1.25rem 3rem;display:flex;flex-direction:column;gap:1.1rem}
 header{display:flex;flex-direction:column;gap:.2rem}
+#syncbox{position:fixed;inset:0;z-index:50;border-radius:0;box-shadow:none;overflow-y:auto;background:var(--paper);
+  padding:calc(1.25rem + env(safe-area-inset-top,0px)) max(16px,calc((100vw - 40rem) / 2)) calc(2rem + env(safe-area-inset-bottom,0px));gap:.8rem}
+#syncbox h3{margin-top:.8rem}
+body.settings-open{overflow:hidden}
 .titlebar{display:flex;align-items:center;justify-content:space-between;gap:.75rem}
 .cog{display:inline-flex;align-items:center;gap:.4rem;border:0;background:var(--chip);color:var(--ink);font:inherit;font-weight:700;font-size:.9rem;padding:.5rem .75rem;border-radius:.6rem;cursor:pointer}
 .cog[aria-expanded="true"]{background:var(--ink);color:var(--paper)}
@@ -84,12 +108,14 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .card{position:relative;background:var(--card);border-radius:.35rem;box-shadow:0 1px 0 var(--line),0 10px 24px -14px rgba(24,34,58,.35);
   padding:1.2rem 1.2rem 1.2rem 2.9rem;min-height:14rem;display:flex;flex-direction:column;gap:.85rem;
   background-image:repeating-linear-gradient(to bottom,transparent 0,transparent calc(1.9rem - 1px),var(--rule) calc(1.9rem - 1px),var(--rule) 1.9rem);background-position:0 3.1rem}
+.card .meta span:first-child{white-space:nowrap}
+.card .meta span:last-child{text-align:right}
 .card::before{content:"";position:absolute;top:0;bottom:0;left:2rem;width:1.5px;background:var(--margin);opacity:.7}
-.card .meta{display:flex;justify-content:space-between;gap:.5rem;font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+.card .meta{display:flex;justify-content:space-between;gap:.75rem;font-family:var(--mono);font-size:.72rem;color:var(--muted)}
 .big{font-family:var(--display);font-weight:700;font-size:clamp(1.8rem,7vw,2.5rem);line-height:1.1;margin:0;overflow-wrap:anywhere}
 .gloss{color:var(--muted);margin:0;font-size:1.05rem}
 .frame{font-size:1.12rem;margin:0}
-.frame .blank{display:inline-block;min-width:4.5rem;border-bottom:2px solid var(--accent);margin-inline:.2rem}
+.frame .blank{display:inline-block;min-width:4.5rem;border-bottom:3px solid var(--hi);margin-inline:.2rem}
 .formname{display:inline-block;background:var(--chip);border-radius:.3rem;padding:.1rem .45rem;font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
 .answer{display:flex;gap:.5rem;flex-wrap:wrap}
 .answer input{flex:1;min-width:0;font:inherit;font-size:1.2rem;padding:.55rem .75rem;border-radius:.45rem;border:1.5px solid var(--line);background:var(--paper);color:var(--ink)}
@@ -106,7 +132,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .hint{font-size:.85rem;color:var(--muted);margin:0}
 .backnote{margin:0;white-space:pre-wrap;font-size:.95rem;background:var(--paper);border-radius:.4rem;padding:.5rem .7rem}
 .progress{height:4px;background:var(--chip);border-radius:2px;overflow:hidden}
-.progress i{display:block;height:100%;background:var(--accent);transition:width .25s}
+.progress i{display:block;height:100%;background:var(--hi);transition:width .25s}
 .empty{padding:1.3rem;border:1.5px dashed var(--line);border-radius:.5rem;color:var(--muted);display:flex;flex-direction:column;gap:.7rem;align-items:flex-start}
 .empty h2{color:var(--ink)}
 
@@ -181,7 +207,7 @@ td.g{font-family:var(--mono);color:var(--muted)}
 .opt:disabled{cursor:default}
 .opt.right{border-color:var(--good);background:var(--sA);color:var(--sAi);font-weight:700}
 .opt.wrong{border-color:var(--bad);color:var(--bad);text-decoration:line-through}
-.gapslot{display:inline-block;min-width:4.5rem;border-bottom:2px solid var(--accent);text-align:center;font-weight:700;padding:0 .25rem}
+.gapslot{display:inline-block;min-width:4.5rem;border-bottom:3px solid var(--hi);text-align:center;font-weight:700;padding:0 .25rem}
 .sentence{font-size:clamp(1.25rem,5vw,1.6rem);line-height:1.45;margin:0;font-weight:700;font-family:var(--display)}
 .built{min-height:3.2rem;display:flex;flex-wrap:wrap;gap:.35rem;padding:.5rem;border:1.5px dashed var(--line);border-radius:.45rem;background:var(--paper);align-items:center}
 .built .ph{color:var(--muted);font-size:.9rem}
@@ -198,7 +224,6 @@ td.g{font-family:var(--mono);color:var(--muted)}
   .wrap{max-width:min(96vw,110rem);padding-inline:32px}
   nav{grid-template-columns:repeat(6,1fr)}
   nav button{font-size:.95rem;padding:.65rem .5rem}
-  #syncbox{max-width:44rem}
   /* practice tabs: controls left, big card right */
   #panel-cards,#panel-forms,#panel-sent{display:grid;grid-template-columns:minmax(20rem,26rem) minmax(0,1fr);column-gap:2rem;row-gap:1rem;align-items:start}
   #panel-cards>*,#panel-forms>*,#panel-sent>*{grid-column:1}
@@ -229,40 +254,42 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
 <div class="wrap">
   <header>
     <div class="titlebar"><h1>LärSig</h1>
-      <button class="cog" id="synctoggle" type="button" aria-expanded="false" aria-controls="syncbox" aria-label="Settings" title="Settings">
+      <button class="cog" id="synctoggle" type="button" aria-expanded="false" aria-controls="syncbox" aria-label="Inställningar" title="Inställningar">
         <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        <span>Settings</span>
+        <span>Inställningar</span>
       </button>
     </div>
   </header>
 
-  <section class="fbox" id="syncbox" hidden>
-    <div class="row"><h2 class="grow">Settings</h2><button class="link" id="closesettings" type="button">Close</button></div>
-    <h3>Appearance</h3>
-    <div class="seg" role="group" aria-label="Colour theme" style="align-self:flex-start"><button type="button" data-theme-btn="auto" aria-pressed="true">Auto</button><button type="button" data-theme-btn="light" aria-pressed="false">Light</button><button type="button" data-theme-btn="dark" aria-pressed="false">Dark</button></div>
+  <section class="fbox" id="syncbox" hidden role="dialog" aria-modal="true" aria-label="Inställningar">
+    <div class="row"><h2 class="grow" style="font-size:1.6rem">Inställningar</h2><button class="btn" id="closesettings" type="button">Klar</button></div>
+    <h3>Utseende</h3>
+    <div class="seg" role="group" aria-label="Colour theme" style="align-self:flex-start"><button type="button" data-theme-btn="auto" aria-pressed="true">Auto</button><button type="button" data-theme-btn="light" aria-pressed="false">Ljust</button><button type="button" data-theme-btn="dark" aria-pressed="false">Mörkt</button></div>
     <p class="note">Auto follows your phone or Mac.</p>
-    <h3>Sync with GitHub</h3>
+    <div class="seg" role="group" aria-label="Colours" style="align-self:flex-start"><button type="button" data-palette-btn="blue" aria-pressed="true">Blå</button><button type="button" data-palette-btn="ume" aria-pressed="false">Ume</button></div>
+    <p class="note">Ume (umenezumi) uses traditional Japanese colours: plum-brown, grey-green and mustard.</p>
+    <h3>Synka med GitHub</h3>
     <div id="sync-off" class="stack">
       <p class="note">Paste your GitHub access key (it starts with <b>ghp_</b>) to keep your words, notes and progress the same on your Mac and phone. They're saved in a private gist in your account. You do this once on each device.</p>
-      <div class="row"><input id="gh-token" type="password" placeholder="ghp_…" aria-label="GitHub access key" autocomplete="off" style="flex:1;width:auto"><button class="btn" id="gh-connect" type="button">Connect</button></div>
+      <div class="row"><input id="gh-token" type="password" placeholder="ghp_…" aria-label="GitHub access key" autocomplete="off" style="flex:1;width:auto"><button class="btn" id="gh-connect" type="button">Anslut</button></div>
     </div>
     <div id="sync-on" class="stack" hidden>
       <p class="note" id="gh-info"></p>
-      <div class="row"><button class="btn small" id="gh-now" type="button">Sync now</button><button class="btn ghost small" id="gh-off" type="button">Disconnect this device</button></div>
+      <div class="row"><button class="btn small" id="gh-now" type="button">Synka nu</button><button class="btn ghost small" id="gh-off" type="button">Koppla från enheten</button></div>
     </div>
-    <h3>Backup</h3>
+    <h3>Säkerhetskopia</h3>
     <p class="note">Save everything as a file, or load one back in. Loading a backup adds anything missing and never deletes.</p>
-    <div class="row"><button class="btn ghost small" id="exportbtn" type="button">Export backup</button><label class="btn ghost small" for="importfile" style="cursor:pointer">Import backup</label><input id="importfile" type="file" accept=".json,application/json" hidden></div>
+    <div class="row"><button class="btn ghost small" id="exportbtn" type="button">Exportera</button><label class="btn ghost small" for="importfile" style="cursor:pointer">Importera</label><input id="importfile" type="file" accept=".json,application/json" hidden></div>
     <p class="note" id="backupmsg" aria-live="polite"></p>
   </section>
 
   <nav role="tablist" aria-label="Sections">
-    <button role="tab" id="tab-cards" aria-selected="true" data-tab="cards">Cards</button>
-    <button role="tab" id="tab-forms" aria-selected="false" data-tab="forms">Verbs</button>
-    <button role="tab" id="tab-sent" aria-selected="false" data-tab="sent">Sentences</button>
-    <button role="tab" id="tab-words" aria-selected="false" data-tab="words">Words</button>
-    <button role="tab" id="tab-grammar" aria-selected="false" data-tab="grammar">Grammar</button>
-    <button role="tab" id="tab-notes" aria-selected="false" data-tab="notes">Notes</button>
+    <button role="tab" id="tab-cards" aria-selected="true" data-tab="cards">Kort</button>
+    <button role="tab" id="tab-forms" aria-selected="false" data-tab="forms">Verb</button>
+    <button role="tab" id="tab-sent" aria-selected="false" data-tab="sent">Meningar</button>
+    <button role="tab" id="tab-words" aria-selected="false" data-tab="words">Ord</button>
+    <button role="tab" id="tab-grammar" aria-selected="false" data-tab="grammar">Grammatik</button>
+    <button role="tab" id="tab-notes" aria-selected="false" data-tab="notes">Anteckningar</button>
   </nav>
 
   <!-- FLASHCARDS -->
@@ -272,7 +299,7 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
       <div class="chips" id="typechips" role="group" aria-label="Word type"></div>
       <div class="row">
         <select id="groupsel" aria-label="Group" style="width:auto;max-width:100%"></select>
-        <label class="check"><input type="checkbox" id="onlymine" style="width:auto"> Only my words</label>
+        <label class="check"><input type="checkbox" id="onlymine" style="width:auto"> Bara mina ord</label>
         <span class="grow"></span>
         <div class="seg" role="group" aria-label="Card direction">
           <button id="dir-sv" aria-pressed="true" data-dir="sv">SV → EN</button>
@@ -285,27 +312,27 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
 
   <!-- VERB FORMS -->
   <section class="panel" id="panel-forms" hidden>
-    <div class="row"><span class="note">Practise:</span>
+    <div class="row"><span class="note">Öva:</span>
       <div class="seg" role="group" aria-label="Which verbs to practise">
-        <button id="vset-common" aria-pressed="true" data-vset="common">Common verbs (<span id="ccount"></span>)</button>
-        <button id="vset-all" aria-pressed="false" data-vset="all">All verbs (<span id="verbcount"></span>)</button>
+        <button id="vset-common" aria-pressed="true" data-vset="common">Vanliga verb (<span id="ccount"></span>)</button>
+        <button id="vset-all" aria-pressed="false" data-vset="all">Alla verb (<span id="verbcount"></span>)</button>
       </div></div>
     <div class="stats" id="stats-forms"></div>
     <div id="forms-stage"></div>
-    <h2>Verb list</h2>
+    <h2>Verblista</h2>
     <p class="note">Grupp 1: -ar, -ade. Grupp 2: -er, -de or -te. Grupp 3: short verbs, -dde. Grupp 4: strong or irregular, learn by heart.</p>
-    <input id="verbsearch" type="search" placeholder="Search, e.g. skriva or write" aria-label="Search verbs">
-    <details class="wgroup" id="vcommon" open><summary><span>Common verbs</span><span class="cnt" id="vcn"></span></summary>
-      <div class="tablewrap"><table><thead><tr><th>Infinitiv</th><th>Presens</th><th>Preteritum</th><th>Supinum</th><th>English</th><th>Grupp</th></tr></thead><tbody id="verbtable"></tbody></table></div></details>
-    <details class="wgroup" id="vmore"><summary><span>More verbs</span><span class="cnt" id="vmn"></span></summary>
-      <div class="tablewrap"><table><thead><tr><th>Infinitiv</th><th>Presens</th><th>Preteritum</th><th>Supinum</th><th>English</th><th>Grupp</th></tr></thead><tbody id="verbtable2"></tbody></table></div></details>
+    <input id="verbsearch" type="search" placeholder="Sök, t.ex. skriva eller write" aria-label="Search verbs">
+    <details class="wgroup" id="vcommon" open><summary><span>Vanliga verb</span><span class="cnt" id="vcn"></span></summary>
+      <div class="tablewrap"><table><thead><tr><th>Infinitiv</th><th>Presens</th><th>Preteritum</th><th>Supinum</th><th>Engelska</th><th>Grupp</th></tr></thead><tbody id="verbtable"></tbody></table></div></details>
+    <details class="wgroup" id="vmore"><summary><span>Fler verb</span><span class="cnt" id="vmn"></span></summary>
+      <div class="tablewrap"><table><thead><tr><th>Infinitiv</th><th>Presens</th><th>Preteritum</th><th>Supinum</th><th>Engelska</th><th>Grupp</th></tr></thead><tbody id="verbtable2"></tbody></table></div></details>
   </section>
 
   <!-- SENTENCES -->
   <section class="panel" id="panel-sent" hidden>
     <div class="seg" role="group" aria-label="Exercise">
-      <button id="smode-gap" aria-pressed="true" data-smode="gap">Fill the gap</button>
-      <button id="smode-order" aria-pressed="false" data-smode="order">Word order</button>
+      <button id="smode-gap" aria-pressed="true" data-smode="gap">Fyll i luckan</button>
+      <button id="smode-order" aria-pressed="false" data-smode="order">Ordföljd</button>
     </div>
     <div class="stats" id="stats-sent"></div>
     <div id="sent-stage"></div>
@@ -314,42 +341,42 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
   <!-- MY WORDS -->
   <section class="panel" id="panel-words" hidden>
     <div class="seg" role="group" aria-label="Which words">
-      <button id="wview-mine" aria-pressed="true" data-wview="mine">My words (<span id="wordcount2">0</span>)</button>
-      <button id="wview-built" aria-pressed="false" data-wview="built">Built-in lists</button>
+      <button id="wview-mine" aria-pressed="true" data-wview="mine">Mina ord · <span id="wordcount2">0</span></button>
+      <button id="wview-built" aria-pressed="false" data-wview="built">Färdiga listor</button>
     </div>
     <div id="wmine" class="panel">
     <form class="fbox" id="addform" autocomplete="off">
-      <h2>Add a word</h2>
+      <h2>Lägg till ett ord</h2>
       <div class="fgrid">
-        <input id="add-sv" placeholder="Svenska, e.g. glad" aria-label="Swedish" required>
-        <input id="add-en" placeholder="English, e.g. happy" aria-label="English" required>
+        <input id="add-sv" placeholder="Svenska, t.ex. glad" aria-label="Swedish" required>
+        <input id="add-en" placeholder="Engelska, t.ex. happy" aria-label="English" required>
         <select id="add-type" aria-label="Word type"></select>
-        <input id="add-group" list="grouplist" placeholder="Group, e.g. Descriptive words" aria-label="Group">
-        <textarea id="add-note" class="full" style="min-height:3.5rem" placeholder="Note or example (optional), e.g. Jag är glad idag." aria-label="Note"></textarea>
+        <input id="add-group" list="grouplist" placeholder="Grupp, t.ex. Beskrivande ord" aria-label="Group">
+        <textarea id="add-note" class="full" style="min-height:3.5rem" placeholder="Anteckning eller exempel (valfritt), t.ex. Jag är glad idag." aria-label="Note"></textarea>
       </div>
-      <div class="row end"><span class="note grow" id="addmsg" aria-live="polite"></span><button class="btn" type="submit">Add word</button></div>
+      <div class="row end"><span class="note grow" id="addmsg" aria-live="polite"></span><button class="btn" type="submit">Lägg till</button></div>
     </form>
     <datalist id="grouplist"></datalist>
 
     <details>
-      <summary>Paste a whole list</summary>
+      <summary>Klistra in en hel lista</summary>
       <p class="note">One word per line: <b>svenska = english</b>. You can add a note after a second =, like <b>glad = happy = Jag är glad.</b> Tabs or semicolons work too.</p>
       <div class="fgrid">
         <select id="bulk-type" aria-label="Word type for the list"></select>
-        <input id="bulk-group" list="grouplist" placeholder="Group for the whole list" aria-label="Group for the list">
+        <input id="bulk-group" list="grouplist" placeholder="Grupp för hela listan" aria-label="Group for the list">
       </div>
       <textarea id="bulk" aria-label="Word list" placeholder="glad = happy&#10;trött = tired&#10;arg = angry = Varför är du arg?"></textarea>
-      <div class="row end"><span class="note grow" id="bulkmsg"></span><button class="btn" id="bulkadd" type="button">Add list</button></div>
+      <div class="row end"><span class="note grow" id="bulkmsg"></span><button class="btn" id="bulkadd" type="button">Lägg till listan</button></div>
     </details>
 
     <div class="row">
-      <h2 class="grow">My words (<span id="wordcount">0</span>)</h2>
+      <h2 class="grow">Mina ord · <span id="wordcount">0</span></h2>
       <div class="seg" role="group" aria-label="Sort words by">
-        <button id="by-group" aria-pressed="true" data-by="group">By group</button>
-        <button id="by-type" aria-pressed="false" data-by="type">By type</button>
+        <button id="by-group" aria-pressed="true" data-by="group">Grupp</button>
+        <button id="by-type" aria-pressed="false" data-by="type">Ordklass</button>
       </div>
     </div>
-    <input id="wsearch" type="search" placeholder="Search my words" aria-label="Search my words">
+    <input id="wsearch" type="search" placeholder="Sök bland mina ord" aria-label="Search my words">
     <div id="wordlist" class="stack"></div>
     </div>
     <div id="wbuilt" class="panel" hidden>
@@ -361,28 +388,28 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
   <!-- NOTES -->
   <section class="panel" id="panel-notes" hidden>
     <div class="row">
-      <input id="nsearch" class="grow" type="search" placeholder="Search my notes" aria-label="Search notes" style="width:auto">
-      <button class="btn" id="newnote" type="button">New note</button>
+      <input id="nsearch" class="grow" type="search" placeholder="Sök i mina anteckningar" aria-label="Search notes" style="width:auto">
+      <button class="btn" id="newnote" type="button">Ny anteckning</button>
     </div>
     <form class="fbox" id="neditor" hidden autocomplete="off">
-      <h2 id="neditor-title">New note</h2>
+      <h2 id="neditor-title">Ny anteckning</h2>
       <div class="fgrid">
-        <input id="n-title" placeholder="Title, e.g. Prepositions for time" aria-label="Title" required>
-        <input id="n-topic" list="topiclist" placeholder="Topic, e.g. Grammar" aria-label="Topic">
-        <textarea id="n-body" class="full" style="min-height:10rem" placeholder="Write anything: a rule from class, example sentences, words to look up later." aria-label="Note text"></textarea>
+        <input id="n-title" placeholder="Rubrik, t.ex. Prepositioner för tid" aria-label="Title" required>
+        <input id="n-topic" list="topiclist" placeholder="Ämne, t.ex. Grammatik" aria-label="Topic">
+        <textarea id="n-body" class="full" style="min-height:10rem" placeholder="Skriv vad som helst: en regel från lektionen, exempelmeningar, ord att slå upp." aria-label="Note text"></textarea>
       </div>
-      <div class="row end"><button class="btn ghost" type="button" id="ncancel">Cancel</button><button class="btn" type="submit">Save note</button></div>
+      <div class="row end"><button class="btn ghost" type="button" id="ncancel">Avbryt</button><button class="btn" type="submit">Spara</button></div>
     </form>
     <datalist id="topiclist"></datalist>
 
-    <h2>My notes</h2>
+    <h2>Mina anteckningar</h2>
     <div id="mynotes" class="stack"></div>
 
   </section>
 
   <!-- GRAMMAR -->
   <section class="panel" id="panel-grammar" hidden>
-    <input id="gsearch" type="search" placeholder="Search grammar, e.g. BIFF, adjektiv, sin" aria-label="Search grammar">
+    <input id="gsearch" type="search" placeholder="Sök, t.ex. BIFF, adjektiv, sin" aria-label="Search grammar">
     <div class="legend" id="legend"></div>
     <div id="guide" class="stack"></div>
   </section>
@@ -468,7 +495,7 @@ const ADVS = [ // sv, en, example, satsadverb?
  ["ut","out, motion","Hon går ut.",0],["ute","outside, place","Barnen leker ute.",0],["in","in, motion","Kom in!",0],["inne","inside, place","Vi är inne.",0],
  ["här","here","Jag bor här.",0],["där","there","Bor du där?",0],["dit","(to) there, motion","Hur kommer jag dit?",0],["hit","(to) here, motion","Kom hit!",0],["dessutom","besides, also","Dessutom är det billigt.",0],["därför","therefore, that's why","Därför kom jag inte.",0]
 ];
-const TYPES = [["verb","Verb"],["partikelverb","Partikelverb"],["adverb","Adverb"],["noun","Noun"],["adjective","Adjective"],["preposition","Preposition"],["conjunction","Linking word"],["question","Question word"],["phrase","Phrase"],["other","Other"]];
+const TYPES = [["verb","Verb"],["partikelverb","Partikelverb"],["adverb","Adverb"],["noun","Substantiv"],["adjective","Adjektiv"],["preposition","Preposition"],["conjunction","Bindeord"],["question","Frågeord"],["phrase","Fras"],["other","Övrigt"]];
 const TYPE_LABEL = Object.fromEntries(TYPES);
 const VBY = Object.fromEntries(VERBS.map(v=>[v[0],v]));
 const PBY = Object.fromEntries(PVERBS.map(v=>[v[0],v]));
@@ -479,14 +506,14 @@ const DAY = 864e5, INT = [0,1,2,4,8,16,35], NEW_PER_SESSION = 9, SESSION_MAX = 3
 /* slot types for the grammar guide */
 const SLOT = {F:"fundament",V:"verb",S:"subjekt",A:"satsadverb",V2:"verb 2",P:"partikel",K:"subjunktion",R:"rest",x:""};
 const GUIDE = [
- {id:"huvudsats",title:"Main clause: straight word order",tag:"rak ordföljd",
+ {id:"huvudsats",title:"Huvudsats: rak ordföljd",tag:"main clause",
   rule:"The finite verb (the one that shows tense: <b>är, har, äter, ska</b>) is always <b>word number two</b>. This is the V2 rule. In straight word order the subject comes first.",
   schema:"Fundament · Verb · (Subjekt) · Satsadverb · Verb 2 · Resten",
   rows:[ [[["F","Jag"],["V","äter"],["A","inte"],["R","kött."]],"I don't eat meat."],
          [[["F","Hon"],["V","har"],["A","aldrig"],["V2","varit"],["R","i Kiruna."]],"She has never been to Kiruna."],
          [[["F","Vi"],["V","ska"],["A","kanske"],["V2","flytta"],["R","till Lund."]],"We might move to Lund."] ],
   tips:["Verb 2 is the second verb in the sentence (infinitive or supinum). It comes after the adverb: har <b>aldrig</b> varit."]},
- {id:"omvand",title:"Main clause: inverted word order",tag:"omvänd ordföljd",
+ {id:"omvand",title:"Huvudsats: omvänd ordföljd",tag:"inverted word order",
   rule:"When something other than the subject comes first (a time, a place, an object, a whole bisats), the verb <b>still stays in position two</b> and the subject moves to after the verb.",
   schema:"Fundament · Verb · Subjekt · Satsadverb · Verb 2 · Resten",
   rows:[ [[["F","Idag"],["V","äter"],["S","jag"],["A","inte"],["R","kött."]],"Today I'm not eating meat."],
@@ -494,7 +521,7 @@ const GUIDE = [
          [[["F","I Malmö"],["V","har"],["S","jag"],["V2","bott"],["R","i nio år."]],"I have lived in Malmö for nine years."],
          [[["F","När jag kom hem"],["V","åt"],["S","jag"],["R","middag."]],"When I got home, I ate dinner. A whole bisats can be the fundament."] ],
   tips:["Common mistake: <i>Idag jag äter…</i> The verb has to come before <b>jag</b>: <b>Idag äter jag…</b>"]},
- {id:"bisats",title:"Subordinate clause and the BIFF rule",tag:"bisats",
+ {id:"bisats",title:"Bisats och BIFF-regeln",tag:"subordinate clause",
   rule:"In a bisats the adverb goes <b>before</b> the finite verb. BIFF = <b>B</b>isats: <b>I</b>nte <b>F</b>öre <b>F</b>inita verbet. There is never inversion inside a bisats: the subject always comes right after the subjunktion.",
   schema:"Subjunktion · Subjekt · Satsadverb · Verb · Verb 2 · Resten",
   rows:[ [[["x","Jag säger"],["K","att"],["S","jag"],["A","inte"],["V","äter"],["R","kött."]],"I say that I don't eat meat."],
@@ -503,7 +530,7 @@ const GUIDE = [
          [[["x","Ring mig"],["K","om"],["S","du"],["A","inte"],["V","hittar"],["R","dit."]],"Call me if you can't find the way."] ],
   tips:["Words that start a bisats: <b>att, eftersom, när, om, fast, medan, innan, efter att, så att, därför att, som</b>, and question words in indirect questions (var, vad, när, hur).",
         "Compare: Jag äter <b>inte</b> kött. → …att jag <b>inte</b> äter kött."]},
- {id:"fragor",title:"Questions",tag:"frågor",
+ {id:"fragor",title:"Frågor",tag:"questions",
   rule:"<b>Yes/no questions</b> start with the verb. <b>Question word questions</b> start with the question word, then the verb (still position two). In an indirect question (inside a bisats) there is no inversion.",
   schema:"(Frågeord) · Verb · Subjekt · Satsadverb · Verb 2 · Resten",
   rows:[ [[["V","Äter"],["S","du"],["A","inte"],["R","kött?"]],"Don't you eat meat?"],
@@ -512,14 +539,14 @@ const GUIDE = [
          [[["F","Vad"],["V","har"],["S","du"],["V2","gjort"],["R","idag?"]],"What have you done today?"],
          [[["x","Jag undrar"],["K","var"],["S","du"],["V","bor."]],"I wonder where you live. (bisats, so no inversion)"] ],
   tips:["Question words: vad, vem, var, vart, när, hur, varför, vilken/vilket/vilka, hur mycket, hur många."]},
- {id:"adverb",title:"Where adverbs go",tag:"adverb",
+ {id:"adverb",title:"Var hamnar adverbet?",tag:"where adverbs go",
   rule:"<b>Satsadverb</b> (inte, aldrig, alltid, ofta, ibland, sällan, redan, fortfarande, kanske, bara, också, gärna, verkligen, nästan, tyvärr…) go right after the finite verb in a main clause, and before it in a bisats. Adverbs that say <b>how, where and when</b> usually go at the end, in that order: sätt, plats, tid.",
   schema:"…Verb · Satsadverb · … · Sätt · Plats · Tid",
   rows:[ [[["F","Jag"],["V","dricker"],["A","ofta"],["R","kaffe."]],"I often drink coffee."],
          [[["x","Hon säger"],["K","att"],["S","hon"],["A","ofta"],["V","dricker"],["R","kaffe."]],"She says that she often drinks coffee."],
          [[["F","Han"],["V","cyklade"],["R","snabbt","sätt"],["R","hem","plats"],["R","igår.","tid"]],"He cycled home fast yesterday."] ],
   tips:["With a short pronoun object, the pronoun can come before inte: <b>Jag ser honom inte.</b> But with a noun: <b>Jag ser inte bilen.</b>"]},
- {id:"partikel",title:"Partikelverb",tag:"partikelverb",
+ {id:"partikel",title:"Partikelverb",tag:"phrasal verbs",
   rule:"A partikelverb is a verb plus a small word (the particle) that changes the meaning. The <b>particle is stressed</b>: tycka OM, komma IHÅG. The particle comes after the satsadverb and verb 2, right before the rest.",
   schema:"…Verb · Satsadverb · Verb 2 · Partikel · Resten",
   rows:[ [[["F","Jag"],["V","tycker"],["A","inte"],["P","om"],["R","fisk."]],"I don't like fish."],
@@ -528,7 +555,7 @@ const GUIDE = [
          [[["x","Jag tror"],["K","att"],["S","han"],["A","inte"],["V","håller"],["P","med."]],"I don't think he agrees."] ],
   tips:["Stress changes the meaning. Hon hälsade <b>PÅ</b> mig = she visited me. Hon <b>HÄLSADE</b> på mig = she greeted me.",
         "Find the full list under Words → Built-in partikelverb."]},
- {id:"riktning",title:"Motion or place: hem / hemma",tag:"adverb",
+ {id:"riktning",title:"Riktning eller plats: hem / hemma",tag:"motion or place",
   rule:"Many place adverbs come in pairs. Use the short one with movement (going somewhere) and the long one for a place (being somewhere).",
   table:[["hem","hemma","Jag går hem. / Jag är hemma."],["ut","ute","Hon går ut. / Hon är ute."],["in","inne","Kom in! / Vi är inne."],["upp","uppe","Gå upp! / Han är uppe."],["ner","nere","Kom ner! / Hon är nere."],["bort","borta","Gå bort. / Han är borta."],["dit","där","Jag åker dit. / Jag bor där."],["hit","här","Kom hit! / Jag är här."]],
   tips:["Ask yourself: is someone moving? Then use the short form."]}
@@ -536,9 +563,9 @@ const GUIDE = [
 
 /* ---------- built-in word lists (group, type, [sv, en, note]) ---------- */
 const LISTS = [
- {group:"Partikelverb", type:"partikelverb", items: PVERBS.map(v=>[v[0],v[1],v[2]+"\nStress on the particle."])},
- {group:"Adverbs", type:"adverb", items: ADVS.map(v=>[v[0],v[1],v[2]+(v[3]?"\nSatsadverb: follows the BIFF rule.":"")])},
- {group:"Adjectives", type:"adjective", items:[
+ {key:"Partikelverb", group:"Partikelverb (phrasal verbs)", type:"partikelverb", items: PVERBS.map(v=>[v[0],v[1],v[2]+"\nStress on the particle."])},
+ {key:"Adverbs", group:"Adverb (adverbs)", type:"adverb", items: ADVS.map(v=>[v[0],v[1],v[2]+(v[3]?"\nSatsadverb: follows the BIFF rule.":"")])},
+ {key:"Adjectives", group:"Adjektiv (adjectives)", type:"adjective", items:[
   ["stor","big","ett stort hus · stora hus"],["liten","small","ett litet hus · små hus · den lilla bilen"],["ny","new","ett nytt jobb · nya skor"],
   ["gammal","old","ett gammalt hus · gamla vänner"],["ung","young","ett ungt par · unga människor"],["bra","good","ett bra jobb · bra filmer (never changes)"],
   ["dålig","bad","ett dåligt väder · dåliga nyheter"],["glad","happy","ett glatt barn · glada barn"],["ledsen","sad","ett ledset barn · ledsna barn"],
@@ -552,7 +579,7 @@ const LISTS = [
   ["hungrig","hungry","ett hungrigt barn · hungriga barn"],["nöjd","satisfied","ett nöjt barn · nöjda kunder"],["viktig","important","ett viktigt möte · viktiga frågor"],
   ["ledig","free, off work","ett ledigt rum · lediga jobb"],["upptagen","busy","ett upptaget rum · upptagna människor"],["röd","red","ett rött äpple · röda äpplen"],
   ["vit","white","ett vitt hus · vita hus"],["svart","black","ett svart kaffe · svarta katter"],["blå","blue","ett blått hus · blå hus"]]},
- {group:"Prepositions", type:"preposition", items:[
+ {key:"Prepositions", group:"Prepositioner (prepositions)", type:"preposition", items:[
   ["i","in","Jag bor i Malmö. Hon är i köket."],["på","on, at","Boken ligger på bordet. Jag är på jobbet."],["under","under, during","Katten ligger under sängen."],
   ["över","over, above","Lampan hänger över bordet."],["bakom","behind","Cykeln står bakom huset."],["framför","in front of","Bussen stannar framför skolan."],
   ["bredvid","next to","Jag sitter bredvid Anna."],["mellan","between","Apoteket ligger mellan banken och kaféet."],["hos","at someone's place","Jag är hos min syster."],
@@ -561,7 +588,7 @@ const LISTS = [
   ["av","of, by","En kopp av glas. Boken är skriven av henne."],["efter","after","Vi ses efter jobbet."],["före","before","Kom före klockan åtta."],
   ["genom","through","Vi gick genom parken."],["mot","towards, against","Bussen åker mot centrum."],["vid","by, at","Vi bor vid havet."],
   ["sedan","since","Jag har bott här sedan 2017."]]},
- {group:"Time words", type:"phrase", items:[
+ {key:"Time words", group:"Tidsord (time words)", type:"phrase", items:[
   ["idag","today",""],["igår","yesterday",""],["imorgon","tomorrow",""],["i förrgår","the day before yesterday",""],["i övermorgon","the day after tomorrow",""],
   ["i morse","this morning (already past)","Jag drack kaffe i morse."],["ikväll","this evening, tonight","Ska vi ses ikväll?"],["i natt","tonight / last night","Jag sov dåligt i natt."],
   ["på morgonen","in the morning (in general)","Jag tränar på morgonen."],["i veckan","this week","Jag jobbar mycket i veckan."],["förra veckan","last week",""],
@@ -570,56 +597,56 @@ const LISTS = [
   ["i två timmar","for two hours","Jag pluggade i två timmar."],["i somras","last summer",""],["i sommar","this summer (coming)",""],
   ["i fjol","last year",""],["halv tre","half past two (2:30)","Halv = half an hour BEFORE the hour."],["kvart över två","quarter past two (2:15)",""],
   ["kvart i tre","quarter to three (2:45)",""],["fem i halv tre","2:25","Five minutes before half past two."]]},
- {group:"Question words", type:"question", items:[
+ {key:"Question words", group:"Frågeord (question words)", type:"question", items:[
   ["vad","what","Vad heter du?"],["vem","who","Vem är det?"],["vems","whose","Vems jacka är det här?"],["var","where (place)","Var bor du?"],
   ["vart","where to","Vart ska du?"],["varifrån","where from","Varifrån kommer du?"],["när","when","När börjar kursen?"],["hur","how","Hur mår du?"],
   ["varför","why","Varför är du trött?"],["vilken / vilket / vilka","which","Vilken buss tar du? Vilket rum? Vilka skor?"],
   ["hur mycket","how much","Hur mycket kostar det?"],["hur många","how many","Hur många barn har du?"],["hur länge","how long","Hur länge har du bott här?"],
   ["hur dags","what time","Hur dags slutar du?"]]},
- {group:"Bindeord: adding", type:"conjunction", items:[
+ {key:"Bindeord: adding", group:"Bindeord: tillägg (adding)", type:"conjunction", items:[
   ["och","and","Jag tränar och sen äter jag."],["dessutom","furthermore, in addition","Adverb: Dessutom är det billigt. (verb before subject)"],
   ["också","also, too","Satsadverb: Jag talar också spanska."],["samt","as well as","Formal, mostly written: Ta med pass samt biljett."],
   ["dels … dels","partly … partly","Jag flyttade dels för jobbet, dels för kärleken."],["både … och","both … and","Både jag och min sambo jobbar."],
   ["inte bara … utan också","not only … but also","Hon är inte bara snäll utan också rolig."]]},
- {group:"Bindeord: contrast", type:"conjunction", items:[
+ {key:"Bindeord: contrast", group:"Bindeord: motsats (contrast)", type:"conjunction", items:[
   ["men","but","Jag vill komma, men jag har inte tid."],["utan","but (rather), after a no","Jag dricker inte kaffe utan te."],
   ["dock","however, yet","Det var dock för sent."],["trots att","even though, despite the fact that","Starts a bisats: …trots att det regnade."],
   ["fastän","although","Starts a bisats: Fastän Malmö är en livlig stad finns det mindre att göra."],["tvärtom","on the contrary","Det var inte tråkigt, tvärtom!"],
   ["ändå","still, anyway","Det regnade men vi gick ut ändå."],["i stället","instead","Vi tog bussen i stället."]]},
- {group:"Bindeord: cause & result", type:"conjunction", items:[
+ {key:"Bindeord: cause & result", group:"Bindeord: orsak och följd (cause & result)", type:"conjunction", items:[
   ["eftersom","because, since","Starts a bisats: …eftersom jag inte hade tid."],["därför att","because","Starts a bisats: …därför att jag var sjuk."],
   ["för","because (for)","Main clause follows: Jag gick hem, för jag var trött."],["så","so","Main clause follows: Jag var trött, så jag gick hem."],
   ["därför","therefore, that's why","Adverb, verb comes next: Därför kom jag inte."],["följaktligen","consequently","Formal: Följaktligen höjdes priset."],
   ["så att","so that","Starts a bisats: Prata långsamt så att alla förstår."]]},
- {group:"Bindeord: time", type:"conjunction", items:[
+ {key:"Bindeord: time", group:"Bindeord: tid (time)", type:"conjunction", items:[
   ["när","when","Starts a bisats: När jag kom hem åt jag."],["sedan / sen","then, after that","Adverb, verb comes next: Sen åt vi middag."],
   ["innan","before","Starts a bisats: …innan jag går."],["medan","while","Starts a bisats: Jag lyssnar på radio medan jag lagar mat."],
   ["efter att","after","Starts a bisats: Efter att vi hade ätit gick vi ut."],["tills","until","Starts a bisats: Vänta tills jag kommer."],
   ["först","first","Först äter vi, sen går vi."],["till slut","in the end","Till slut hittade jag nyckeln."],
   ["för det första / för det andra","firstly / secondly","För det första är det billigt. (verb before subject)"]]},
- {group:"Bindeord: condition & other", type:"conjunction", items:[
+ {key:"Bindeord: condition & other", group:"Bindeord: villkor m.m. (condition & other)", type:"conjunction", items:[
   ["om","if, whether","Starts a bisats: Om du har tid, ring mig."],["att","that","Starts a bisats: Jag vet att hon inte kommer."],
   ["som","who, which, that","Starts a bisats: en person som var ny i Sverige"],["jämfört med","compared to","Malmö är mindre jämfört med Köpenhamn."],
   ["till exempel (t.ex.)","for example","Jag gillar frukt, till exempel äpplen."]]},
- {group:"Work", type:"noun", items:[
+ {key:"Work", group:"Arbete (work)", type:"noun", items:[
   ["ett jobb","a job",""],["en arbetsplats","a workplace",""],["en chef","a boss, manager",""],["en kollega","a colleague","kollegor (plural)"],
   ["en lön","a salary",""],["en ansökan","an application","Jag skickade min ansökan igår."],["ett CV","a CV",""],["en intervju","an interview",""],
   ["en arbetsgivare","an employer",""],["en anställning","an employment, a position",""],["heltid","full time","Jag jobbar heltid."],["deltid","part time",""],
   ["ett möte","a meeting",""],["en uppgift","a task",""],["en semester","a vacation",""],["sjukskriven","on sick leave","Hon är sjukskriven idag."],
   ["ett kontrakt","a contract",""],["en provanställning","a probationary employment","Usually six months."],["att söka jobb","to apply for jobs",""],
   ["erfarenhet","experience","Jag har erfarenhet av labbarbete."]]},
- {group:"Health", type:"noun", items:[
+ {key:"Health", group:"Hälsa (health)", type:"noun", items:[
   ["en vårdcentral","a health centre",""],["en läkare","a doctor",""],["en sjuksköterska","a nurse",""],["ett recept","a prescription, a recipe",""],
   ["ett apotek","a pharmacy",""],["boka en tid","to book an appointment","Jag vill boka en tid."],["feber","fever","Jag har feber."],
   ["ont i halsen","a sore throat","Jag har ont i halsen."],["huvudvärk","headache",""],["en förkylning","a cold","Jag är förkyld."],
   ["hosta","a cough / to cough",""],["en tandläkare","a dentist",""],["en remiss","a referral",""],["en akutmottagning","an emergency room",""],
   ["ett sjukintyg","a doctor's note",""]]},
- {group:"Body", type:"noun", items:[
+ {key:"Body", group:"Kroppen (body)", type:"noun", items:[
   ["ett huvud","a head",""],["en arm","an arm",""],["ett ben","a leg, a bone",""],["en mage","a stomach",""],["en rygg","a back",""],
   ["en hals","a throat, neck",""],["en axel","a shoulder",""],["ett knä","a knee","knän (plural)"],["en fot","a foot","fötter (plural)"],
   ["en hand","a hand","händer (plural)"],["ett öga","an eye","ögon (plural)"],["ett öra","an ear","öron (plural)"],["en tand","a tooth","tänder (plural)"],
   ["ett finger","a finger","fingrar (plural)"],["en näsa","a nose",""]]},
- {group:"Home", type:"noun", items:[
+ {key:"Home", group:"Hemmet (home)", type:"noun", items:[
   ["en lägenhet","an apartment",""],["ett hus","a house",""],["ett kök","a kitchen",""],["ett sovrum","a bedroom",""],["ett vardagsrum","a living room",""],
   ["ett badrum","a bathroom",""],["en hyra","a rent","Hur mycket är hyran?"],["en hyresvärd","a landlord",""],["ett hyreskontrakt","a rental contract",""],
   ["en tvättstuga","a shared laundry room","Jag har bokat tvättstugan."],["en balkong","a balcony",""],["ett fönster","a window","fönster (plural)"],
@@ -627,52 +654,52 @@ const LISTS = [
   ["en diskmaskin","a dishwasher",""],["ett kylskåp","a fridge",""],["en spis","a stove",""],["en granne","a neighbour","grannar (plural)"]]}
 ];
 const BUILT = []; const BBY = {};
-for(const L of LISTS) for(const it of L.items){ const id="b:"+L.group+":"+it[0]; const e={id,sv:it[0],en:it[1],note:it[2]||"",type:L.type,group:L.group}; BUILT.push(e); BBY[id]=e }
-const BUILT_GROUPS = ["Common verbs",...LISTS.map(l=>l.group)];
+for(const L of LISTS) for(const it of L.items){ const id="b:"+(L.key||L.group)+":"+it[0]; const e={id,sv:it[0],en:it[1],note:it[2]||"",type:L.type,group:L.group}; BUILT.push(e); BBY[id]=e }
+const BUILT_GROUPS = ["Vanliga verb (common verbs)",...LISTS.map(l=>l.group)];
 
 /* ---------- more grammar pages ---------- */
 GUIDE.push(
- {id:"substantiv",title:"Nouns: en/ett, the, and plurals",tag:"substantiv",
+ {id:"substantiv",title:"Substantiv: en/ett, bestämd form och plural",tag:"nouns",
   rule:"Every noun is an <b>en-word</b> or an <b>ett-word</b>, and you have to learn which with the word. Most are en-words. “The” is an ending: bil<b>en</b>, hus<b>et</b>. There are five common plural endings.",
   table:{head:["a / an","the","plural","the (plural)"],rows:[["en bil","bilen","bilar","bilarna"],["en flicka","flickan","flickor","flickorna"],["en katt","katten","katter","katterna"],["en sko","skon","skor","skorna"],["ett äpple","äpplet","äpplen","äpplena"],["ett barn","barnet","barn","barnen"],["en lärare","läraren","lärare","lärarna"],["en man","mannen","män","männen"],["en hand","handen","händer","händerna"]]},
   tips:["Learn every new noun with en or ett in front: <b>en</b> nyckel, <b>ett</b> kvitto. Add it that way in My words.","Ett-words ending in a consonant have no plural ending: ett hus, två hus."]},
- {id:"adjektiv",title:"Adjective endings",tag:"adjektiv",
+ {id:"adjektiv",title:"Adjektivets böjning",tag:"adjective endings",
   rule:"An adjective changes to match the noun. Add <b>-t</b> for ett-words and <b>-a</b> for plural. After <b>den, det, de</b> (and after min, din, hans…) it always ends in <b>-a</b>, and the noun gets its “the” ending too.",
   table:{head:["en","ett","plural","the"],rows:[["en stor bil","ett stort hus","stora bilar","den stora bilen"],["en ny jacka","ett nytt jobb","nya skor","det nya jobbet"],["en röd bil","ett rött äpple","röda äpplen","de röda äpplena"],["en gammal stol","ett gammalt hus","gamla hus","det gamla huset"],["en liten bil","ett litet hus","små hus","den lilla bilen / de små husen"],["en bra film","ett bra jobb","bra filmer","den bra filmen"]]},
   tips:["Adjectives after the verb change too: Bilen är stor. Huset är stort. Bilarna är stora.","Min nya jacka, hans gamla bil: after a possessive, use the -a form."]},
- {id:"komparation",title:"Comparing: större, störst",tag:"komparation",
+ {id:"komparation",title:"Komparation: större, störst",tag:"comparing",
   rule:"Most adjectives add <b>-are</b> (more) and <b>-ast</b> (most). Some common ones are irregular. Use <b>än</b> for “than”.",
   table:{head:["","more","most"],rows:[["varm","varmare","varmast"],["rolig","roligare","roligast"],["stor","större","störst"],["liten","mindre","minst"],["bra","bättre","bäst"],["dålig","sämre","sämst"],["gammal","äldre","äldst"],["ung","yngre","yngst"],["lång","längre","längst"],["hög","högre","högst"],["många","fler","flest"],["mycket","mer","mest"]]},
   tips:["Hon är längre <b>än</b> jag. Det här är den bäst<b>a</b> filmen. (den + superlative → -a)","Long adjectives use mer and mest: mer intressant, mest intressant."]},
- {id:"possessiv",title:"Whose? min, hans, sin",tag:"possessiv",
+ {id:"possessiv",title:"Possessiva pronomen: min, hans, sin",tag:"whose?",
   rule:"Possessives match the noun like adjectives: min bil, mitt hus, mina skor. Use <b>sin / sitt / sina</b> when the thing belongs to the <b>subject of the same clause</b> (he, she, they themselves).",
   table:{head:["","en","ett","plural"],rows:[["my","min","mitt","mina"],["your","din","ditt","dina"],["his / her","hans / hennes","hans / hennes","hans / hennes"],["his/her/their own","sin","sitt","sina"],["our","vår","vårt","våra"],["your (plural)","er","ert","era"],["their","deras","deras","deras"]]},
   rows:[ [[["F","Anna"],["V","tar"],["R","sin cykel."]],"Anna takes her (own) bike."],
          [[["F","Erik"],["V","tar"],["R","hennes cykel."]],"Erik takes her (Anna's) bike."] ],
   tips:["Never use sin in the subject itself: <b>Anna och hennes man</b> bor här (not sin man)."]},
- {id:"reflexiv",title:"Reflexive verbs",tag:"reflexiv",
+ {id:"reflexiv",title:"Reflexiva verb",tag:"reflexive verbs",
   rule:"Some verbs need a word that points back to the subject: jag tvättar <b>mig</b>, hon känner <b>sig</b> trött.",
   table:{head:["","",""],rows:[["jag","tvättar","mig"],["du","tvättar","dig"],["han / hon","tvättar","sig"],["vi","tvättar","oss"],["ni","tvättar","er"],["de","tvättar","sig"]]},
   rows:[ [[["F","Idag"],["V","känner"],["S","jag"],["R","mig"],["R","trött."]],"Today I feel tired. The reflexive word stays after the subject."],
          [[["F","Vi"],["V","måste"],["V2","skynda"],["R","oss."]],"We have to hurry."] ],
   tips:["Common ones: känna sig, sätta sig, lägga sig, skynda sig, lära sig, gifta sig, bestämma sig, klä på sig, ta på sig."]},
- {id:"tempus",title:"Tenses and talking about the future",tag:"tempus",
+ {id:"tempus",title:"Tempus och framtid",tag:"tenses",
   rule:"Use <b>preteritum</b> for a finished time (igår, i fredags, 2019). Use <b>perfekt</b> (har + supinum) when no finished time is named, or for something up to now. For the future, use <b>ska</b> for plans and <b>kommer att</b> for predictions.",
   table:{head:["tense","example","use it for"],rows:[["presens","Jag äter.","now, habits, near future"],["preteritum","Jag åt igår.","a finished time in the past"],["perfekt","Jag har ätit.","no time named, experiences, up to now"],["pluskvamperfekt","Jag hade ätit.","before another past event"],["ska + infinitiv","Jag ska äta kl. 6.","plans, things you decided"],["kommer att + infinitiv","Det kommer att regna.","predictions"],["presens + time","Jag äter imorgon.","the future, very common"]]},
   tips:["Words like aldrig, någonsin, redan and just often go with perfekt: Har du någonsin varit i Kiruna?"]},
- {id:"modal",title:"Modal verbs: kan, vill, måste",tag:"hjälpverb",
+ {id:"modal",title:"Hjälpverb: kan, vill, måste",tag:"modal verbs",
   rule:"Modal verbs are followed by a verb in the infinitive <b>without att</b>.",
   rows:[ [[["F","Jag"],["V","kan"],["V2","simma."]],"I can swim."],
          [[["F","Jag"],["V","vill"],["A","inte"],["V2","gå"],["R","hem."]],"I don't want to go home."],
          [[["F","Du"],["V","måste"],["V2","boka"],["R","en tid."]],"You have to book an appointment."],
          [[["F","Här"],["V","får"],["S","man"],["A","inte"],["V2","röka."]],"You're not allowed to smoke here."] ],
   tips:["The same goes for: ska, skulle, får, bör, brukar, måste, kan, vill, låter.","But verbs like försöka, sluta and börja usually take att: Jag försöker att lära mig. (att is often dropped in speech.)"]},
- {id:"tidsprep",title:"Time: i måndags or på måndag?",tag:"prepositioner",
+ {id:"tidsprep",title:"Tid: i måndags eller på måndag?",tag:"time prepositions",
   rule:"The preposition tells you if a time is past, future, or every time.",
   table:{head:["Swedish","English","when"],rows:[["på måndag","next Monday","future"],["i måndags","last Monday","past"],["på måndagar","on Mondays","every time"],["i sommar","this summer","future / now"],["i somras","last summer","past"],["om en vecka","in a week","from now"],["för en vecka sedan","a week ago","past"],["i en vecka","for a week","how long"],["på en vecka","within a week","how fast"],["i morse","this morning","past"],["i år / i fjol","this year / last year",""]]},
   tips:["Ask: is it before now, after now, or every time? Then pick the form."]}
 );
-GUIDE.push({id:"bindeord",title:"Bindeord: how they change word order",tag:"bindeord",
+GUIDE.push({id:"bindeord",title:"Bindeord och ordföljd",tag:"linking words",
   rule:"Bindeord link sentences. They come in three kinds, and each kind does something different to the word order. Learn which kind a word is together with its meaning.",
   table:{head:["kind","examples","what happens next"],rows:[
    ["conjunction","och, men, eller, så, för","normal main clause: …men jag har inte tid."],
@@ -781,6 +808,14 @@ function lsGet(){try{return JSON.parse(localStorage.getItem(LSKEY)||"null")}catc
 function lsSet(){try{localStorage.setItem(LSKEY,JSON.stringify(state))}catch(e){}}
 (function(){const l=lsGet(); if(l && l.cards){ state.cards=l.cards; state.words=l.words||[]; state.notes=l.notes||[]; state.tp=l.tp||l.t||0; state.tn=l.tn||0 }})();
 for(const w of state.words){ if(!w.type) w.type="other"; if(w.group==null) w.group="" }
+const GROUP_RENAME = {"Expressions & idioms":"Uttryck och idiom (expressions & idioms)","My partikelverb":"Mina partikelverb (my phrasal verbs)",
+ "Small words & adverbs":"Småord och adverb (small words & adverbs)","Feelings & describing words":"Känslor och beskrivande ord (feelings & describing words)",
+ "Nature & outdoors":"Natur och friluftsliv (nature & outdoors)","Society & housing":"Samhälle och boende (society & housing)",
+ "Health & body":"Hälsa och kropp (health & body)","School & learning":"Skola och lärande (school & learning)",
+ "Time expressions (mine)":"Tidsuttryck (time expressions)","Home & everyday":"Hem och vardag (home & everyday)",
+ "Shopping & money":"Shopping och pengar (shopping & money)","Verbs from class":"Verb från lektionerna (verbs from class)"};
+function migrateGroups(){ let ch=false; for(const w of state.words){ const n=GROUP_RENAME[w.group]; if(n){ w.group=n; ch=true } } if(ch){ state.tp=Date.now(); lsSet() } return ch }
+migrateGroups();
 
 /* ---- GitHub gist sync ----
    Everything lives in one private gist file. Progress (cards + words) and notes each carry
@@ -793,8 +828,8 @@ const setSync = t=>syncEl.textContent=t;
 let syncTimer=null, chain=Promise.resolve(), lastSync=0;
 function save(kind){
   state["t"+kind]=Date.now(); lsSet();
-  if(gh.token){ clearTimeout(syncTimer); setSync("Saving…"); syncTimer=setTimeout(()=>{syncTimer=null;sync()},2500) }
-  else setSync("Saved on this device");
+  if(gh.token){ clearTimeout(syncTimer); setSync("Sparar…"); syncTimer=setTimeout(()=>{syncTimer=null;sync()},2500) }
+  else setSync("Sparat på den här enheten");
 }
 function payload(){ return {app:"svenska-varje-dag",v:2,tp:state.tp,tn:state.tn,cards:state.cards,words:state.words,notes:state.notes} }
 async function api(path, opts={}){
@@ -829,13 +864,13 @@ async function doSync(){
       if((remote.tn||0)>state.tn){ state.notes=remote.notes||[]; state.tn=remote.tn; changed=true }
       else if(state.tn>(remote.tn||0)) push=true;
     }
-    if(changed){ for(const w of state.words){ if(!w.type) w.type="other"; if(w.group==null) w.group="" } lsSet(); renderAll() }
+    if(changed){ for(const w of state.words){ if(!w.type) w.type="other"; if(w.group==null) w.group="" } if(migrateGroups()) push=true; lsSet(); renderAll() }
     if(push) await api("/gists/"+gh.gist,{method:"PATCH",body:JSON.stringify({files:{[FILE]:{content:JSON.stringify(payload())}}})});
     lastSync=Date.now();
-    setSync("Synced with GitHub "+new Date().toLocaleTimeString("sv-SE",{hour:"2-digit",minute:"2-digit"}));
+    setSync("Synkat med GitHub "+new Date().toLocaleTimeString("sv-SE",{hour:"2-digit",minute:"2-digit"}));
   }catch(e){
-    if(e.status===401){ setSync("Your GitHub key stopped working. Open Settings to paste a new one."); gh.token=""; ghSave(); renderSyncBox() }
-    else if(e.status===404 && gh.gist){ gh.gist=""; ghSave(); setSync("Couldn't find your sync file. Tap Sync now to set it up again.") }
+    if(e.status===401){ setSync("Your GitHub key stopped working. Open Inställningar to paste a new one."); gh.token=""; ghSave(); renderSyncBox() }
+    else if(e.status===404 && gh.gist){ gh.gist=""; ghSave(); setSync("Couldn't find your sync file. Tap Synka nu to set it up again.") }
     else if(e.status===403||e.status===429) setSync("GitHub is busy. Will try again soon.");
     else setSync("Couldn't reach GitHub. Your changes are safe on this device.");
   }
@@ -846,17 +881,20 @@ function renderSyncBox(){
   document.getElementById("sync-off").hidden=on; document.getElementById("sync-on").hidden=!on;
   if(on) document.getElementById("gh-info").textContent = "This device is connected. Your data is in a private gist named “"+FILE+"”."+(lastSync?" Last synced at "+new Date(lastSync).toLocaleTimeString("sv-SE",{hour:"2-digit",minute:"2-digit"})+".":"");
 }
-document.getElementById("synctoggle").onclick=e=>{ const b=document.getElementById("syncbox"); b.hidden=!b.hidden; e.currentTarget.setAttribute("aria-expanded",String(!b.hidden)); renderSyncBox() };
-document.getElementById("closesettings").onclick=()=>{ document.getElementById("syncbox").hidden=true; const t=document.getElementById("synctoggle"); t.setAttribute("aria-expanded","false"); t.focus() };
+function openSettings(){ const b=document.getElementById("syncbox"); b.hidden=false; b.scrollTop=0; document.body.classList.add("settings-open"); document.getElementById("synctoggle").setAttribute("aria-expanded","true"); renderSyncBox(); document.getElementById("closesettings").focus() }
+function closeSettings(){ document.getElementById("syncbox").hidden=true; document.body.classList.remove("settings-open"); const t=document.getElementById("synctoggle"); t.setAttribute("aria-expanded","false"); t.focus() }
+document.getElementById("synctoggle").onclick=()=>{ document.getElementById("syncbox").hidden ? openSettings() : closeSettings() };
+document.getElementById("closesettings").onclick=closeSettings;
+document.addEventListener("keydown",e=>{ if(e.key==="Escape" && !document.getElementById("syncbox").hidden) closeSettings() });
 document.getElementById("gh-connect").onclick=async()=>{
   const t=document.getElementById("gh-token").value.trim();
   if(!t){ setSync("Paste your key first."); return }
-  gh={token:t,gist:""}; ghSave(); setSync("Connecting to GitHub…");
+  gh={token:t,gist:""}; ghSave(); setSync("Ansluter till GitHub…");
   await sync();
   if(gh.token) document.getElementById("gh-token").value="";
 };
-document.getElementById("gh-now").onclick=()=>{ setSync("Syncing…"); sync() };
-document.getElementById("gh-off").onclick=()=>{ gh={}; ghSave(); setSync("Not syncing. Saved on this device."); renderSyncBox() };
+document.getElementById("gh-now").onclick=()=>{ setSync("Synkar…"); sync() };
+document.getElementById("gh-off").onclick=()=>{ gh={}; ghSave(); setSync("Synkar inte. Sparat på den här enheten."); renderSyncBox() };
 window.addEventListener("online",()=>sync());
 document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible" && !syncTimer && Date.now()-lastSync>20000) sync() });
 
@@ -878,12 +916,12 @@ document.getElementById("importfile").onchange=async e=>{
     for(const x of d.words||[]){ if(x&&x.id&&!state.words.some(y=>y.id===x.id||(y.sv===x.sv&&y.en===x.en))){ state.words.push({type:"other",group:"",note:"",...x}); w++ } }
     for(const x of d.notes||[]){ if(x&&x.id&&!state.notes.some(y=>y.id===x.id)){ state.notes.push(x); n++ } }
     for(const [k,v] of Object.entries(d.cards||{})){ if(!state.cards[k]) state.cards[k]=v }
-    save("p"); save("n"); renderAll();
+    migrateGroups(); save("p"); save("n"); renderAll();
     msg.textContent=`Loaded backup: ${w} new word${w===1?"":"s"}, ${n} new note${n===1?"":"s"}.`;
   }catch(err){ msg.textContent="That file isn't a backup from this app. Choose a file named larsig-backup-….json." }
 };
 
-setSync(gh.token ? "Syncing…" : "Saved on this device. Open Settings to sync with GitHub.");
+setSync(gh.token ? "Synkar…" : "Sparat på den här enheten");
 if(gh.token) sync();
 if("serviceWorker" in navigator && location.protocol==="https:") navigator.serviceWorker.register("sw.js").catch(()=>{});
 
@@ -899,13 +937,13 @@ const typeOptions = sel=>TYPES.map(([k,l])=>`<option value="${k}"${k===sel?" sel
 const groups = ()=>[...new Set(state.words.map(w=>(w.group||"").trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"sv"));
 function refreshLists(){
   $("#grouplist").innerHTML = groups().map(g=>`<option value="${esc(g)}">`).join("");
-  $("#topiclist").innerHTML = [...new Set(["Grammar","Vocabulary","From class",...state.notes.map(n=>n.topic).filter(Boolean)])].map(t=>`<option value="${esc(t)}">`).join("");
+  $("#topiclist").innerHTML = [...new Set(["Grammatik","Ordförråd","Från lektionen",...state.notes.map(n=>n.topic).filter(Boolean)])].map(t=>`<option value="${esc(t)}">`).join("");
 }
 // two-tap delete
 function armDelete(btn, fn){
   if(btn.classList.contains("armed")){ fn(); return }
-  btn.classList.add("armed"); btn.textContent="Tap again to delete";
-  setTimeout(()=>{ if(btn.isConnected){ btn.classList.remove("armed"); btn.textContent="Delete" } },3000);
+  btn.classList.add("armed"); btn.textContent="Tryck igen för att ta bort";
+  setTimeout(()=>{ if(btn.isConnected){ btn.classList.remove("armed"); btn.textContent="Ta bort" } },3000);
 }
 
 /* ================= SCHEDULING ================= */
@@ -920,7 +958,7 @@ function buildQueue(ids){ const t=Date.now();
   const due=shuffle(ids.filter(id=>state.cards[id]&&state.cards[id].d<=t));
   const fresh=ids.filter(id=>!state.cards[id]).slice(0,NEW_PER_SESSION);
   return due.slice(0,SESSION_MAX-fresh.length).concat(fresh) }
-function stats(el,c){ el.innerHTML=`<div class="stat due"><b>${c.due}</b><span>Due now</span></div><div class="stat"><b>${c.fresh}</b><span>Not seen yet</span></div><div class="stat"><b>${c.known}</b><span>Know well</span></div>` }
+function stats(el,c){ el.innerHTML=`<div class="stat due"><b>${c.due}</b><span>Att repetera</span></div><div class="stat"><b>${c.fresh}</b><span>Nya</span></div><div class="stat"><b>${c.known}</b><span>Kan bra</span></div>` }
 
 /* ================= TABS ================= */
 let tab="cards"; try{ tab=localStorage.getItem(LSKEY+"-tab")||"cards" }catch(e){}
@@ -938,7 +976,7 @@ const COMMON = new Set(["vara","ha","göra","gå","komma","säga","se","ta","få
 const nk = t => String(t).toLowerCase().replace(/[.!?…]+$/,"").replace(/\s+/g," ").trim().replace(/^(att|en|ett) /,"");
 const keysOf = sv => String(sv).split("/").map(nk).filter(Boolean);
 const BUILT_KEYS = new Map();
-for(const v of VERBS){ const k=nk(v[0]); if(!BUILT_KEYS.has(k)) BUILT_KEYS.set(k, COMMON.has(v[0])?"Common verbs":"Verbs") }
+for(const v of VERBS){ const k=nk(v[0]); if(!BUILT_KEYS.has(k)) BUILT_KEYS.set(k, COMMON.has(v[0])?"Vanliga verb (common verbs)":"Verb (verbs)") }
 for(const e of BUILT) for(const k of keysOf(e.sv)) if(!BUILT_KEYS.has(k)) BUILT_KEYS.set(k, e.group);
 function builtMatch(sv){ for(const k of keysOf(sv)) if(BUILT_KEYS.has(k)) return BUILT_KEYS.get(k); return null }
 function mineMatch(sv){ const ks=keysOf(sv); return state.words.find(w=>keysOf(w.sv).some(k=>ks.includes(k))) }
@@ -947,7 +985,7 @@ function mineMatch(sv){ const ks=keysOf(sv); return state.words.find(w=>keysOf(w
 let dir="sv", ftype="all", fgroup="", onlyMine=false, cs=null;
 function faces(id){
   const k=id.slice(0,1), key=id.slice(2);
-  if(k==="m"){ const v=VBY[key]; return v&&{sv:"att "+v[0],en:v[4],note:`${v[1]} · ${v[2]} · ${v[3]}`,type:"verb",group:"Common verbs",mine:false} }
+  if(k==="m"){ const v=VBY[key]; return v&&{sv:"att "+v[0],en:v[4],note:`${v[1]} · ${v[2]} · ${v[3]}`,type:"verb",group:"Vanliga verb (common verbs)",mine:false} }
   if(k==="b"){ const e=BBY[id]; return e&&{...e,mine:false} }
   const w=state.words.find(w=>w.id===key); return w&&{sv:w.sv,en:w.en,note:w.note||"",type:w.type||"other",group:w.group||"",mine:true};
 }
@@ -960,11 +998,11 @@ function poolIds(){
   return out.filter(id=>{ const f=faces(id); if(!f) return false; if(ftype!=="all"&&f.type!==ftype) return false; if(fgroup&&f.group!==fgroup) return false; return true });
 }
 function renderFilters(){
-  $("#typechips").innerHTML = [["all","All"],...TYPES].map(([k,l])=>`<button type="button" data-ft="${k}" aria-pressed="${k===ftype}">${l}</button>`).join("");
+  $("#typechips").innerHTML = [["all","Alla"],...TYPES].map(([k,l])=>`<button type="button" data-ft="${k}" aria-pressed="${k===ftype}">${l}</button>`).join("");
   $("#typechips").querySelectorAll("[data-ft]").forEach(b=>b.onclick=()=>{ftype=b.dataset.ft;cs=null;renderCards()});
   const gs=groups(), bs=onlyMine?[]:BUILT_GROUPS; if(fgroup&&!gs.includes(fgroup)&&!bs.includes(fgroup)) fgroup="";
   const opt=g=>`<option value="${esc(g)}"${g===fgroup?" selected":""}>${esc(g)}</option>`;
-  $("#groupsel").innerHTML = `<option value="">All groups</option>`+(gs.length?`<optgroup label="My groups">${gs.map(opt).join("")}</optgroup>`:"")+(bs.length?`<optgroup label="Built-in lists">${bs.map(opt).join("")}</optgroup>`:"");
+  $("#groupsel").innerHTML = `<option value="">Alla grupper</option>`+(gs.length?`<optgroup label="Mina grupper">${gs.map(opt).join("")}</optgroup>`:"")+(bs.length?`<optgroup label="Färdiga listor">${bs.map(opt).join("")}</optgroup>`:"");
   $("#onlymine").checked = onlyMine;
   document.querySelectorAll("[data-dir]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.dir===dir));
 }
@@ -977,26 +1015,26 @@ function renderCards(){
   const st=$("#cards-stage");
   if(!cs){
     const n=buildQueue(ids).length;
-    if(!ids.length){ st.innerHTML=`<div class="empty"><h2>No cards here yet</h2><p style="margin:0">Nothing matches this filter. Add words under Words, or pick another type or group.</p><button class="btn" id="gowords">Add words</button></div>`; $("#gowords").onclick=()=>showTab("words"); return }
-    st.innerHTML=`<div class="empty"><h2>${n?"Ready when you are":"All done for now"}</h2><p style="margin:0">See the word, say the meaning out loud, then flip it. Be honest: cards you mark “Forgot” come back first.</p>
-      <button class="btn" id="cstart" ${n?"":"disabled"}>${n?"Start ("+n+" cards)":"Come back tomorrow"}</button></div>`;
+    if(!ids.length){ st.innerHTML=`<div class="empty"><h2>Inga kort här än</h2><p style="margin:0">Nothing matches this filter. Add words under Words, or pick another type or group.</p><button class="btn" id="gowords">Lägg till ord</button></div>`; $("#gowords").onclick=()=>showTab("words"); return }
+    st.innerHTML=`<div class="empty"><h2>${n?"Dags att öva":"Klart för idag"}</h2><p style="margin:0">See the word, say the meaning out loud, then flip it. Be honest: cards you mark “Glömde” come back first.</p>
+      <button class="btn" id="cstart" ${n?"":"disabled"}>${n?"Starta ("+n+" kort)":"Kom tillbaka imorgon"}</button></div>`;
     const b=$("#cstart"); if(n) b.onclick=()=>{cs={queue:buildQueue(ids),i:0,flipped:false,right:0,wrong:0};renderCards()};
     return;
   }
   while(cs.i<cs.queue.length && !faces(cs.queue[cs.i])) cs.i++;
   if(cs.i>=cs.queue.length){
-    st.innerHTML=`<div class="card"><div class="meta"><span>Session done</span><span></span></div><p class="big">Snyggt!</p>
-      <p class="gloss">${cs.right} remembered, ${cs.wrong} forgotten. Forgotten cards come back tomorrow.</p>
-      <div class="row"><button class="btn" id="cback">Back to overview</button></div></div>`;
+    st.innerHTML=`<div class="card"><div class="meta"><span>Klart!</span><span></span></div><p class="big">Snyggt!</p>
+      <p class="gloss">${cs.right} kunde du, ${cs.wrong} glömde du. De du glömde kommer tillbaka imorgon.</p>
+      <div class="row"><button class="btn" id="cback">Tillbaka</button></div></div>`;
     $("#cback").onclick=()=>{cs=null;renderCards()}; return;
   }
   const id=cs.queue[cs.i], f=faces(id), front=dir==="sv"?f.sv:f.en, back=dir==="sv"?f.en:f.sv;
   st.innerHTML=`${bar(cs.i,cs.queue.length)}<div class="card">
-    <div class="meta"><span>${cs.i+1} / ${cs.queue.length}${!state.cards[id]?" · new":""}</span><span>${esc(TYPE_LABEL[f.type]||"")}${f.group?" · "+esc(f.group):""}</span></div>
+    <div class="meta"><span>${cs.i+1} / ${cs.queue.length}${!state.cards[id]?" · ny":""}</span><span>${esc(TYPE_LABEL[f.type]||"")}${f.group?" · "+esc(f.group.replace(/ \(.*\)$/,"")):""}</span></div>
     <p class="big">${esc(front)}</p>
     ${cs.flipped?`<p class="gloss" style="font-size:1.3rem;color:var(--ink)">${esc(back)}</p>${f.note?`<p class="backnote">${esc(f.note)}</p>`:""}
-      <div class="row"><button class="btn bad grow" id="cno">Forgot</button><button class="btn good grow" id="cyes">Got it</button></div>`
-    :`<div class="row"><button class="btn grow" id="cflip">Show answer</button></div>`}
+      <div class="row"><button class="btn bad grow" id="cno">Glömde</button><button class="btn good grow" id="cyes">Kunde</button></div>`
+    :`<div class="row"><button class="btn grow" id="cflip">Visa svar</button></div>`}
   </div>`;
   if(cs.flipped){ $("#cno").onclick=()=>rateCard(id,false); $("#cyes").onclick=()=>rateCard(id,true) }
   else $("#cflip").onclick=()=>{cs.flipped=true;renderCards()};
@@ -1023,33 +1061,33 @@ function renderForms(){
   const st=$("#forms-stage");
   if(!fs){
     const c=counts(formIds()), n=buildQueue(formIds()).length;
-    st.innerHTML=`<div class="empty"><h2>${c.due?c.due+" verb forms to review":"Practise verb forms"}</h2>
+    st.innerHTML=`<div class="empty"><h2>${c.due?c.due+" verbformer att repetera":"Öva verbformer"}</h2>
       <p style="margin:0">You get a verb and type one form: presens (nu), preteritum (igår) or supinum (har). New verbs come a few at a time, most common first.</p>
-      <button class="btn" id="fstart" ${n?"":"disabled"}>${n?"Start ("+n+" cards)":"All done for now"}</button></div>`;
+      <button class="btn" id="fstart" ${n?"":"disabled"}>${n?"Starta ("+n+" kort)":"Klart för idag"}</button></div>`;
     if(n) $("#fstart").onclick=()=>{fs={queue:buildQueue(formIds()),i:0,right:0,wrong:0,answered:false};renderForms()};
     return;
   }
   if(fs.i>=fs.queue.length){
-    st.innerHTML=`<div class="card"><div class="meta"><span>Session done</span><span></span></div><p class="big">Bra jobbat!</p>
-      <p class="gloss">${fs.right} right first time, ${fs.wrong} to practise again. The misses come back tomorrow.</p>
-      <div class="row"><button class="btn" id="fagain">Back to overview</button></div></div>`;
+    st.innerHTML=`<div class="card"><div class="meta"><span>Klart!</span><span></span></div><p class="big">Bra jobbat!</p>
+      <p class="gloss">${fs.right} rätt direkt, ${fs.wrong} att öva mer. Missarna kommer tillbaka imorgon.</p>
+      <div class="row"><button class="btn" id="fagain">Tillbaka</button></div></div>`;
     $("#fagain").onclick=()=>{fs=null;renderForms()}; return;
   }
   const id=fs.queue[fs.i], [,inf,k]=id.split(":"), v=VBY[inf], F=FORMS[k];
   let html=`${bar(fs.i,fs.queue.length)}<div class="card">
-    <div class="meta"><span>${fs.i+1} / ${fs.queue.length}${!state.cards[id]?" · new":""}</span><span>grupp ${v[5]}</span></div>
+    <div class="meta"><span>${fs.i+1} / ${fs.queue.length}${!state.cards[id]?" · ny":""}</span><span>grupp ${v[5]}</span></div>
     <div><p class="big">att ${esc(v[0])}</p><p class="gloss">${esc(v[4])}</p></div>
     <p class="frame"><span class="formname">${F.label}</span>&nbsp; ${esc(F.frame[0])}<span class="blank"></span> ${esc(F.frame[1])}</p>`;
   if(!fs.answered){
-    html+=`<form class="answer" id="fform" autocomplete="off"><input id="fin" aria-label="Your answer" autocapitalize="off" spellcheck="false" placeholder="type the ${F.label} form">
-      <button class="btn" type="submit">Check</button></form>
+    html+=`<form class="answer" id="fform" autocomplete="off"><input id="fin" aria-label="Your answer" autocapitalize="off" spellcheck="false" placeholder="skriv ${F.label}">
+      <button class="btn" type="submit">Rätta</button></form>
       <div class="row"><div class="keys">${["å","ä","ö"].map(ch=>`<button type="button" data-ch="${ch}" aria-label="insert ${ch}">${ch}</button>`).join("")}</div>
-      <span class="grow"></span><button class="btn ghost" type="button" id="fshow">I don't know</button></div>`;
+      <span class="grow"></span><button class="btn ghost" type="button" id="fshow">Jag vet inte</button></div>`;
   } else {
     html+=`<p class="verdict ${fs.lastOk?"ok":"no"}">${fs.lastOk?"Rätt!":esc(fs.lastMsg)}</p>
       <div class="forms">${["infinitiv","presens","preteritum","supinum"].map((x,j)=>`<div><small>${x}</small><strong class="${j===F.i?"hit":""}">${esc(v[j])}</strong></div>`).join("")}</div>
       <p class="hint">${["","Grupp 1: -ar, -ade, -at. Very regular.","Grupp 2: -er, then -de/-t, or -te/-t after k, p, s, t.","Grupp 3: short verbs ending in a vowel: -r, -dde, -tt.","Grupp 4: strong verb. The vowel changes, so say this one out loud a few times."][v[5]]}</p>
-      <div class="row end"><button class="btn" id="fnext">Next</button></div>`;
+      <div class="row end"><button class="btn" id="fnext">Nästa</button></div>`;
   }
   st.innerHTML=html+`</div>`;
   if(!fs.answered){
@@ -1061,10 +1099,10 @@ function renderForms(){
 }
 function answerForm(id,v,F,given){
   const acc=v[F.i].split("/").map(norm); let ok=false,msg="";
-  if(given===null) msg="Here it is. You'll see it again soon.";
+  if(given===null) msg="Här är svaret. Du får se det igen snart.";
   else if(acc.includes(norm(given))) ok=true;
-  else if(acc.map(strip).includes(strip(given))) msg="Almost! Check the å, ä and ö.";
-  else msg=`Not quite. You wrote “${given.trim()}”.`;
+  else if(acc.map(strip).includes(strip(given))) msg="Nästan! Kolla å, ä och ö.";
+  else msg=`Inte riktigt. Du skrev “${given.trim()}”.`;
   if(!fs.queue.slice(0,fs.i).includes(id)){ ok?fs.right++:fs.wrong++ }
   grade(id,ok); if(!ok) fs.queue.splice(Math.min(fs.i+4,fs.queue.length),0,id);
   fs.answered=true; fs.lastOk=ok; fs.lastMsg=msg; renderForms();
@@ -1074,8 +1112,8 @@ function renderVerbTable(){ const q=norm($("#verbsearch").value||"");
   const row=v=>`<tr><td class="nw"><b>${esc(v[0])}</b></td><td class="nw">${esc(v[1])}</td><td class="nw">${esc(v[2])}</td><td class="nw">${esc(v[3])}</td><td>${esc(v[4])}</td><td class="g">${v[5]}</td></tr>`;
   const hit=v=>!q||v.some(x=>String(x).toLowerCase().includes(q));
   const c=VERBS.filter(v=>COMMON.has(v[0])&&hit(v)), m=VERBS.filter(v=>!COMMON.has(v[0])&&hit(v));
-  $("#verbtable").innerHTML=c.map(row).join("")||`<tr><td colspan="6" class="note">No match</td></tr>`;
-  $("#verbtable2").innerHTML=m.map(row).join("")||`<tr><td colspan="6" class="note">No match</td></tr>`;
+  $("#verbtable").innerHTML=c.map(row).join("")||`<tr><td colspan="6" class="note">Ingen träff</td></tr>`;
+  $("#verbtable2").innerHTML=m.map(row).join("")||`<tr><td colspan="6" class="note">Ingen träff</td></tr>`;
   $("#vcn").textContent=c.length; $("#vmn").textContent=m.length;
   if(q){ $("#vcommon").open=c.length>0; $("#vmore").open=m.length>0 }
   $("#ccount").textContent=VERBS.filter(v=>COMMON.has(v[0])).length; }
@@ -1086,7 +1124,7 @@ let wview="mine"; let wby="group", editingWord=null; const openGroups=new Set();
 $("#add-type").innerHTML=typeOptions("other"); $("#bulk-type").innerHTML=typeOptions("other");
 function addWord(sv,en,note,type,group){
   sv=sv.trim(); en=en.trim(); if(!sv||!en) return "empty";
-  const own=mineMatch(sv); if(own) return "mine:"+(own.group||"No group");
+  const own=mineMatch(sv); if(own) return "mine:"+(own.group||"Utan grupp (no group)");
   const b=builtMatch(sv); if(b) return "built:"+b;
   state.words.unshift({id:uidGen(),sv,en,note:(note||"").trim(),type:type||"other",group:(group||"").trim()}); return true;
 }
@@ -1094,7 +1132,7 @@ $("#addform").addEventListener("submit",e=>{
   e.preventDefault();
   const sv=$("#add-sv").value.trim(), r=addWord(sv,$("#add-en").value,$("#add-note").value,$("#add-type").value,$("#add-group").value);
   const msg=$("#addmsg");
-  if(r===true){ save("p"); $("#add-sv").value=""; $("#add-en").value=""; $("#add-note").value=""; msg.textContent=`Added “${sv}”.`; renderWords() }  // keep type + group for the next word
+  if(r===true){ save("p"); $("#add-sv").value=""; $("#add-en").value=""; $("#add-note").value=""; msg.textContent=`Lade till “${sv}”.`; renderWords() }  // keep type + group for the next word
   else if(typeof r==="string"&&r.startsWith("built:")) msg.textContent=`“${sv}” is already in the built-in list ${r.slice(6)}, so it's in your flashcards. Not added again.`;
   else if(typeof r==="string"&&r.startsWith("mine:")) msg.textContent=`“${sv}” is already in My words (${r.slice(5)}). Use Edit on it to change the meaning or note.`;
   $("#add-sv").focus();
@@ -1107,7 +1145,7 @@ $("#bulkadd").onclick=()=>{
     const r=addWord(p[0],p[1],p.slice(2).join(" "),t,g);
     if(r===true) n++; else if(String(r).startsWith("built:")) inBuilt.push(p[0].trim()); else if(String(r).startsWith("mine:")) inMine.push(p[0].trim()); else bad++ }
   if(n){ save("p"); $("#bulk").value="" }
-  const parts=[`Added ${n} word${n===1?"":"s"}.`];
+  const parts=[`Lade till ${n} ord.`];
   if(inBuilt.length) parts.push(`Already built in: ${inBuilt.join(", ")}.`);
   if(inMine.length) parts.push(`Already in My words: ${inMine.join(", ")}.`);
   if(bad) parts.push(`${bad} line${bad===1?"":"s"} had no = sign.`);
@@ -1117,7 +1155,7 @@ $("#bulkadd").onclick=()=>{
 document.querySelectorAll("[data-by]").forEach(b=>b.onclick=()=>{wby=b.dataset.by;renderWords()});
 document.querySelectorAll("[data-wview]").forEach(b=>b.onclick=()=>{wview=b.dataset.wview;renderWords()});
 $("#wsearch").addEventListener("input",()=>renderWords());
-function wordLevel(w){const c=state.cards["w:"+w.id]; return !c?"new":c.b>=4?"know well":"learning"}
+function wordLevel(w){const c=state.cards["w:"+w.id]; return !c?"ny":c.b>=4?"kan bra":"lär mig"}
 function renderWords(){
   refreshLists();
   document.querySelectorAll("[data-by]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.by===wby));
@@ -1130,8 +1168,8 @@ function renderWords(){
   if(!state.words.length){ el.innerHTML=`<p class="note">Nothing here yet. Add a few words from your last lesson and give them a group, like “Descriptive words”, so you can find them again.</p>`; return }
   if(!list.length){ el.innerHTML=`<p class="note">No words match “${esc(q)}”.</p>`; return }
   const buckets=new Map();
-  for(const w of list){ const key = wby==="group" ? (w.group||"No group") : (TYPE_LABEL[w.type]||"Other"); if(!buckets.has(key)) buckets.set(key,[]); buckets.get(key).push(w) }
-  const keys=[...buckets.keys()].sort((a,b)=> a==="No group"?1: b==="No group"?-1: a.localeCompare(b,"sv"));
+  for(const w of list){ const key = wby==="group" ? (w.group||"Utan grupp (no group)") : (TYPE_LABEL[w.type]||"Övrigt"); if(!buckets.has(key)) buckets.set(key,[]); buckets.get(key).push(w) }
+  const keys=[...buckets.keys()].sort((a,b)=> a==="Utan grupp (no group)"?1: b==="Utan grupp (no group)"?-1: a.localeCompare(b,"sv"));
   const editKey = editingWord && list.find(w=>w.id===editingWord);
   el.innerHTML=keys.map(k=>{ const ws=buckets.get(k), open = q || openGroups.has(k) || (editKey && ws.includes(editKey));
     return `<details class="wgroup" data-g="${esc(k)}"${open?" open":""}><summary><span>${esc(k)}</span><span class="cnt">${ws.length}</span></summary><div class="group">${ws.map(w=>wordRow(w)).join("")}</div></details>` }).join("");
@@ -1147,15 +1185,15 @@ function renderWords(){
 function wordRow(w){
   if(w.id===editingWord) return `<div class="item editing"><form id="editword" class="stack" autocomplete="off"><div class="fgrid">
       <input id="e-sv" value="${esc(w.sv)}" aria-label="Swedish" required><input id="e-en" value="${esc(w.en)}" aria-label="English" required>
-      <select id="e-type" aria-label="Word type">${typeOptions(w.type)}</select><input id="e-group" list="grouplist" value="${esc(w.group)}" placeholder="Group" aria-label="Group">
-      <textarea id="e-note" class="full" style="min-height:4rem" placeholder="Note or example" aria-label="Note">${esc(w.note)}</textarea></div>
-      <div class="row end"><button class="btn ghost small" type="button" id="ecancel">Cancel</button><button class="btn small" type="submit">Save</button></div></form></div>`;
+      <select id="e-type" aria-label="Word type">${typeOptions(w.type)}</select><input id="e-group" list="grouplist" value="${esc(w.group)}" placeholder="Grupp" aria-label="Group">
+      <textarea id="e-note" class="full" style="min-height:4rem" placeholder="Anteckning eller exempel" aria-label="Note">${esc(w.note)}</textarea></div>
+      <div class="row end"><button class="btn ghost small" type="button" id="ecancel">Avbryt</button><button class="btn small" type="submit">Spara</button></div></form></div>`;
   const other = wby==="group" ? (TYPE_LABEL[w.type]||"") : (w.group||"");
   return `<div class="item"><span class="sv">${esc(w.sv)}</span><span class="en">${esc(w.en)}</span>
-    <span class="acts"><button class="link" data-wedit="${w.id}">Edit</button><button class="link del" data-wdel="${w.id}" aria-label="Delete ${esc(w.sv)}">Delete</button></span>
+    <span class="acts"><button class="link" data-wedit="${w.id}">Ändra</button><button class="link del" data-wdel="${w.id}" aria-label="Delete ${esc(w.sv)}">Ta bort</button></span>
     <span class="sub">${other?`<span class="tag">${esc(other)}</span>`:""}<span class="tag">${wordLevel(w)}</span>${w.note?`<span class="n">${esc(w.note)}</span>`:""}</span></div>`;
 }
-$("#builtins").innerHTML = LISTS.map(L=>`<details class="wgroup"><summary><span>${esc(L.group)}</span><span class="cnt">${L.items.length}</span></summary><div class="tablewrap"><table><thead><tr><th>Svenska</th><th>English</th><th>Example / note</th></tr></thead><tbody>${L.items.map(it=>`<tr><td class="nw"><b>${esc(it[0])}</b></td><td>${esc(it[1])}</td><td>${esc(it[2]||"").replace(/\n/g,"<br>")}</td></tr>`).join("")}</tbody></table></div></details>`).join("");
+$("#builtins").innerHTML = LISTS.map(L=>`<details class="wgroup"><summary><span>${esc(L.group)}</span><span class="cnt">${L.items.length}</span></summary><div class="tablewrap"><table><thead><tr><th>Svenska</th><th>Engelska</th><th>Exempel / anteckning</th></tr></thead><tbody>${L.items.map(it=>`<tr><td class="nw"><b>${esc(it[0])}</b></td><td>${esc(it[1])}</td><td>${esc(it[2]||"").replace(/\n/g,"<br>")}</td></tr>`).join("")}</tbody></table></div></details>`).join("");
 
 /* ================= NOTES ================= */
 let editingNote=null;
@@ -1177,12 +1215,12 @@ function renderNotes(){
   if(!state.notes.length) el.innerHTML=`<p class="note">No notes yet. Tap New note to write down a rule from class, example sentences, or words to look up later. Give it a topic so related notes stay together.</p>`;
   else if(!notes.length) el.innerHTML=`<p class="note">None of your notes match “${esc(q)}”.</p>`;
   else {
-    const by=new Map(); for(const n of notes){const k=n.topic||"No topic"; if(!by.has(k)) by.set(k,[]); by.get(k).push(n)}
-    const keys=[...by.keys()].sort((a,b)=>a==="No topic"?1:b==="No topic"?-1:a.localeCompare(b,"sv"));
+    const by=new Map(); for(const n of notes){const k=n.topic||"Utan ämne"; if(!by.has(k)) by.set(k,[]); by.get(k).push(n)}
+    const keys=[...by.keys()].sort((a,b)=>a==="Utan ämne"?1:b==="Utan ämne"?-1:a.localeCompare(b,"sv"));
     el.innerHTML=keys.map(k=>`<div class="group stack"><h3>${esc(k)} <span>${by.get(k).length}</span></h3>${by.get(k).sort((a,b)=>b.u-a.u).map(n=>`
       <details class="mynote"${q?" open":""}><summary><span>${esc(n.title)}</span><span class="note">${new Date(n.u).toLocaleDateString("sv-SE")}</span></summary>
-      <p class="body">${esc(n.body)||'<span class="note">Empty note</span>'}</p>
-      <div class="row end"><button class="link" data-nedit="${n.id}">Edit</button><button class="link del" data-ndel="${n.id}">Delete</button></div></details>`).join("")}</div>`).join("");
+      <p class="body">${esc(n.body)||'<span class="note">Tom anteckning</span>'}</p>
+      <div class="row end"><button class="link" data-nedit="${n.id}">Ändra</button><button class="link del" data-ndel="${n.id}">Ta bort</button></div></details>`).join("")}</div>`).join("");
     el.querySelectorAll("[data-nedit]").forEach(b=>b.onclick=()=>openEditor(b.dataset.nedit));
     el.querySelectorAll("[data-ndel]").forEach(b=>b.onclick=()=>armDelete(b,()=>{state.notes=state.notes.filter(n=>n.id!==b.dataset.ndel);save("n");renderNotes()}));
   }
@@ -1190,7 +1228,7 @@ function renderNotes(){
 }
 function openEditor(id){
   editingNote=id||null; const n=id?state.notes.find(n=>n.id===id):null;
-  $("#neditor-title").textContent = n?"Edit note":"New note";
+  $("#neditor-title").textContent = n?"Ändra anteckning":"Ny anteckning";
   $("#n-title").value=n?n.title:""; $("#n-topic").value=n?n.topic:""; $("#n-body").value=n?n.body:"";
   $("#neditor").hidden=false; $("#n-title").focus();
 }
@@ -1228,25 +1266,25 @@ function renderSent(){
   const st=$("#sent-stage");
   if(!ss){
     const n=buildQueue(ids).length;
-    st.innerHTML=`<div class="empty"><h2>${smode==="gap"?"Fill the gap":"Put the words in order"}</h2>
+    st.innerHTML=`<div class="empty"><h2>${smode==="gap"?"Fyll i luckan":"Sätt orden i rätt ordning"}</h2>
       <p style="margin:0">${smode==="gap"?"Pick the right word for the sentence. All four choices look possible, so think about the grammar: tense, en/ett, prepositions and word order.":"Tap the words to build the sentence. Watch where the verb goes, and where inte and other satsadverb go."}</p>
-      <button class="btn" id="sstart" ${n?"":"disabled"}>${n?"Start ("+n+" sentences)":"All done for now"}</button></div>`;
+      <button class="btn" id="sstart" ${n?"":"disabled"}>${n?"Starta ("+n+" meningar)":"Klart för idag"}</button></div>`;
     if(n) $("#sstart").onclick=()=>{ss={queue:buildQueue(ids),i:0,right:0,wrong:0};prepItem();renderSent()};
     return;
   }
   if(ss.i>=ss.queue.length){
-    st.innerHTML=`<div class="card"><div class="meta"><span>Session done</span><span></span></div><p class="big">Toppen!</p>
-      <p class="gloss">${ss.right} right first time, ${ss.wrong} to practise again. The misses come back tomorrow.</p>
-      <div class="row"><button class="btn" id="sback">Back to overview</button></div></div>`;
+    st.innerHTML=`<div class="card"><div class="meta"><span>Klart!</span><span></span></div><p class="big">Toppen!</p>
+      <p class="gloss">${ss.right} rätt direkt, ${ss.wrong} att öva mer. Missarna kommer tillbaka imorgon.</p>
+      <div class="row"><button class="btn" id="sback">Tillbaka</button></div></div>`;
     $("#sback").onclick=()=>{ss=null;renderSent()}; return;
   }
-  const id=ss.queue[ss.i], meta=`<div class="meta"><span>${ss.i+1} / ${ss.queue.length}${!state.cards[id]?" · new":""}</span><span>${smode==="gap"?"fill the gap":"word order"}</span></div>`;
+  const id=ss.queue[ss.i], meta=`<div class="meta"><span>${ss.i+1} / ${ss.queue.length}${!state.cards[id]?" · ny":""}</span><span>${smode==="gap"?"fyll i luckan":"ordföljd"}</span></div>`;
   if(smode==="gap"){
     const g=GBY[id], [a,b]=g[0].split("___"), done=ss.choice!==null;
     st.innerHTML=`${bar(ss.i,ss.queue.length)}<div class="card">${meta}
       <p class="sentence">${esc(a)}<span class="gapslot">${done?esc(g[1]):"&nbsp;"}</span>${esc(b)}</p>
       <div class="opts">${ss.opts.map((o,i)=>`<button class="opt${done&&o===g[1]?" right":""}${done&&o===ss.choice&&o!==g[1]?" wrong":""}" data-opt="${i}" ${done?"disabled":""}>${esc(o)}</button>`).join("")}</div>
-      ${done?`<p class="verdict ${ss.choice===g[1]?"ok":"no"}">${ss.choice===g[1]?"Rätt!":"Not quite."}</p><p class="hint" style="font-size:.95rem">${esc(g[3])}</p><div class="row end"><button class="btn" id="snext">Next</button></div>`:""}
+      ${done?`<p class="verdict ${ss.choice===g[1]?"ok":"no"}">${ss.choice===g[1]?"Rätt!":"Inte riktigt."}</p><p class="hint" style="font-size:.95rem">${esc(g[3])}</p><div class="row end"><button class="btn" id="snext">Nästa</button></div>`:""}
     </div>`;
     if(!done) st.querySelectorAll("[data-opt]").forEach(btn=>btn.onclick=()=>{ ss.choice=ss.opts[+btn.dataset.opt]; scoreSent(id, ss.choice===g[1]); renderSent() });
     else { $("#snext").onclick=nextSent; $("#snext").focus({preventScroll:true}) }
@@ -1257,13 +1295,13 @@ function renderSent(){
     const isRight=okForms.includes(given);
     st.innerHTML=`${bar(ss.i,ss.queue.length)}<div class="card">${meta}
       <p class="gloss">${esc(o[2])}</p>
-      <div class="built" aria-label="Your sentence">${ss.picked.length?ss.picked.map((i,k)=>`<button class="tok in" data-un="${k}" ${ss.checked?"disabled":""}>${esc(k===0?cap(w[i]):w[i])}</button>`).join("")+`<span>${esc(o[1])}</span>`:`<span class="ph">Tap the words below in the right order</span>`}</div>
+      <div class="built" aria-label="Your sentence">${ss.picked.length?ss.picked.map((i,k)=>`<button class="tok in" data-un="${k}" ${ss.checked?"disabled":""}>${esc(k===0?cap(w[i]):w[i])}</button>`).join("")+`<span>${esc(o[1])}</span>`:`<span class="ph">Tryck på orden i rätt ordning</span>`}</div>
       ${ss.checked?"":`<div class="bank">${ss.bank.filter(i=>!ss.picked.includes(i)).map(i=>`<button class="tok" data-pick="${i}">${esc(w[i])}</button>`).join("")}</div>
-      <div class="row end"><button class="btn ghost small" id="sclear" type="button" ${ss.picked.length?"":"disabled"}>Clear</button><button class="btn" id="scheck" type="button" ${ss.picked.length===w.length?"":"disabled"}>Check</button></div>`}
-      ${ss.checked?`<p class="verdict ${isRight?"ok":"no"}">${isRight?"Rätt!":"Not quite. The right order is:"}</p>
+      <div class="row end"><button class="btn ghost small" id="sclear" type="button" ${ss.picked.length?"":"disabled"}>Rensa</button><button class="btn" id="scheck" type="button" ${ss.picked.length===w.length?"":"disabled"}>Rätta</button></div>`}
+      ${ss.checked?`<p class="verdict ${isRight?"ok":"no"}">${isRight?"Rätt!":"Inte riktigt. Rätt ordföljd är:"}</p>
         ${isRight?"":`<p class="frame"><b>${esc(cap(w.join(" "))+o[1])}</b></p>`}
-        ${o[3].length?`<p class="hint">Also correct: ${o[3].map(x=>esc(cap(x.join(" "))+o[1])).join(" · ")}</p>`:""}
-        <div class="row end"><button class="btn" id="snext">Next</button></div>`:""}
+        ${o[3].length?`<p class="hint">Också rätt: ${o[3].map(x=>esc(cap(x.join(" "))+o[1])).join(" · ")}</p>`:""}
+        <div class="row end"><button class="btn" id="snext">Nästa</button></div>`:""}
     </div>`;
     st.querySelectorAll("[data-pick]").forEach(b=>b.onclick=()=>{ss.picked.push(+b.dataset.pick);renderSent()});
     st.querySelectorAll("[data-un]").forEach(b=>b.onclick=()=>{ss.picked.splice(+b.dataset.un,1);renderSent()});
@@ -1283,8 +1321,16 @@ function applyTheme(t){
   if(t==="light"||t==="dark") document.documentElement.setAttribute("data-theme",t); else document.documentElement.removeAttribute("data-theme");
   document.querySelectorAll("[data-theme-btn]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.themeBtn===(t||"auto")));
   const dark = t==="dark" || (t!=="light" && matchMedia("(prefers-color-scheme: dark)").matches);
-  document.querySelector('meta[name="theme-color"]').setAttribute("content", dark?"#11151F":"#2446A8");
+  const ume = document.documentElement.getAttribute("data-palette")==="ume";
+  document.querySelector('meta[name="theme-color"]').setAttribute("content", ume ? (dark?"#1D1A1B":"#7A5A59") : (dark?"#11151F":"#2446A8"));
 }
+function applyPalette(c){
+  if(c==="ume") document.documentElement.setAttribute("data-palette","ume"); else document.documentElement.removeAttribute("data-palette");
+  document.querySelectorAll("[data-palette-btn]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.paletteBtn===(c==="ume"?"ume":"blue")));
+}
+let palette="blue"; try{ palette=localStorage.getItem(LSKEY+"-palette")||"blue" }catch(e){}
+applyPalette(palette);
+document.querySelectorAll("[data-palette-btn]").forEach(b=>b.onclick=()=>{ palette=b.dataset.paletteBtn; try{localStorage.setItem(LSKEY+"-palette",palette)}catch(e){} applyPalette(palette); applyTheme(theme) });
 let theme="auto"; try{ theme=localStorage.getItem(LSKEY+"-theme")||"auto" }catch(e){}
 applyTheme(theme);
 document.querySelectorAll("[data-theme-btn]").forEach(b=>b.onclick=()=>{ theme=b.dataset.themeBtn; try{localStorage.setItem(LSKEY+"-theme",theme)}catch(e){} applyTheme(theme) });
