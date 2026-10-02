@@ -1,0 +1,839 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>LärSig</title>
+<meta name="theme-color" content="#2446A8">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one narrow study column with a bottom-friendly tab bar; practice happens on a ruled index card, grammar is shown as colour-coded word slots. */
+:root{
+  --paper:#EEF1F5; --card:#FFFFFF; --ink:#18223A; --muted:#5B6785;
+  --rule:#D3DEEE; --margin:#D9534F; --accent:#2446A8; --accent-ink:#FFFFFF;
+  --good:#1F7A4D; --bad:#B53A2E; --chip:#E1E7F1; --line:#D5DCE8;
+  --sF:#E7E0FA; --sFi:#4B2E9E; --sV:#FCE6BF; --sVi:#7A4A00; --sS:#D6E6FB; --sSi:#16457F;
+  --sA:#D3F0E0; --sAi:#165C38; --sK:#F8DCE6; --sKi:#8A1E47; --sR:#E6E9EF; --sRi:#3B4560;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#11151F; --card:#1B2130; --ink:#E6EBF5; --muted:#9AA6C2;
+  --rule:#273145; --margin:#C8645E; --accent:#8FA8F5; --accent-ink:#0E1424;
+  --good:#5CC48F; --bad:#EE8577; --chip:#242C3E; --line:#2B3448;
+  --sF:#33295A; --sFi:#D3C6FF; --sV:#4A3713; --sVi:#FFD48A; --sS:#1C3354; --sSi:#B4D3FF;
+  --sA:#173D2A; --sAi:#9FE3BE; --sK:#4A1F30; --sKi:#FFB8D0; --sR:#2A3142; --sRi:#C9D1E3; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#11151F; --card:#1B2130; --ink:#E6EBF5; --muted:#9AA6C2;
+  --rule:#273145; --margin:#C8645E; --accent:#8FA8F5; --accent-ink:#0E1424;
+  --good:#5CC48F; --bad:#EE8577; --chip:#242C3E; --line:#2B3448;
+  --sF:#33295A; --sFi:#D3C6FF; --sV:#4A3713; --sVi:#FFD48A; --sS:#1C3354; --sSi:#B4D3FF;
+  --sA:#173D2A; --sAi:#9FE3BE; --sK:#4A1F30; --sKi:#FFB8D0; --sR:#2A3142; --sRi:#C9D1E3; color-scheme:dark}
+
+*{box-sizing:border-box}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+[hidden]{display:none!important}
+body{margin:0;-webkit-text-size-adjust:100%;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:1rem;line-height:1.5}
+.wrap{max-width:42rem;margin:0 auto;padding-inline:16px;padding-block:1.25rem 3rem;display:flex;flex-direction:column;gap:1.1rem}
+header{display:flex;flex-direction:column;gap:.2rem}
+h1{font-family:var(--display);font-weight:700;font-size:1.9rem;line-height:1.1;margin:0;letter-spacing:-.01em}
+.sync{font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+h2{font-family:var(--display);font-size:1.2rem;margin:0;text-wrap:balance}
+h3{font-family:var(--display);font-size:1rem;margin:0}
+
+nav{display:grid;grid-template-columns:repeat(4,1fr);gap:.2rem;background:var(--chip);padding:.25rem;border-radius:.6rem;position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+nav button{border:0;background:transparent;color:var(--muted);font:inherit;font-size:.92rem;font-weight:700;padding:.55rem .25rem;border-radius:.45rem;cursor:pointer}
+nav button[aria-selected="true"]{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.panel{display:flex;flex-direction:column;gap:1rem}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem}
+.stat{display:flex;flex-direction:column;gap:.1rem;padding:.5rem .7rem;border-top:2px solid var(--line)}
+.stat b{font-family:var(--mono);font-weight:500;font-size:1.35rem;font-variant-numeric:tabular-nums}
+.stat span{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.stat.due b{color:var(--accent)}
+
+.btn{border:0;border-radius:.5rem;font:inherit;font-weight:700;padding:.65rem 1.05rem;cursor:pointer;background:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn.small{padding:.35rem .7rem;font-size:.85rem}
+.btn.bad{background:var(--bad);color:var(--card)}
+.btn.good{background:var(--good);color:var(--card)}
+.btn.warn{background:transparent;color:var(--bad);box-shadow:inset 0 0 0 1.5px var(--bad)}
+.btn:disabled{opacity:.45;cursor:default}
+.row{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+.row.end{justify-content:flex-end}
+.grow{flex:1}
+.note{font-size:.88rem;color:var(--muted);margin:0}
+
+/* index card */
+.card{position:relative;background:var(--card);border-radius:.35rem;box-shadow:0 1px 0 var(--line),0 10px 24px -14px rgba(24,34,58,.35);
+  padding:1.2rem 1.2rem 1.2rem 2.9rem;min-height:14rem;display:flex;flex-direction:column;gap:.85rem;
+  background-image:repeating-linear-gradient(to bottom,transparent 0,transparent calc(1.9rem - 1px),var(--rule) calc(1.9rem - 1px),var(--rule) 1.9rem);background-position:0 3.1rem}
+.card::before{content:"";position:absolute;top:0;bottom:0;left:2rem;width:1.5px;background:var(--margin);opacity:.7}
+.card .meta{display:flex;justify-content:space-between;gap:.5rem;font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+.big{font-family:var(--display);font-weight:700;font-size:clamp(1.8rem,7vw,2.5rem);line-height:1.1;margin:0;overflow-wrap:anywhere}
+.gloss{color:var(--muted);margin:0;font-size:1.05rem}
+.frame{font-size:1.12rem;margin:0}
+.frame .blank{display:inline-block;min-width:4.5rem;border-bottom:2px solid var(--accent);margin-inline:.2rem}
+.formname{display:inline-block;background:var(--chip);border-radius:.3rem;padding:.1rem .45rem;font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.answer{display:flex;gap:.5rem;flex-wrap:wrap}
+.answer input{flex:1;min-width:0;font:inherit;font-size:1.2rem;padding:.55rem .75rem;border-radius:.45rem;border:1.5px solid var(--line);background:var(--paper);color:var(--ink)}
+.keys{display:flex;gap:.35rem}
+.keys button{font:inherit;font-size:1.1rem;font-weight:700;width:2.6rem;height:2.6rem;border-radius:.4rem;border:1.5px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.verdict{margin:0;font-weight:700}
+.verdict.ok{color:var(--good)} .verdict.no{color:var(--bad)}
+.forms{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.25rem .75rem;font-size:.95rem}
+.forms div{display:flex;flex-direction:column;min-width:0}
+.forms small{font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.forms strong{overflow-wrap:anywhere}
+@media (max-width:30rem){.forms{grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem .75rem}}
+.forms .hit{color:var(--accent)}
+.hint{font-size:.85rem;color:var(--muted);margin:0}
+.backnote{margin:0;white-space:pre-wrap;font-size:.95rem;background:var(--paper);border-radius:.4rem;padding:.5rem .7rem}
+.progress{height:4px;background:var(--chip);border-radius:2px;overflow:hidden}
+.progress i{display:block;height:100%;background:var(--accent);transition:width .25s}
+.empty{padding:1.3rem;border:1.5px dashed var(--line);border-radius:.5rem;color:var(--muted);display:flex;flex-direction:column;gap:.7rem;align-items:flex-start}
+.empty h2{color:var(--ink)}
+
+/* chips + filters */
+.chips{display:flex;gap:.35rem;flex-wrap:wrap}
+.chips button{border:0;font:inherit;font-size:.85rem;padding:.3rem .7rem;border-radius:999px;background:var(--chip);color:var(--muted);cursor:pointer}
+.chips button[aria-pressed="true"]{background:var(--ink);color:var(--paper);font-weight:700}
+.seg{display:inline-flex;background:var(--chip);border-radius:.45rem;padding:.2rem}
+.seg button{border:0;background:transparent;font:inherit;font-size:.85rem;padding:.3rem .7rem;border-radius:.35rem;color:var(--muted);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--card);color:var(--ink);font-weight:700}
+.tag{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:.05rem .4rem;border-radius:.3rem;background:var(--chip);color:var(--muted);white-space:nowrap}
+label.check{display:inline-flex;gap:.4rem;align-items:center;font-size:.88rem;color:var(--muted);cursor:pointer}
+
+/* forms */
+input,select,textarea{font:inherit;padding:.5rem .65rem;border-radius:.45rem;border:1.5px solid var(--line);background:var(--card);color:var(--ink);min-width:0;width:100%}
+textarea{min-height:7rem;resize:vertical}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.fgrid .full{grid-column:1/-1}
+@media (max-width:30rem){.fgrid{grid-template-columns:1fr}}
+.fbox{display:flex;flex-direction:column;gap:.6rem;background:var(--card);border-radius:.5rem;padding:1rem;box-shadow:0 1px 0 var(--line)}
+details{border-top:1px solid var(--line);padding-top:.7rem}
+summary{cursor:pointer;font-weight:700}
+details > *:not(summary){margin-top:.6rem}
+
+/* word list */
+.group{display:flex;flex-direction:column}
+.group h3{display:flex;justify-content:space-between;gap:.5rem;padding:.6rem 0 .3rem;border-bottom:2px solid var(--ink)}
+.group h3 span{font-family:var(--mono);font-weight:400;font-size:.75rem;color:var(--muted)}
+.item{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:.3rem .75rem;align-items:baseline;padding:.55rem 0;border-bottom:1px solid var(--line)}
+.item .sv{font-weight:700;overflow-wrap:anywhere}
+.item .en{color:var(--muted);overflow-wrap:anywhere}
+.item .acts{display:flex;gap:.25rem;align-items:center}
+.item .sub{grid-column:1/-1;display:flex;gap:.4rem;flex-wrap:wrap;align-items:center;font-size:.85rem;color:var(--muted)}
+.item .sub .n{white-space:pre-wrap;flex-basis:100%}
+.item.editing{display:block}
+.link{border:0;background:transparent;color:var(--accent);font:inherit;font-size:.85rem;font-weight:700;cursor:pointer;padding:.15rem .35rem;border-radius:.3rem}
+.link.del{color:var(--muted)}
+.link.del.armed{color:var(--card);background:var(--bad)}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{text-align:left;padding:.4rem .5rem;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700;white-space:nowrap}
+td.nw{white-space:nowrap}
+td.g{font-family:var(--mono);color:var(--muted)}
+
+/* grammar */
+.legend{display:flex;flex-wrap:wrap;gap:.35rem}
+.sent{display:flex;flex-direction:column;gap:.3rem;padding:.6rem 0;border-bottom:1px solid var(--line)}
+.slots{display:flex;flex-wrap:wrap;gap:.3rem;align-items:flex-start}
+.w{display:inline-flex;flex-direction:column;align-items:flex-start;padding:.25rem .5rem .2rem;border-radius:.35rem;line-height:1.2}
+.w b{font-size:1.05rem}
+.w small{font-size:.62rem;text-transform:uppercase;letter-spacing:.07em;opacity:.85}
+.s-F{background:var(--sF);color:var(--sFi)} .s-V,.s-V2{background:var(--sV);color:var(--sVi)} .s-V2 b{font-weight:400}
+.s-P{background:transparent;color:var(--sVi);box-shadow:inset 0 0 0 1.5px var(--sVi)}
+.s-S{background:var(--sS);color:var(--sSi)} .s-A{background:var(--sA);color:var(--sAi)}
+.s-K{background:var(--sK);color:var(--sKi)} .s-R{background:var(--sR);color:var(--sRi)}
+.s-x{background:transparent;color:var(--muted);box-shadow:inset 0 0 0 1.5px var(--line)}
+.sent .en{font-size:.88rem;color:var(--muted)}
+.rule{margin:0;max-width:65ch}
+.schema{font-family:var(--mono);font-size:.8rem;color:var(--muted);background:var(--chip);padding:.45rem .6rem;border-radius:.35rem;overflow-x:auto;white-space:nowrap}
+.tips{margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:.3rem;max-width:65ch}
+.gpage{background:var(--card);border-radius:.5rem;border:0;padding:.85rem 1rem;box-shadow:0 1px 0 var(--line)}
+.gpage summary{display:flex;justify-content:space-between;gap:.5rem;align-items:baseline}
+.gpage summary .tag{flex-shrink:0}
+.gpage > div{display:flex;flex-direction:column;gap:.7rem}
+.mynote{background:var(--card);border-radius:.5rem;padding:.85rem 1rem;box-shadow:0 1px 0 var(--line);border:0}
+.mynote summary{display:flex;justify-content:space-between;gap:.5rem}
+.mynote .body{white-space:pre-wrap;margin:0;max-width:65ch;overflow-wrap:anywhere}
+.stack{display:flex;flex-direction:column;gap:.5rem}
+footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);padding-top:.8rem}
+@media (prefers-reduced-motion:reduce){.progress i{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>LärSig</h1>
+    <div class="row"><span class="sync grow" id="sync">Loading…</span><button class="link" id="synctoggle" type="button" aria-expanded="false" aria-controls="syncbox">Sync &amp; backup</button></div>
+  </header>
+
+  <section class="fbox" id="syncbox" hidden>
+    <h2>Sync with GitHub</h2>
+    <div id="sync-off" class="stack">
+      <p class="note">Paste your GitHub access key (it starts with <b>ghp_</b>) to keep your words, notes and progress the same on your Mac and phone. They're saved in a private gist in your account. You do this once on each device.</p>
+      <div class="row"><input id="gh-token" type="password" placeholder="ghp_…" aria-label="GitHub access key" autocomplete="off" style="flex:1;width:auto"><button class="btn" id="gh-connect" type="button">Connect</button></div>
+    </div>
+    <div id="sync-on" class="stack" hidden>
+      <p class="note" id="gh-info"></p>
+      <div class="row"><button class="btn small" id="gh-now" type="button">Sync now</button><button class="btn ghost small" id="gh-off" type="button">Disconnect this device</button></div>
+    </div>
+    <h2>Backup</h2>
+    <p class="note">Save everything as a file, or load one back in. Loading a backup adds anything missing and never deletes.</p>
+    <div class="row"><button class="btn ghost small" id="exportbtn" type="button">Export backup</button><label class="btn ghost small" for="importfile" style="cursor:pointer">Import backup</label><input id="importfile" type="file" accept=".json,application/json" hidden></div>
+    <p class="note" id="backupmsg" aria-live="polite"></p>
+  </section>
+
+  <nav role="tablist" aria-label="Sections">
+    <button role="tab" id="tab-cards" aria-selected="true" data-tab="cards">Cards</button>
+    <button role="tab" id="tab-forms" aria-selected="false" data-tab="forms">Verbs</button>
+    <button role="tab" id="tab-words" aria-selected="false" data-tab="words">Words</button>
+    <button role="tab" id="tab-notes" aria-selected="false" data-tab="notes">Notes</button>
+  </nav>
+
+  <!-- FLASHCARDS -->
+  <section class="panel" id="panel-cards">
+    <div class="stats" id="stats-cards"></div>
+    <div class="stack">
+      <div class="chips" id="typechips" role="group" aria-label="Word type"></div>
+      <div class="row">
+        <select id="groupsel" aria-label="Group" style="width:auto;max-width:100%"></select>
+        <label class="check"><input type="checkbox" id="onlymine" style="width:auto"> Only my words</label>
+        <span class="grow"></span>
+        <div class="seg" role="group" aria-label="Card direction">
+          <button id="dir-sv" aria-pressed="true" data-dir="sv">SV → EN</button>
+          <button id="dir-en" aria-pressed="false" data-dir="en">EN → SV</button>
+        </div>
+      </div>
+    </div>
+    <div id="cards-stage"></div>
+  </section>
+
+  <!-- VERB FORMS -->
+  <section class="panel" id="panel-forms" hidden>
+    <div class="stats" id="stats-forms"></div>
+    <div id="forms-stage"></div>
+    <details>
+      <summary>All verbs (<span id="verbcount"></span>)</summary>
+      <p class="note">Grupp 1: -ar, -ade. Grupp 2: -er, -de or -te. Grupp 3: short verbs, -dde. Grupp 4: strong or irregular, learn by heart.</p>
+      <input id="verbsearch" type="search" placeholder="Search, e.g. skriva or write" aria-label="Search verbs">
+      <div class="tablewrap"><table><thead><tr><th>Infinitiv</th><th>Presens</th><th>Preteritum</th><th>Supinum</th><th>English</th><th>Grupp</th></tr></thead><tbody id="verbtable"></tbody></table></div>
+    </details>
+  </section>
+
+  <!-- MY WORDS -->
+  <section class="panel" id="panel-words" hidden>
+    <form class="fbox" id="addform" autocomplete="off">
+      <h2>Add a word</h2>
+      <div class="fgrid">
+        <input id="add-sv" placeholder="Svenska, e.g. glad" aria-label="Swedish" required>
+        <input id="add-en" placeholder="English, e.g. happy" aria-label="English" required>
+        <select id="add-type" aria-label="Word type"></select>
+        <input id="add-group" list="grouplist" placeholder="Group, e.g. Descriptive words" aria-label="Group">
+        <textarea id="add-note" class="full" style="min-height:3.5rem" placeholder="Note or example (optional), e.g. Jag är glad idag." aria-label="Note"></textarea>
+      </div>
+      <div class="row end"><button class="btn" type="submit">Add word</button></div>
+    </form>
+    <datalist id="grouplist"></datalist>
+
+    <details>
+      <summary>Paste a whole list</summary>
+      <p class="note">One word per line: <b>svenska = english</b>. You can add a note after a second =, like <b>glad = happy = Jag är glad.</b> Tabs or semicolons work too.</p>
+      <div class="fgrid">
+        <select id="bulk-type" aria-label="Word type for the list"></select>
+        <input id="bulk-group" list="grouplist" placeholder="Group for the whole list" aria-label="Group for the list">
+      </div>
+      <textarea id="bulk" aria-label="Word list" placeholder="glad = happy&#10;trött = tired&#10;arg = angry = Varför är du arg?"></textarea>
+      <div class="row end"><span class="note grow" id="bulkmsg"></span><button class="btn" id="bulkadd" type="button">Add list</button></div>
+    </details>
+
+    <div class="row">
+      <h2 class="grow">My words (<span id="wordcount">0</span>)</h2>
+      <div class="seg" role="group" aria-label="Sort words by">
+        <button id="by-group" aria-pressed="true" data-by="group">By group</button>
+        <button id="by-type" aria-pressed="false" data-by="type">By type</button>
+      </div>
+    </div>
+    <input id="wsearch" type="search" placeholder="Search my words" aria-label="Search my words">
+    <div id="wordlist" class="stack"></div>
+
+    <details>
+      <summary>Built-in partikelverb (<span id="pcount"></span>)</summary>
+      <p class="note">The particle carries the stress: tycka OM, komma IHÅG. These are already in your flashcards.</p>
+      <div class="tablewrap"><table><thead><tr><th>Partikelverb</th><th>English</th><th>Example</th></tr></thead><tbody id="ptable"></tbody></table></div>
+    </details>
+    <details>
+      <summary>Built-in adverbs (<span id="acount"></span>)</summary>
+      <p class="note">Ones marked <span class="tag">satsadverb</span> follow the BIFF rule. See Notes → Adverbs.</p>
+      <div class="tablewrap"><table><thead><tr><th>Adverb</th><th>English</th><th>Example</th></tr></thead><tbody id="atable"></tbody></table></div>
+    </details>
+  </section>
+
+  <!-- NOTES -->
+  <section class="panel" id="panel-notes" hidden>
+    <div class="row">
+      <input id="nsearch" class="grow" type="search" placeholder="Search notes and grammar" aria-label="Search notes" style="width:auto">
+      <button class="btn" id="newnote" type="button">New note</button>
+    </div>
+    <form class="fbox" id="neditor" hidden autocomplete="off">
+      <h2 id="neditor-title">New note</h2>
+      <div class="fgrid">
+        <input id="n-title" placeholder="Title, e.g. Prepositions for time" aria-label="Title" required>
+        <input id="n-topic" list="topiclist" placeholder="Topic, e.g. Grammar" aria-label="Topic">
+        <textarea id="n-body" class="full" style="min-height:10rem" placeholder="Write anything: a rule from class, example sentences, words to look up later." aria-label="Note text"></textarea>
+      </div>
+      <div class="row end"><button class="btn ghost" type="button" id="ncancel">Cancel</button><button class="btn" type="submit">Save note</button></div>
+    </form>
+    <datalist id="topiclist"></datalist>
+
+    <h2>My notes</h2>
+    <div id="mynotes" class="stack"></div>
+
+    <h2>Sentence structure guide</h2>
+    <div class="legend" id="legend"></div>
+    <div id="guide" class="stack"></div>
+  </section>
+
+  <footer>On your phone: open this page in Chrome, tap ⋮ and choose “Install app” or “Add to home screen”. It then opens full screen and works offline.</footer>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const VERBS = [
+ ["vara","är","var","varit","to be",4],["ha","har","hade","haft","to have",4],["göra","gör","gjorde","gjort","to do, make",4],
+ ["gå","går","gick","gått","to go, walk",4],["komma","kommer","kom","kommit","to come",4],["säga","säger","sa/sade","sagt","to say",4],
+ ["se","ser","såg","sett","to see",4],["ta","tar","tog","tagit","to take",4],["få","får","fick","fått","to get, be allowed",4],
+ ["ge","ger","gav","gett/givit","to give",4],["kunna","kan","kunde","kunnat","can, to be able",4],["vilja","vill","ville","velat","to want",4],
+ ["veta","vet","visste","vetat","to know (a fact)",4],["bli","blir","blev","blivit","to become",4],["tala","talar","talade","talat","to speak",1],
+ ["prata","pratar","pratade","pratat","to talk",1],["arbeta","arbetar","arbetade","arbetat","to work",1],["bo","bor","bodde","bott","to live (somewhere)",3],
+ ["äta","äter","åt","ätit","to eat",4],["dricka","dricker","drack","druckit","to drink",4],["sova","sover","sov","sovit","to sleep",4],
+ ["skriva","skriver","skrev","skrivit","to write",4],["läsa","läser","läste","läst","to read",2],["köpa","köper","köpte","köpt","to buy",2],
+ ["tycka","tycker","tyckte","tyckt","to think (opinion)",2],["tänka","tänker","tänkte","tänkt","to think (reflect)",2],["tro","tror","trodde","trott","to believe",3],
+ ["förstå","förstår","förstod","förstått","to understand",4],["heta","heter","hette","hetat","to be called",4],["behöva","behöver","behövde","behövt","to need",2],
+ ["börja","börjar","började","börjat","to start",1],["fråga","frågar","frågade","frågat","to ask",1],["svara","svarar","svarade","svarat","to answer",1],
+ ["titta","tittar","tittade","tittat","to look",1],["lyssna","lyssnar","lyssnade","lyssnat","to listen",1],["höra","hör","hörde","hört","to hear",2],
+ ["ringa","ringer","ringde","ringt","to call, ring",2],["träffa","träffar","träffade","träffat","to meet",1],["vänta","väntar","väntade","väntat","to wait",1],
+ ["hitta","hittar","hittade","hittat","to find",1],["använda","använder","använde","använt","to use",2],["hjälpa","hjälper","hjälpte","hjälpt","to help",2],
+ ["glömma","glömmer","glömde","glömt","to forget",2],["känna","känner","kände","känt","to feel, know (a person)",2],["lära","lär","lärde","lärt","to teach (lära sig: to learn)",2],
+ ["sitta","sitter","satt","suttit","to sit",4],["stå","står","stod","stått","to stand",4],["ligga","ligger","låg","legat","to lie (be lying)",4],
+ ["lägga","lägger","la/lade","lagt","to put, lay",4],["springa","springer","sprang","sprungit","to run",4],["köra","kör","körde","kört","to drive",2],
+ ["resa","reser","reste","rest","to travel",2],["flyga","flyger","flög","flugit","to fly",4],["handla","handlar","handlade","handlat","to shop",1],
+ ["betala","betalar","betalade","betalat","to pay",1],["kosta","kostar","kostade","kostat","to cost",1],["laga","lagar","lagade","lagat","to cook, fix",1],
+ ["städa","städar","städade","städat","to clean",1],["öppna","öppnar","öppnade","öppnat","to open",1],["stänga","stänger","stängde","stängt","to close",2],
+ ["skicka","skickar","skickade","skickat","to send",1],["visa","visar","visade","visat","to show",1],["spela","spelar","spelade","spelat","to play",1],
+ ["träna","tränar","tränade","tränat","to train, work out",1],["cykla","cyklar","cyklade","cyklat","to cycle",1],["vakna","vaknar","vaknade","vaknat","to wake up",1],
+ ["somna","somnar","somnade","somnat","to fall asleep",1],["må","mår","mådde","mått","to feel (health)",3],["leva","lever","levde","levt","to live, be alive",2],
+ ["hinna","hinner","hann","hunnit","to have time, manage",4],["hålla","håller","höll","hållit","to hold",4],["sälja","säljer","sålde","sålt","to sell",4],
+ ["välja","väljer","valde","valt","to choose",4],["försöka","försöker","försökte","försökt","to try",2],["bestämma","bestämmer","bestämde","bestämt","to decide",2],
+ ["bygga","bygger","byggde","byggt","to build",2],["följa","följer","följde","följt","to follow",2],["sjunga","sjunger","sjöng","sjungit","to sing",4],
+ ["bjuda","bjuder","bjöd","bjudit","to invite, treat",4],["finnas","finns","fanns","funnits","to exist, there is",4],["vinna","vinner","vann","vunnit","to win",4],
+ ["bära","bär","bar","burit","to carry",4],["dra","drar","drog","dragit","to pull",4],["slå","slår","slog","slagit","to hit",4],
+ ["låta","låter","lät","låtit","to sound, let",4],["gråta","gråter","grät","gråtit","to cry",4],["dö","dör","dog","dött","to die",4],["frysa","fryser","frös","frusit","to freeze, be cold",4]
+];
+const PVERBS = [
+ ["tycka om","to like","Jag tycker om kaffe."],["hålla med","to agree","Jag håller med dig."],["komma ihåg","to remember","Kommer du ihåg hennes namn?"],
+ ["ta hand om","to take care of","Hon tar hand om barnen."],["ge upp","to give up","Ge inte upp!"],["stänga av","to turn off","Stäng av datorn."],
+ ["sätta på","to turn on","Kan du sätta på radion?"],["hälsa på","to visit","Vi hälsar på mormor på söndag."],["ta med","to bring","Ta med ett paraply."],
+ ["slänga bort","to throw away","Jag slängde bort kvittot."],["gå ut","to go out","Ska vi gå ut ikväll?"],["komma tillbaka","to come back","Jag kommer tillbaka klockan fem."],
+ ["flytta in","to move in","Vi flyttade in i maj."],["fylla i","to fill in","Fyll i blanketten."],["skriva upp","to write down","Skriv upp ordet."],
+ ["ta på sig","to put on (clothes)","Hon tar på sig jackan."],["ta av sig","to take off (clothes)","Ta av dig skorna."],["hålla på","to be busy doing","Vad håller du på med?"],
+ ["känna igen","to recognise","Jag kände inte igen honom."],["se ut","to look (appearance)","Du ser trött ut."],["se fram emot","to look forward to","Jag ser fram emot helgen."],
+ ["ta reda på","to find out","Jag ska ta reda på det."],["lägga till","to add","Lägg till ett ord."],["ta bort","to remove","Ta bort ditt namn."],
+ ["stå ut med","to put up with","Jag står inte ut med bullret."],["gå sönder","to break (by itself)","Telefonen gick sönder."],["bli av med","to get rid of","Jag vill bli av med soffan."],
+ ["tycka synd om","to feel sorry for","Jag tycker synd om honom."],["komma överens","to get along","Vi kommer bra överens."],["gå över","to pass, go away (pain)","Huvudvärken gick över."],
+ ["ringa upp","to call back","Jag ringer upp dig sen."],["stiga upp","to get up (out of bed)","Jag stiger upp klockan sju."]
+];
+const ADVS = [ // sv, en, example, satsadverb?
+ ["inte","not","Jag äter inte kött.",1],["aldrig","never","Hon röker aldrig.",1],["alltid","always","Vi äter alltid frukost.",1],["ofta","often","Jag dricker ofta te.",1],
+ ["ibland","sometimes","Ibland tar jag bussen.",1],["sällan","rarely","Han är sällan sen.",1],["redan","already","Jag har redan ätit.",1],["fortfarande","still","Hon bor fortfarande i Lund.",1],
+ ["kanske","maybe","Vi kommer kanske imorgon.",1],["bara","only, just","Jag vill bara sova.",1],["också","also, too","Jag talar också spanska.",1],["gärna","gladly, I'd like to","Jag tar gärna en kaffe.",1],
+ ["verkligen","really","Det var verkligen gott.",1],["nästan","almost","Jag är nästan klar.",1],["säkert","surely, probably","Hon kommer säkert.",1],["tyvärr","unfortunately","Jag kan tyvärr inte komma.",1],
+ ["egentligen","actually, really","Jag vill egentligen inte.",1],["faktiskt","actually, in fact","Det är faktiskt sant.",1],["ännu inte","not yet","Jag har inte ätit ännu.",0],
+ ["snart","soon","Bussen kommer snart.",0],["sedan / sen","then, later","Vi äter och sen går vi.",0],["nu","now","Jag måste gå nu.",0],["då","then (at that time)","Då bodde jag i Kanada.",0],
+ ["igen","again","Kan du säga det igen?",0],["tidigt","early","Jag vaknar tidigt.",0],["sent","late","Det är sent.",0],["genast","immediately","Kom hit genast!",0],
+ ["ganska","quite, fairly","Det är ganska kallt.",0],["mycket","very, a lot","Tack så mycket!",0],["lite","a little","Jag talar lite svenska.",0],["ungefär","about, roughly","Det tar ungefär en timme.",0],
+ ["tillsammans","together","Vi lagar mat tillsammans.",0],["hem","(to) home, motion","Jag går hem.",0],["hemma","at home, place","Jag är hemma.",0],
+ ["ut","out, motion","Hon går ut.",0],["ute","outside, place","Barnen leker ute.",0],["in","in, motion","Kom in!",0],["inne","inside, place","Vi är inne.",0],
+ ["här","here","Jag bor här.",0],["där","there","Bor du där?",0],["dit","(to) there, motion","Hur kommer jag dit?",0],["hit","(to) here, motion","Kom hit!",0],["dessutom","besides, also","Dessutom är det billigt.",0],["därför","therefore, that's why","Därför kom jag inte.",0]
+];
+const TYPES = [["verb","Verb"],["partikelverb","Partikelverb"],["adverb","Adverb"],["noun","Noun"],["adjective","Adjective"],["phrase","Phrase"],["other","Other"]];
+const TYPE_LABEL = Object.fromEntries(TYPES);
+const VBY = Object.fromEntries(VERBS.map(v=>[v[0],v]));
+const PBY = Object.fromEntries(PVERBS.map(v=>[v[0],v]));
+const ABY = Object.fromEntries(ADVS.map(v=>[v[0],v]));
+const FORMS = {pres:{i:1,label:"presens",frame:["Nu ","jag."]},past:{i:2,label:"preteritum",frame:["Igår ","jag."]},sup:{i:3,label:"supinum",frame:["Jag har ",""]}};
+const DAY = 864e5, INT = [0,1,2,4,8,16,35], NEW_PER_SESSION = 9, SESSION_MAX = 30;
+
+/* slot types for the grammar guide */
+const SLOT = {F:"fundament",V:"verb",S:"subjekt",A:"satsadverb",V2:"verb 2",P:"partikel",K:"subjunktion",R:"rest",x:""};
+const GUIDE = [
+ {id:"huvudsats",title:"Main clause: straight word order",tag:"rak ordföljd",
+  rule:"The finite verb (the one that shows tense: <b>är, har, äter, ska</b>) is always <b>word number two</b>. This is the V2 rule. In straight word order the subject comes first.",
+  schema:"Fundament · Verb · (Subjekt) · Satsadverb · Verb 2 · Resten",
+  rows:[ [[["F","Jag"],["V","äter"],["A","inte"],["R","kött."]],"I don't eat meat."],
+         [[["F","Hon"],["V","har"],["A","aldrig"],["V2","varit"],["R","i Kiruna."]],"She has never been to Kiruna."],
+         [[["F","Vi"],["V","ska"],["A","kanske"],["V2","flytta"],["R","till Lund."]],"We might move to Lund."] ],
+  tips:["Verb 2 is the second verb in the sentence (infinitive or supinum). It comes after the adverb: har <b>aldrig</b> varit."]},
+ {id:"omvand",title:"Main clause: inverted word order",tag:"omvänd ordföljd",
+  rule:"When something other than the subject comes first (a time, a place, an object, a whole bisats), the verb <b>still stays in position two</b> and the subject moves to after the verb.",
+  schema:"Fundament · Verb · Subjekt · Satsadverb · Verb 2 · Resten",
+  rows:[ [[["F","Idag"],["V","äter"],["S","jag"],["A","inte"],["R","kött."]],"Today I'm not eating meat."],
+         [[["F","På söndag"],["V","ska"],["S","vi"],["A","kanske"],["V2","hälsa"],["P","på"],["R","mormor."]],"On Sunday we might visit grandma."],
+         [[["F","I Malmö"],["V","har"],["S","jag"],["V2","bott"],["R","i nio år."]],"I have lived in Malmö for nine years."],
+         [[["F","När jag kom hem"],["V","åt"],["S","jag"],["R","middag."]],"When I got home, I ate dinner. A whole bisats can be the fundament."] ],
+  tips:["Common mistake: <i>Idag jag äter…</i> The verb has to come before <b>jag</b>: <b>Idag äter jag…</b>"]},
+ {id:"bisats",title:"Subordinate clause and the BIFF rule",tag:"bisats",
+  rule:"In a bisats the adverb goes <b>before</b> the finite verb. BIFF = <b>B</b>isats: <b>I</b>nte <b>F</b>öre <b>F</b>inita verbet. There is never inversion inside a bisats: the subject always comes right after the subjunktion.",
+  schema:"Subjunktion · Subjekt · Satsadverb · Verb · Verb 2 · Resten",
+  rows:[ [[["x","Jag säger"],["K","att"],["S","jag"],["A","inte"],["V","äter"],["R","kött."]],"I say that I don't eat meat."],
+         [[["x","Jag vet"],["K","att"],["S","hon"],["A","aldrig"],["V","har"],["V2","varit"],["R","i Kiruna."]],"I know that she has never been to Kiruna."],
+         [[["x","Han kom inte"],["K","eftersom"],["S","han"],["A","inte"],["V","mådde"],["R","bra."]],"He didn't come because he wasn't feeling well."],
+         [[["x","Ring mig"],["K","om"],["S","du"],["A","inte"],["V","hittar"],["R","dit."]],"Call me if you can't find the way."] ],
+  tips:["Words that start a bisats: <b>att, eftersom, när, om, fast, medan, innan, efter att, så att, därför att, som</b>, and question words in indirect questions (var, vad, när, hur).",
+        "Compare: Jag äter <b>inte</b> kött. → …att jag <b>inte</b> äter kött."]},
+ {id:"fragor",title:"Questions",tag:"frågor",
+  rule:"<b>Yes/no questions</b> start with the verb. <b>Question word questions</b> start with the question word, then the verb (still position two). In an indirect question (inside a bisats) there is no inversion.",
+  schema:"(Frågeord) · Verb · Subjekt · Satsadverb · Verb 2 · Resten",
+  rows:[ [[["V","Äter"],["S","du"],["A","inte"],["R","kött?"]],"Don't you eat meat?"],
+         [[["V","Har"],["S","du"],["A","redan"],["V2","ätit?"]],"Have you already eaten?"],
+         [[["F","Var"],["V","bor"],["S","du?"]],"Where do you live?"],
+         [[["F","Vad"],["V","har"],["S","du"],["V2","gjort"],["R","idag?"]],"What have you done today?"],
+         [[["x","Jag undrar"],["K","var"],["S","du"],["V","bor."]],"I wonder where you live. (bisats, so no inversion)"] ],
+  tips:["Question words: vad, vem, var, vart, när, hur, varför, vilken/vilket/vilka, hur mycket, hur många."]},
+ {id:"adverb",title:"Where adverbs go",tag:"adverb",
+  rule:"<b>Satsadverb</b> (inte, aldrig, alltid, ofta, ibland, sällan, redan, fortfarande, kanske, bara, också, gärna, verkligen, nästan, tyvärr…) go right after the finite verb in a main clause, and before it in a bisats. Adverbs that say <b>how, where and when</b> usually go at the end, in that order: sätt, plats, tid.",
+  schema:"…Verb · Satsadverb · … · Sätt · Plats · Tid",
+  rows:[ [[["F","Jag"],["V","dricker"],["A","ofta"],["R","kaffe."]],"I often drink coffee."],
+         [[["x","Hon säger"],["K","att"],["S","hon"],["A","ofta"],["V","dricker"],["R","kaffe."]],"She says that she often drinks coffee."],
+         [[["F","Han"],["V","cyklade"],["R","snabbt","sätt"],["R","hem","plats"],["R","igår.","tid"]],"He cycled home fast yesterday."] ],
+  tips:["With a short pronoun object, the pronoun can come before inte: <b>Jag ser honom inte.</b> But with a noun: <b>Jag ser inte bilen.</b>"]},
+ {id:"partikel",title:"Partikelverb",tag:"partikelverb",
+  rule:"A partikelverb is a verb plus a small word (the particle) that changes the meaning. The <b>particle is stressed</b>: tycka OM, komma IHÅG. The particle comes after the satsadverb and verb 2, right before the rest.",
+  schema:"…Verb · Satsadverb · Verb 2 · Partikel · Resten",
+  rows:[ [[["F","Jag"],["V","tycker"],["A","inte"],["P","om"],["R","fisk."]],"I don't like fish."],
+         [[["V","Kommer"],["S","du"],["P","ihåg"],["R","hennes namn?"]],"Do you remember her name?"],
+         [[["F","Hon"],["V","har"],["A","redan"],["V2","stängt"],["P","av"],["R","datorn."]],"She has already turned off the computer."],
+         [[["x","Jag tror"],["K","att"],["S","han"],["A","inte"],["V","håller"],["P","med."]],"I don't think he agrees."] ],
+  tips:["Stress changes the meaning. Hon hälsade <b>PÅ</b> mig = she visited me. Hon <b>HÄLSADE</b> på mig = she greeted me.",
+        "Find the full list under Words → Built-in partikelverb."]},
+ {id:"riktning",title:"Motion or place: hem / hemma",tag:"adverb",
+  rule:"Many place adverbs come in pairs. Use the short one with movement (going somewhere) and the long one for a place (being somewhere).",
+  table:[["hem","hemma","Jag går hem. / Jag är hemma."],["ut","ute","Hon går ut. / Hon är ute."],["in","inne","Kom in! / Vi är inne."],["upp","uppe","Gå upp! / Han är uppe."],["ner","nere","Kom ner! / Hon är nere."],["bort","borta","Gå bort. / Han är borta."],["dit","där","Jag åker dit. / Jag bor där."],["hit","här","Kom hit! / Jag är här."]],
+  tips:["Ask yourself: is someone moving? Then use the short form."]}
+];
+
+/* ================= STATE + SAVING ================= */
+const LSKEY = "svenska-varje-dag-v1";
+let state = {v:2,tp:0,tn:0,cards:{},words:[],notes:[]};
+function lsGet(){try{return JSON.parse(localStorage.getItem(LSKEY)||"null")}catch(e){return null}}
+function lsSet(){try{localStorage.setItem(LSKEY,JSON.stringify(state))}catch(e){}}
+(function(){const l=lsGet(); if(l && l.cards){ state.cards=l.cards; state.words=l.words||[]; state.notes=l.notes||[]; state.tp=l.tp||l.t||0; state.tn=l.tn||0 }})();
+for(const w of state.words){ if(!w.type) w.type="other"; if(w.group==null) w.group="" }
+
+/* ---- GitHub gist sync ----
+   Everything lives in one private gist file. Progress (cards + words) and notes each carry
+   their own timestamp, and the newer copy of each part wins, so the Mac and phone can both edit. */
+const GHKEY = LSKEY+"-github", FILE = "svenska-varje-dag.json";
+let gh = (()=>{try{return JSON.parse(localStorage.getItem(GHKEY)||"null")||{}}catch(e){return {}}})();
+const ghSave = ()=>{try{localStorage.setItem(GHKEY,JSON.stringify(gh))}catch(e){}};
+const syncEl = document.getElementById("sync");
+const setSync = t=>syncEl.textContent=t;
+let syncTimer=null, chain=Promise.resolve(), lastSync=0;
+function save(kind){
+  state["t"+kind]=Date.now(); lsSet();
+  if(gh.token){ clearTimeout(syncTimer); setSync("Saving…"); syncTimer=setTimeout(()=>{syncTimer=null;sync()},2500) }
+  else setSync("Saved on this device");
+}
+function payload(){ return {app:"svenska-varje-dag",v:2,tp:state.tp,tn:state.tn,cards:state.cards,words:state.words,notes:state.notes} }
+async function api(path, opts={}){
+  const r = await fetch("https://api.github.com"+path,{...opts,cache:"no-store",headers:{Authorization:"Bearer "+gh.token,Accept:"application/vnd.github+json",...(opts.body?{"Content-Type":"application/json"}:{})}});
+  if(!r.ok){ const e=new Error("github "+r.status); e.status=r.status; throw e }
+  return r.json();
+}
+async function findOrCreateGist(){
+  for(let p=1;p<=10;p++){
+    const list = await api("/gists?per_page=100&page="+p);
+    const hit = list.find(g=>g.files && g.files[FILE]);
+    if(hit) return hit.id;
+    if(list.length<100) break;
+  }
+  const g = await api("/gists",{method:"POST",body:JSON.stringify({description:"LärSig: app data (words, notes, progress)",public:false,files:{[FILE]:{content:JSON.stringify(payload())}}})});
+  return g.id;
+}
+function sync(){ chain = chain.then(doSync,doSync); return chain }
+async function doSync(){
+  if(!gh.token) return;
+  if(!navigator.onLine){ setSync("Offline. Changes will sync when you're back online."); return }
+  try{
+    if(!gh.gist){ gh.gist = await findOrCreateGist(); ghSave() }
+    const g = await api("/gists/"+gh.gist);
+    const f = g.files && g.files[FILE];
+    let remote = null;
+    if(f){ const text = f.truncated ? await (await fetch(f.raw_url,{cache:"no-store"})).text() : f.content; try{ remote=JSON.parse(text) }catch(e){} }
+    let changed=false, push=!remote;
+    if(remote){
+      if((remote.tp||0)>state.tp){ state.cards=remote.cards||{}; state.words=remote.words||[]; state.tp=remote.tp; changed=true }
+      else if(state.tp>(remote.tp||0)) push=true;
+      if((remote.tn||0)>state.tn){ state.notes=remote.notes||[]; state.tn=remote.tn; changed=true }
+      else if(state.tn>(remote.tn||0)) push=true;
+    }
+    if(changed){ for(const w of state.words){ if(!w.type) w.type="other"; if(w.group==null) w.group="" } lsSet(); renderAll() }
+    if(push) await api("/gists/"+gh.gist,{method:"PATCH",body:JSON.stringify({files:{[FILE]:{content:JSON.stringify(payload())}}})});
+    lastSync=Date.now();
+    setSync("Synced with GitHub "+new Date().toLocaleTimeString("sv-SE",{hour:"2-digit",minute:"2-digit"}));
+  }catch(e){
+    if(e.status===401){ setSync("Your GitHub key stopped working. Open Sync & backup to paste a new one."); gh.token=""; ghSave(); renderSyncBox() }
+    else if(e.status===404 && gh.gist){ gh.gist=""; ghSave(); setSync("Couldn't find your sync file. Tap Sync now to set it up again.") }
+    else if(e.status===403||e.status===429) setSync("GitHub is busy. Will try again soon.");
+    else setSync("Couldn't reach GitHub. Your changes are safe on this device.");
+  }
+  renderSyncBox();
+}
+function renderSyncBox(){
+  const on=!!gh.token;
+  document.getElementById("sync-off").hidden=on; document.getElementById("sync-on").hidden=!on;
+  if(on) document.getElementById("gh-info").textContent = "This device is connected. Your data is in a private gist named “"+FILE+"”."+(lastSync?" Last synced at "+new Date(lastSync).toLocaleTimeString("sv-SE",{hour:"2-digit",minute:"2-digit"})+".":"");
+}
+document.getElementById("synctoggle").onclick=e=>{ const b=document.getElementById("syncbox"); b.hidden=!b.hidden; e.currentTarget.setAttribute("aria-expanded",String(!b.hidden)); renderSyncBox() };
+document.getElementById("gh-connect").onclick=async()=>{
+  const t=document.getElementById("gh-token").value.trim();
+  if(!t){ setSync("Paste your key first."); return }
+  gh={token:t,gist:""}; ghSave(); setSync("Connecting to GitHub…");
+  await sync();
+  if(gh.token) document.getElementById("gh-token").value="";
+};
+document.getElementById("gh-now").onclick=()=>{ setSync("Syncing…"); sync() };
+document.getElementById("gh-off").onclick=()=>{ gh={}; ghSave(); setSync("Not syncing. Saved on this device."); renderSyncBox() };
+window.addEventListener("online",()=>sync());
+document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible" && !syncTimer && Date.now()-lastSync>20000) sync() });
+
+/* ---- backup ---- */
+document.getElementById("exportbtn").onclick=()=>{
+  const blob=new Blob([JSON.stringify(payload(),null,1)],{type:"application/json"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+  a.download="larsig-backup-"+new Date().toISOString().slice(0,10)+".json";
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),5000);
+  document.getElementById("backupmsg").textContent="Backup saved to your downloads.";
+};
+document.getElementById("importfile").onchange=async e=>{
+  const file=e.target.files[0]; e.target.value=""; if(!file) return;
+  const msg=document.getElementById("backupmsg");
+  try{
+    const d=JSON.parse(await file.text());
+    if(!d||d.app!=="svenska-varje-dag") throw 0;
+    let w=0,n=0;
+    for(const x of d.words||[]){ if(x&&x.id&&!state.words.some(y=>y.id===x.id||(y.sv===x.sv&&y.en===x.en))){ state.words.push({type:"other",group:"",note:"",...x}); w++ } }
+    for(const x of d.notes||[]){ if(x&&x.id&&!state.notes.some(y=>y.id===x.id)){ state.notes.push(x); n++ } }
+    for(const [k,v] of Object.entries(d.cards||{})){ if(!state.cards[k]) state.cards[k]=v }
+    save("p"); save("n"); renderAll();
+    msg.textContent=`Loaded backup: ${w} new word${w===1?"":"s"}, ${n} new note${n===1?"":"s"}.`;
+  }catch(err){ msg.textContent="That file isn't a backup from this app. Choose a file named larsig-backup-….json." }
+};
+
+setSync(gh.token ? "Syncing…" : "Saved on this device. Open Sync & backup to sync with GitHub.");
+if(gh.token) sync();
+if("serviceWorker" in navigator && location.protocol==="https:") navigator.serviceWorker.register("sw.js").catch(()=>{});
+
+/* ================= HELPERS ================= */
+const $ = s=>document.querySelector(s);
+const esc = s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+const norm = s=>s.toLowerCase().trim().replace(/\s+/g," ").replace(/^att /,"");
+const strip = s=>norm(s).replace(/[åä]/g,"a").replace(/ö/g,"o");
+const uidGen = ()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const shuffle = a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const bar = (d,t)=>`<div class="progress" aria-hidden="true"><i style="width:${t?Math.round(d/t*100):0}%"></i></div>`;
+const typeOptions = sel=>TYPES.map(([k,l])=>`<option value="${k}"${k===sel?" selected":""}>${l}</option>`).join("");
+const groups = ()=>[...new Set(state.words.map(w=>(w.group||"").trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"sv"));
+function refreshLists(){
+  $("#grouplist").innerHTML = groups().map(g=>`<option value="${esc(g)}">`).join("");
+  $("#topiclist").innerHTML = [...new Set(["Grammar","Vocabulary","From class",...state.notes.map(n=>n.topic).filter(Boolean)])].map(t=>`<option value="${esc(t)}">`).join("");
+}
+// two-tap delete
+function armDelete(btn, fn){
+  if(btn.classList.contains("armed")){ fn(); return }
+  btn.classList.add("armed"); btn.textContent="Tap again to delete";
+  setTimeout(()=>{ if(btn.isConnected){ btn.classList.remove("armed"); btn.textContent="Delete" } },3000);
+}
+
+/* ================= SCHEDULING ================= */
+function grade(id, ok){
+  const c = state.cards[id] || {b:0,d:0};
+  if(ok){ c.b=Math.min(c.b+1,INT.length-1); c.d=Date.now()+INT[c.b]*DAY-3*36e5 } else { c.b=0; c.d=Date.now() }
+  state.cards[id]=c; save("p");
+}
+function counts(ids){ let due=0,fresh=0,known=0; const t=Date.now();
+  for(const id of ids){ const c=state.cards[id]; if(!c) fresh++; else { if(c.d<=t) due++; if(c.b>=4) known++ } } return {due,fresh,known} }
+function buildQueue(ids){ const t=Date.now();
+  const due=shuffle(ids.filter(id=>state.cards[id]&&state.cards[id].d<=t));
+  const fresh=ids.filter(id=>!state.cards[id]).slice(0,NEW_PER_SESSION);
+  return due.slice(0,SESSION_MAX-fresh.length).concat(fresh) }
+function stats(el,c){ el.innerHTML=`<div class="stat due"><b>${c.due}</b><span>Due now</span></div><div class="stat"><b>${c.fresh}</b><span>Not seen yet</span></div><div class="stat"><b>${c.known}</b><span>Know well</span></div>` }
+
+/* ================= TABS ================= */
+let tab="cards"; try{ tab=localStorage.getItem(LSKEY+"-tab")||"cards" }catch(e){}
+function showTab(t){
+  tab=t;
+  document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===t));
+  for(const p of ["cards","forms","words","notes"]) document.getElementById("panel-"+p).hidden = p!==t;
+  try{localStorage.setItem(LSKEY+"-tab",t)}catch(e){}
+  renderAll();
+}
+document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab)));
+
+/* ================= FLASHCARDS ================= */
+let dir="sv", ftype="all", fgroup="", onlyMine=false, cs=null;
+function faces(id){
+  const k=id.slice(0,1), key=id.slice(2);
+  if(k==="m"){ const v=VBY[key]; return v&&{sv:"att "+v[0],en:v[4],note:`${v[1]} · ${v[2]} · ${v[3]}`,type:"verb",group:"",mine:false} }
+  if(k==="p"){ const v=PBY[key]; return v&&{sv:v[0],en:v[1],note:v[2]+"\nStress on the particle.",type:"partikelverb",group:"",mine:false} }
+  if(k==="a"){ const v=ABY[key]; return v&&{sv:v[0],en:v[1],note:v[2]+(v[3]?"\nSatsadverb: BIFF rule.":""),type:"adverb",group:"",mine:false} }
+  const w=state.words.find(w=>w.id===key); return w&&{sv:w.sv,en:w.en,note:w.note||"",type:w.type||"other",group:w.group||"",mine:true};
+}
+function poolIds(){
+  const out=[];
+  for(const w of state.words) out.push("w:"+w.id);
+  if(!onlyMine && !fgroup){ for(const v of VERBS) out.push("m:"+v[0]); for(const v of PVERBS) out.push("p:"+v[0]); for(const v of ADVS) out.push("a:"+v[0]) }
+  return out.filter(id=>{ const f=faces(id); if(!f) return false; if(ftype!=="all"&&f.type!==ftype) return false; if(fgroup&&f.group!==fgroup) return false; return true });
+}
+function renderFilters(){
+  $("#typechips").innerHTML = [["all","All"],...TYPES].map(([k,l])=>`<button type="button" data-ft="${k}" aria-pressed="${k===ftype}">${l}</button>`).join("");
+  $("#typechips").querySelectorAll("[data-ft]").forEach(b=>b.onclick=()=>{ftype=b.dataset.ft;cs=null;renderCards()});
+  const gs=groups(); if(fgroup&&!gs.includes(fgroup)) fgroup="";
+  $("#groupsel").innerHTML = `<option value="">All groups</option>`+gs.map(g=>`<option value="${esc(g)}"${g===fgroup?" selected":""}>${esc(g)}</option>`).join("");
+  $("#groupsel").hidden = !gs.length;
+  $("#onlymine").checked = onlyMine;
+  document.querySelectorAll("[data-dir]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.dir===dir));
+}
+$("#groupsel").onchange=e=>{fgroup=e.target.value;cs=null;renderCards()};
+$("#onlymine").onchange=e=>{onlyMine=e.target.checked;cs=null;renderCards()};
+document.querySelectorAll("[data-dir]").forEach(b=>b.onclick=()=>{dir=b.dataset.dir;renderCards()});
+function renderCards(){
+  renderFilters();
+  const ids=poolIds(); stats($("#stats-cards"),counts(ids));
+  const st=$("#cards-stage");
+  if(!cs){
+    const n=buildQueue(ids).length;
+    if(!ids.length){ st.innerHTML=`<div class="empty"><h2>No cards here yet</h2><p style="margin:0">Nothing matches this filter. Add words under Words, or pick another type or group.</p><button class="btn" id="gowords">Add words</button></div>`; $("#gowords").onclick=()=>showTab("words"); return }
+    st.innerHTML=`<div class="empty"><h2>${n?"Ready when you are":"All done for now"}</h2><p style="margin:0">See the word, say the meaning out loud, then flip it. Be honest: cards you mark “Forgot” come back first.</p>
+      <button class="btn" id="cstart" ${n?"":"disabled"}>${n?"Start ("+n+" cards)":"Come back tomorrow"}</button></div>`;
+    const b=$("#cstart"); if(n) b.onclick=()=>{cs={queue:buildQueue(ids),i:0,flipped:false,right:0,wrong:0};renderCards()};
+    return;
+  }
+  while(cs.i<cs.queue.length && !faces(cs.queue[cs.i])) cs.i++;
+  if(cs.i>=cs.queue.length){
+    st.innerHTML=`<div class="card"><div class="meta"><span>Session done</span><span></span></div><p class="big">Snyggt!</p>
+      <p class="gloss">${cs.right} remembered, ${cs.wrong} forgotten. Forgotten cards come back tomorrow.</p>
+      <div class="row"><button class="btn" id="cback">Back to overview</button></div></div>`;
+    $("#cback").onclick=()=>{cs=null;renderCards()}; return;
+  }
+  const id=cs.queue[cs.i], f=faces(id), front=dir==="sv"?f.sv:f.en, back=dir==="sv"?f.en:f.sv;
+  st.innerHTML=`${bar(cs.i,cs.queue.length)}<div class="card">
+    <div class="meta"><span>${cs.i+1} / ${cs.queue.length}${!state.cards[id]?" · new":""}</span><span>${esc(TYPE_LABEL[f.type]||"")}${f.group?" · "+esc(f.group):""}</span></div>
+    <p class="big">${esc(front)}</p>
+    ${cs.flipped?`<p class="gloss" style="font-size:1.3rem;color:var(--ink)">${esc(back)}</p>${f.note?`<p class="backnote">${esc(f.note)}</p>`:""}
+      <div class="row"><button class="btn bad grow" id="cno">Forgot</button><button class="btn good grow" id="cyes">Got it</button></div>`
+    :`<div class="row"><button class="btn grow" id="cflip">Show answer</button></div>`}
+  </div>`;
+  if(cs.flipped){ $("#cno").onclick=()=>rateCard(id,false); $("#cyes").onclick=()=>rateCard(id,true) }
+  else $("#cflip").onclick=()=>{cs.flipped=true;renderCards()};
+}
+function rateCard(id,ok){
+  if(!cs.queue.slice(0,cs.i).includes(id)){ ok?cs.right++:cs.wrong++ }
+  grade(id,ok); if(!ok) cs.queue.splice(Math.min(cs.i+4,cs.queue.length),0,id);
+  cs.i++; cs.flipped=false; renderCards();
+}
+document.addEventListener("keydown",e=>{
+  if(tab!=="cards"||!cs||e.target.matches("input,textarea,select")) return;
+  if(!cs.flipped&&e.key===" "){e.preventDefault();cs.flipped=true;renderCards()}
+  else if(cs.flipped&&(e.key==="1"||e.key==="2")) rateCard(cs.queue[cs.i],e.key==="2");
+});
+
+/* ================= VERB FORMS ================= */
+let fs=null;
+const formIds=()=>{const o=[];for(const v of VERBS)for(const k of ["pres","past","sup"])o.push("f:"+v[0]+":"+k);return o};
+function renderForms(){
+  stats($("#stats-forms"),counts(formIds()));
+  const st=$("#forms-stage");
+  if(!fs){
+    const c=counts(formIds()), n=buildQueue(formIds()).length;
+    st.innerHTML=`<div class="empty"><h2>${c.due?c.due+" verb forms to review":"Practise verb forms"}</h2>
+      <p style="margin:0">You get a verb and type one form: presens (nu), preteritum (igår) or supinum (har). New verbs come a few at a time, most common first.</p>
+      <button class="btn" id="fstart" ${n?"":"disabled"}>${n?"Start ("+n+" cards)":"All done for now"}</button></div>`;
+    if(n) $("#fstart").onclick=()=>{fs={queue:buildQueue(formIds()),i:0,right:0,wrong:0,answered:false};renderForms()};
+    return;
+  }
+  if(fs.i>=fs.queue.length){
+    st.innerHTML=`<div class="card"><div class="meta"><span>Session done</span><span></span></div><p class="big">Bra jobbat!</p>
+      <p class="gloss">${fs.right} right first time, ${fs.wrong} to practise again. The misses come back tomorrow.</p>
+      <div class="row"><button class="btn" id="fagain">Back to overview</button></div></div>`;
+    $("#fagain").onclick=()=>{fs=null;renderForms()}; return;
+  }
+  const id=fs.queue[fs.i], [,inf,k]=id.split(":"), v=VBY[inf], F=FORMS[k];
+  let html=`${bar(fs.i,fs.queue.length)}<div class="card">
+    <div class="meta"><span>${fs.i+1} / ${fs.queue.length}${!state.cards[id]?" · new":""}</span><span>grupp ${v[5]}</span></div>
+    <div><p class="big">att ${esc(v[0])}</p><p class="gloss">${esc(v[4])}</p></div>
+    <p class="frame"><span class="formname">${F.label}</span>&nbsp; ${esc(F.frame[0])}<span class="blank"></span> ${esc(F.frame[1])}</p>`;
+  if(!fs.answered){
+    html+=`<form class="answer" id="fform" autocomplete="off"><input id="fin" aria-label="Your answer" autocapitalize="off" spellcheck="false" placeholder="type the ${F.label} form">
+      <button class="btn" type="submit">Check</button></form>
+      <div class="row"><div class="keys">${["å","ä","ö"].map(ch=>`<button type="button" data-ch="${ch}" aria-label="insert ${ch}">${ch}</button>`).join("")}</div>
+      <span class="grow"></span><button class="btn ghost" type="button" id="fshow">I don't know</button></div>`;
+  } else {
+    html+=`<p class="verdict ${fs.lastOk?"ok":"no"}">${fs.lastOk?"Rätt!":esc(fs.lastMsg)}</p>
+      <div class="forms">${["infinitiv","presens","preteritum","supinum"].map((x,j)=>`<div><small>${x}</small><strong class="${j===F.i?"hit":""}">${esc(v[j])}</strong></div>`).join("")}</div>
+      <p class="hint">${["","Grupp 1: -ar, -ade, -at. Very regular.","Grupp 2: -er, then -de/-t, or -te/-t after k, p, s, t.","Grupp 3: short verbs ending in a vowel: -r, -dde, -tt.","Grupp 4: strong verb. The vowel changes, so say this one out loud a few times."][v[5]]}</p>
+      <div class="row end"><button class="btn" id="fnext">Next</button></div>`;
+  }
+  st.innerHTML=html+`</div>`;
+  if(!fs.answered){
+    const inp=$("#fin"); inp.focus({preventScroll:true});
+    st.querySelectorAll("[data-ch]").forEach(b=>b.onclick=()=>{const s=inp.selectionStart??inp.value.length,e=inp.selectionEnd??s;inp.value=inp.value.slice(0,s)+b.dataset.ch+inp.value.slice(e);inp.focus();inp.setSelectionRange(s+1,s+1)});
+    $("#fform").onsubmit=ev=>{ev.preventDefault(); if(inp.value.trim()) answerForm(id,v,F,inp.value)};
+    $("#fshow").onclick=()=>answerForm(id,v,F,null);
+  } else { const n=$("#fnext"); n.onclick=()=>{fs.i++;fs.answered=false;renderForms()}; n.focus({preventScroll:true}) }
+}
+function answerForm(id,v,F,given){
+  const acc=v[F.i].split("/").map(norm); let ok=false,msg="";
+  if(given===null) msg="Here it is. You'll see it again soon.";
+  else if(acc.includes(norm(given))) ok=true;
+  else if(acc.map(strip).includes(strip(given))) msg="Almost! Check the å, ä and ö.";
+  else msg=`Not quite. You wrote “${given.trim()}”.`;
+  if(!fs.queue.slice(0,fs.i).includes(id)){ ok?fs.right++:fs.wrong++ }
+  grade(id,ok); if(!ok) fs.queue.splice(Math.min(fs.i+4,fs.queue.length),0,id);
+  fs.answered=true; fs.lastOk=ok; fs.lastMsg=msg; renderForms();
+}
+$("#verbcount").textContent=VERBS.length;
+function renderVerbTable(){ const q=norm($("#verbsearch").value||"");
+  $("#verbtable").innerHTML=VERBS.filter(v=>!q||v.some(x=>String(x).toLowerCase().includes(q))).map(v=>`<tr><td class="nw"><b>${esc(v[0])}</b></td><td class="nw">${esc(v[1])}</td><td class="nw">${esc(v[2])}</td><td class="nw">${esc(v[3])}</td><td>${esc(v[4])}</td><td class="g">${v[5]}</td></tr>`).join("") }
+$("#verbsearch").addEventListener("input",renderVerbTable);
+
+/* ================= MY WORDS ================= */
+let wby="group", editingWord=null;
+$("#add-type").innerHTML=typeOptions("other"); $("#bulk-type").innerHTML=typeOptions("other");
+function addWord(sv,en,note,type,group){
+  sv=sv.trim(); en=en.trim(); if(!sv||!en) return false;
+  if(state.words.some(w=>w.sv.toLowerCase()===sv.toLowerCase()&&w.en.toLowerCase()===en.toLowerCase())) return false;
+  state.words.unshift({id:uidGen(),sv,en,note:(note||"").trim(),type:type||"other",group:(group||"").trim()}); return true;
+}
+$("#addform").addEventListener("submit",e=>{
+  e.preventDefault();
+  if(addWord($("#add-sv").value,$("#add-en").value,$("#add-note").value,$("#add-type").value,$("#add-group").value)){
+    save("p"); $("#add-sv").value=""; $("#add-en").value=""; $("#add-note").value=""; renderWords();  // keep type + group for the next word
+  }
+  $("#add-sv").focus();
+});
+$("#bulkadd").onclick=()=>{
+  let n=0,skipped=0; const t=$("#bulk-type").value, g=$("#bulk-group").value;
+  for(const line of $("#bulk").value.split(/\n/)){ if(!line.trim()) continue;
+    const p=line.split(/\s*(?:=|\t|;)\s*/);
+    if(p.length>=2&&addWord(p[0],p[1],p.slice(2).join(" "),t,g)) n++; else skipped++ }
+  if(n){ save("p"); $("#bulk").value="" }
+  $("#bulkmsg").textContent = n?`Added ${n} word${n>1?"s":""}${skipped?`, skipped ${skipped} (duplicate or no = sign)`:""}.`:"Nothing added. Use one line per word, like: glad = happy";
+  renderWords();
+};
+document.querySelectorAll("[data-by]").forEach(b=>b.onclick=()=>{wby=b.dataset.by;renderWords()});
+$("#wsearch").addEventListener("input",()=>renderWords());
+function wordLevel(w){const c=state.cards["w:"+w.id]; return !c?"new":c.b>=4?"know well":"learning"}
+function renderWords(){
+  refreshLists();
+  document.querySelectorAll("[data-by]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.by===wby));
+  $("#wordcount").textContent=state.words.length;
+  const q=($("#wsearch").value||"").toLowerCase().trim();
+  const list=state.words.filter(w=>!q||[w.sv,w.en,w.note,w.group,TYPE_LABEL[w.type]].some(x=>(x||"").toLowerCase().includes(q)));
+  const el=$("#wordlist");
+  if(!state.words.length){ el.innerHTML=`<p class="note">Nothing here yet. Add a few words from your last lesson and give them a group, like “Descriptive words”, so you can find them again.</p>`; return }
+  if(!list.length){ el.innerHTML=`<p class="note">No words match “${esc(q)}”.</p>`; return }
+  const buckets=new Map();
+  for(const w of list){ const key = wby==="group" ? (w.group||"No group") : (TYPE_LABEL[w.type]||"Other"); if(!buckets.has(key)) buckets.set(key,[]); buckets.get(key).push(w) }
+  const keys=[...buckets.keys()].sort((a,b)=> a==="No group"?1: b==="No group"?-1: a.localeCompare(b,"sv"));
+  el.innerHTML=keys.map(k=>`<div class="group"><h3>${esc(k)} <span>${buckets.get(k).length}</span></h3>${buckets.get(k).map(w=>wordRow(w)).join("")}</div>`).join("");
+  el.querySelectorAll("[data-wedit]").forEach(b=>b.onclick=()=>{editingWord=b.dataset.wedit;renderWords();const i=$("#e-sv");i&&i.focus()});
+  el.querySelectorAll("[data-wdel]").forEach(b=>b.onclick=()=>armDelete(b,()=>{const id=b.dataset.wdel;state.words=state.words.filter(w=>w.id!==id);delete state.cards["w:"+id];save("p");renderWords()}));
+  const ef=$("#editword");
+  if(ef){ ef.onsubmit=e=>{e.preventDefault(); const w=state.words.find(w=>w.id===editingWord);
+      if(w&&$("#e-sv").value.trim()&&$("#e-en").value.trim()){ w.sv=$("#e-sv").value.trim(); w.en=$("#e-en").value.trim(); w.type=$("#e-type").value; w.group=$("#e-group").value.trim(); w.note=$("#e-note").value.trim(); save("p") }
+      editingWord=null; renderWords() };
+    $("#ecancel").onclick=()=>{editingWord=null;renderWords()} }
+}
+function wordRow(w){
+  if(w.id===editingWord) return `<div class="item editing"><form id="editword" class="stack" autocomplete="off"><div class="fgrid">
+      <input id="e-sv" value="${esc(w.sv)}" aria-label="Swedish" required><input id="e-en" value="${esc(w.en)}" aria-label="English" required>
+      <select id="e-type" aria-label="Word type">${typeOptions(w.type)}</select><input id="e-group" list="grouplist" value="${esc(w.group)}" placeholder="Group" aria-label="Group">
+      <textarea id="e-note" class="full" style="min-height:4rem" placeholder="Note or example" aria-label="Note">${esc(w.note)}</textarea></div>
+      <div class="row end"><button class="btn ghost small" type="button" id="ecancel">Cancel</button><button class="btn small" type="submit">Save</button></div></form></div>`;
+  const other = wby==="group" ? (TYPE_LABEL[w.type]||"") : (w.group||"");
+  return `<div class="item"><span class="sv">${esc(w.sv)}</span><span class="en">${esc(w.en)}</span>
+    <span class="acts"><button class="link" data-wedit="${w.id}">Edit</button><button class="link del" data-wdel="${w.id}" aria-label="Delete ${esc(w.sv)}">Delete</button></span>
+    <span class="sub">${other?`<span class="tag">${esc(other)}</span>`:""}<span class="tag">${wordLevel(w)}</span>${w.note?`<span class="n">${esc(w.note)}</span>`:""}</span></div>`;
+}
+$("#pcount").textContent=PVERBS.length; $("#acount").textContent=ADVS.length;
+$("#ptable").innerHTML=PVERBS.map(v=>`<tr><td class="nw"><b>${esc(v[0])}</b></td><td>${esc(v[1])}</td><td>${esc(v[2])}</td></tr>`).join("");
+$("#atable").innerHTML=ADVS.map(v=>`<tr><td class="nw"><b>${esc(v[0])}</b>${v[3]?' <span class="tag">satsadverb</span>':""}</td><td>${esc(v[1])}</td><td>${esc(v[2])}</td></tr>`).join("");
+
+/* ================= NOTES ================= */
+let editingNote=null;
+const chip=(s,t,cap)=>`<span class="w s-${s}"><b>${esc(t)}</b><small>${esc(cap??SLOT[s])}</small></span>`;
+$("#legend").innerHTML=["F","V","S","A","V2","P","K","R"].map(s=>`<span class="w s-${s}"><small>${SLOT[s]}</small></span>`).join("");
+function guidePage(g, open){
+  const rows=(g.rows||[]).map(([parts,en])=>`<div class="sent"><div class="slots">${parts.map(p=>chip(p[0],p[1],p[2])).join("")}</div><span class="en">${esc(en)}</span></div>`).join("");
+  const table=g.table?`<div class="tablewrap"><table><thead><tr><th>Motion</th><th>Place</th><th>Example</th></tr></thead><tbody>${g.table.map(r=>`<tr><td><b>${esc(r[0])}</b></td><td><b>${esc(r[1])}</b></td><td>${esc(r[2])}</td></tr>`).join("")}</tbody></table></div>`:"";
+  return `<details class="gpage"${open?" open":""}><summary><span>${esc(g.title)}</span><span class="tag">${esc(g.tag)}</span></summary><div>
+    <p class="rule">${g.rule}</p>${g.schema?`<div class="schema">${esc(g.schema)}</div>`:""}<div>${rows}</div>${table}
+    ${g.tips?`<ul class="tips">${g.tips.map(t=>`<li>${t}</li>`).join("")}</ul>`:""}</div></details>`;
+}
+function renderNotes(){
+  refreshLists();
+  const q=($("#nsearch").value||"").toLowerCase().trim();
+  // my notes
+  const notes=state.notes.filter(n=>!q||[n.title,n.topic,n.body].some(x=>(x||"").toLowerCase().includes(q)));
+  const el=$("#mynotes");
+  if(!state.notes.length) el.innerHTML=`<p class="note">No notes yet. Tap New note to write down a rule from class, example sentences, or words to look up later. Give it a topic so related notes stay together.</p>`;
+  else if(!notes.length) el.innerHTML=`<p class="note">None of your notes match “${esc(q)}”.</p>`;
+  else {
+    const by=new Map(); for(const n of notes){const k=n.topic||"No topic"; if(!by.has(k)) by.set(k,[]); by.get(k).push(n)}
+    const keys=[...by.keys()].sort((a,b)=>a==="No topic"?1:b==="No topic"?-1:a.localeCompare(b,"sv"));
+    el.innerHTML=keys.map(k=>`<div class="group stack"><h3>${esc(k)} <span>${by.get(k).length}</span></h3>${by.get(k).sort((a,b)=>b.u-a.u).map(n=>`
+      <details class="mynote"${q?" open":""}><summary><span>${esc(n.title)}</span><span class="note">${new Date(n.u).toLocaleDateString("sv-SE")}</span></summary>
+      <p class="body">${esc(n.body)||'<span class="note">Empty note</span>'}</p>
+      <div class="row end"><button class="link" data-nedit="${n.id}">Edit</button><button class="link del" data-ndel="${n.id}">Delete</button></div></details>`).join("")}</div>`).join("");
+    el.querySelectorAll("[data-nedit]").forEach(b=>b.onclick=()=>openEditor(b.dataset.nedit));
+    el.querySelectorAll("[data-ndel]").forEach(b=>b.onclick=()=>armDelete(b,()=>{state.notes=state.notes.filter(n=>n.id!==b.dataset.ndel);save("n");renderNotes()}));
+  }
+  // grammar guide
+  const gs=GUIDE.filter(g=>!q||JSON.stringify(g).toLowerCase().includes(q));
+  $("#guide").innerHTML = gs.length ? gs.map((g,i)=>guidePage(g, q ? true : i===0)).join("") : `<p class="note">No grammar pages match “${esc(q)}”.</p>`;
+}
+function openEditor(id){
+  editingNote=id||null; const n=id?state.notes.find(n=>n.id===id):null;
+  $("#neditor-title").textContent = n?"Edit note":"New note";
+  $("#n-title").value=n?n.title:""; $("#n-topic").value=n?n.topic:""; $("#n-body").value=n?n.body:"";
+  $("#neditor").hidden=false; $("#n-title").focus();
+}
+$("#newnote").onclick=()=>openEditor(null);
+$("#ncancel").onclick=()=>{$("#neditor").hidden=true;editingNote=null};
+$("#neditor").addEventListener("submit",e=>{
+  e.preventDefault(); const title=$("#n-title").value.trim(); if(!title) return;
+  const data={title,topic:$("#n-topic").value.trim(),body:$("#n-body").value.replace(/\s+$/,""),u:Date.now()};
+  if(editingNote){ const n=state.notes.find(n=>n.id===editingNote); if(n) Object.assign(n,data) } else state.notes.unshift({id:uidGen(),...data});
+  save("n"); $("#neditor").hidden=true; editingNote=null; renderNotes();
+});
+$("#nsearch").addEventListener("input",renderNotes);
+
+/* ================= BOOT ================= */
+function renderAll(){ if(tab==="cards") renderCards(); else if(tab==="forms") renderForms(); else if(tab==="words") renderWords(); else renderNotes() }
+renderVerbTable();
+showTab(["cards","forms","words","notes"].includes(tab)?tab:"cards");
+</script>
+</body>
+</html>
