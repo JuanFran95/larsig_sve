@@ -6,6 +6,7 @@
 <title>LärSig</title>
 <meta name="theme-color" content="#2446A8">
 <link rel="manifest" href="manifest.webmanifest">
+<script>try{var t=localStorage.getItem("svenska-varje-dag-v1-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -43,13 +44,20 @@
 body{margin:0;-webkit-text-size-adjust:100%;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:1rem;line-height:1.5}
 .wrap{max-width:42rem;margin:0 auto;padding-inline:16px;padding-block:1.25rem 3rem;display:flex;flex-direction:column;gap:1.1rem}
 header{display:flex;flex-direction:column;gap:.2rem}
+.titlebar{display:flex;align-items:center;justify-content:space-between;gap:.75rem}
+.cog{display:inline-flex;align-items:center;gap:.4rem;border:0;background:var(--chip);color:var(--ink);font:inherit;font-weight:700;font-size:.9rem;padding:.5rem .75rem;border-radius:.6rem;cursor:pointer}
+.cog[aria-expanded="true"]{background:var(--ink);color:var(--paper)}
+.cog svg{transition:transform .3s}
+.cog[aria-expanded="true"] svg{transform:rotate(60deg)}
+@media (prefers-reduced-motion:reduce){.cog svg{transition:none}}
 h1{font-family:var(--display);font-weight:700;font-size:1.9rem;line-height:1.1;margin:0;letter-spacing:-.01em}
 .sync{font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+footer .sync{display:inline-block;margin-bottom:.4rem}
 h2{font-family:var(--display);font-size:1.2rem;margin:0;text-wrap:balance}
 h3{font-family:var(--display);font-size:1rem;margin:0}
 
-nav{display:flex;gap:.2rem;background:var(--chip);padding:.25rem;border-radius:.6rem;position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
-nav button{border:0;background:transparent;color:var(--muted);font:inherit;font-size:.86rem;font-weight:700;padding:.55rem .35rem;flex:1 1 auto;white-space:nowrap;border-radius:.45rem;cursor:pointer}
+nav{display:grid;grid-template-columns:repeat(6,auto);gap:.2rem;background:var(--chip);padding:.25rem;border-radius:.6rem;position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+nav button{border:0;background:transparent;color:var(--muted);font:inherit;font-size:.86rem;font-weight:700;padding:.55rem .35rem;white-space:nowrap;border-radius:.45rem;cursor:pointer}
 nav button[aria-selected="true"]{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
 button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
@@ -184,6 +192,35 @@ td.g{font-family:var(--mono);color:var(--muted)}
 .wgroup{background:var(--card);border-radius:.5rem;padding:.7rem 1rem;box-shadow:0 1px 0 var(--line);border:0}
 .wgroup summary{display:flex;justify-content:space-between;gap:.5rem;font-family:var(--display);font-size:1.05rem}
 .wgroup .cnt{font-family:var(--mono);font-weight:400;font-size:.8rem;color:var(--muted)}
+@media (max-width:34rem){nav{grid-template-columns:repeat(3,1fr)}}
+/* ---------- desktop: use the whole window ---------- */
+@media (min-width:64rem){
+  .wrap{max-width:min(96vw,110rem);padding-inline:32px}
+  nav{grid-template-columns:repeat(6,1fr)}
+  nav button{font-size:.95rem;padding:.65rem .5rem}
+  #syncbox{max-width:44rem}
+  /* practice tabs: controls left, big card right */
+  #panel-cards,#panel-forms,#panel-sent{display:grid;grid-template-columns:minmax(20rem,26rem) minmax(0,1fr);column-gap:2rem;row-gap:1rem;align-items:start}
+  #panel-cards>*,#panel-forms>*,#panel-sent>*{grid-column:1}
+  #cards-stage,#forms-stage,#sent-stage{grid-column:2;grid-row:1 / span 6}
+  #panel-forms>h2,#panel-forms>p.note,#panel-forms>#verbsearch,#panel-forms>details{grid-column:1 / -1}
+  #panel-forms>h2{margin-top:1rem}
+  .card{min-height:22rem;padding:2rem 2.25rem 2rem 4rem}
+  .card::before{left:2.9rem}
+  .big{font-size:clamp(2.4rem,4vw,3.4rem)}
+  .sentence{font-size:clamp(1.6rem,2.4vw,2.1rem)}
+  .opt{font-size:1.15rem;padding:.9rem}
+  .empty{min-height:14rem;justify-content:center}
+  /* lists and pages in columns */
+  #wordlist,#builtins,#guide,#mynotes{display:block;columns:2 26rem;column-gap:1.25rem}
+  #wordlist>*,#builtins>*,#guide>*,#mynotes>*{break-inside:avoid;margin:0 0 1rem;display:block}
+  #addform .fgrid{grid-template-columns:1fr 1fr 1fr 1fr}
+  #addform .fgrid .full{grid-column:1 / -1}
+  #panel-grammar>#gsearch,#panel-notes>.row{max-width:44rem}
+  #neditor{max-width:56rem}
+}
+@media (min-width:110rem){ #wordlist,#builtins,#guide,#mynotes{columns:3 26rem} }
+
 footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);padding-top:.8rem}
 @media (prefers-reduced-motion:reduce){.progress i{transition:none}}
 </style>
@@ -191,12 +228,20 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
 <body>
 <div class="wrap">
   <header>
-    <h1>LärSig</h1>
-    <div class="row"><span class="sync grow" id="sync">Loading…</span><button class="link" id="synctoggle" type="button" aria-expanded="false" aria-controls="syncbox">Sync &amp; backup</button></div>
+    <div class="titlebar"><h1>LärSig</h1>
+      <button class="cog" id="synctoggle" type="button" aria-expanded="false" aria-controls="syncbox" aria-label="Settings" title="Settings">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Settings</span>
+      </button>
+    </div>
   </header>
 
   <section class="fbox" id="syncbox" hidden>
-    <h2>Sync with GitHub</h2>
+    <div class="row"><h2 class="grow">Settings</h2><button class="link" id="closesettings" type="button">Close</button></div>
+    <h3>Appearance</h3>
+    <div class="seg" role="group" aria-label="Colour theme" style="align-self:flex-start"><button type="button" data-theme-btn="auto" aria-pressed="true">Auto</button><button type="button" data-theme-btn="light" aria-pressed="false">Light</button><button type="button" data-theme-btn="dark" aria-pressed="false">Dark</button></div>
+    <p class="note">Auto follows your phone or Mac.</p>
+    <h3>Sync with GitHub</h3>
     <div id="sync-off" class="stack">
       <p class="note">Paste your GitHub access key (it starts with <b>ghp_</b>) to keep your words, notes and progress the same on your Mac and phone. They're saved in a private gist in your account. You do this once on each device.</p>
       <div class="row"><input id="gh-token" type="password" placeholder="ghp_…" aria-label="GitHub access key" autocomplete="off" style="flex:1;width:auto"><button class="btn" id="gh-connect" type="button">Connect</button></div>
@@ -205,7 +250,7 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
       <p class="note" id="gh-info"></p>
       <div class="row"><button class="btn small" id="gh-now" type="button">Sync now</button><button class="btn ghost small" id="gh-off" type="button">Disconnect this device</button></div>
     </div>
-    <h2>Backup</h2>
+    <h3>Backup</h3>
     <p class="note">Save everything as a file, or load one back in. Loading a backup adds anything missing and never deletes.</p>
     <div class="row"><button class="btn ghost small" id="exportbtn" type="button">Export backup</button><label class="btn ghost small" for="importfile" style="cursor:pointer">Import backup</label><input id="importfile" type="file" accept=".json,application/json" hidden></div>
     <p class="note" id="backupmsg" aria-live="polite"></p>
@@ -216,6 +261,7 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
     <button role="tab" id="tab-forms" aria-selected="false" data-tab="forms">Verbs</button>
     <button role="tab" id="tab-sent" aria-selected="false" data-tab="sent">Sentences</button>
     <button role="tab" id="tab-words" aria-selected="false" data-tab="words">Words</button>
+    <button role="tab" id="tab-grammar" aria-selected="false" data-tab="grammar">Grammar</button>
     <button role="tab" id="tab-notes" aria-selected="false" data-tab="notes">Notes</button>
   </nav>
 
@@ -239,14 +285,20 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
 
   <!-- VERB FORMS -->
   <section class="panel" id="panel-forms" hidden>
+    <div class="row"><span class="note">Practise:</span>
+      <div class="seg" role="group" aria-label="Which verbs to practise">
+        <button id="vset-common" aria-pressed="true" data-vset="common">Common verbs (<span id="ccount"></span>)</button>
+        <button id="vset-all" aria-pressed="false" data-vset="all">All verbs (<span id="verbcount"></span>)</button>
+      </div></div>
     <div class="stats" id="stats-forms"></div>
     <div id="forms-stage"></div>
-    <details>
-      <summary>All verbs (<span id="verbcount"></span>)</summary>
-      <p class="note">Grupp 1: -ar, -ade. Grupp 2: -er, -de or -te. Grupp 3: short verbs, -dde. Grupp 4: strong or irregular, learn by heart.</p>
-      <input id="verbsearch" type="search" placeholder="Search, e.g. skriva or write" aria-label="Search verbs">
-      <div class="tablewrap"><table><thead><tr><th>Infinitiv</th><th>Presens</th><th>Preteritum</th><th>Supinum</th><th>English</th><th>Grupp</th></tr></thead><tbody id="verbtable"></tbody></table></div>
-    </details>
+    <h2>Verb list</h2>
+    <p class="note">Grupp 1: -ar, -ade. Grupp 2: -er, -de or -te. Grupp 3: short verbs, -dde. Grupp 4: strong or irregular, learn by heart.</p>
+    <input id="verbsearch" type="search" placeholder="Search, e.g. skriva or write" aria-label="Search verbs">
+    <details class="wgroup" id="vcommon" open><summary><span>Common verbs</span><span class="cnt" id="vcn"></span></summary>
+      <div class="tablewrap"><table><thead><tr><th>Infinitiv</th><th>Presens</th><th>Preteritum</th><th>Supinum</th><th>English</th><th>Grupp</th></tr></thead><tbody id="verbtable"></tbody></table></div></details>
+    <details class="wgroup" id="vmore"><summary><span>More verbs</span><span class="cnt" id="vmn"></span></summary>
+      <div class="tablewrap"><table><thead><tr><th>Infinitiv</th><th>Presens</th><th>Preteritum</th><th>Supinum</th><th>English</th><th>Grupp</th></tr></thead><tbody id="verbtable2"></tbody></table></div></details>
   </section>
 
   <!-- SENTENCES -->
@@ -261,6 +313,11 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
 
   <!-- MY WORDS -->
   <section class="panel" id="panel-words" hidden>
+    <div class="seg" role="group" aria-label="Which words">
+      <button id="wview-mine" aria-pressed="true" data-wview="mine">My words (<span id="wordcount2">0</span>)</button>
+      <button id="wview-built" aria-pressed="false" data-wview="built">Built-in lists</button>
+    </div>
+    <div id="wmine" class="panel">
     <form class="fbox" id="addform" autocomplete="off">
       <h2>Add a word</h2>
       <div class="fgrid">
@@ -270,7 +327,7 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
         <input id="add-group" list="grouplist" placeholder="Group, e.g. Descriptive words" aria-label="Group">
         <textarea id="add-note" class="full" style="min-height:3.5rem" placeholder="Note or example (optional), e.g. Jag är glad idag." aria-label="Note"></textarea>
       </div>
-      <div class="row end"><button class="btn" type="submit">Add word</button></div>
+      <div class="row end"><span class="note grow" id="addmsg" aria-live="polite"></span><button class="btn" type="submit">Add word</button></div>
     </form>
     <datalist id="grouplist"></datalist>
 
@@ -294,16 +351,17 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
     </div>
     <input id="wsearch" type="search" placeholder="Search my words" aria-label="Search my words">
     <div id="wordlist" class="stack"></div>
-
-    <h2>Built-in word lists</h2>
-    <p class="note">These are already in your flashcards. Pick a list under Cards → All groups to practise just that one.</p>
-    <div id="builtins"></div>
+    </div>
+    <div id="wbuilt" class="panel" hidden>
+      <p class="note">Word lists that come with the app. They're already in your flashcards: pick one under Cards → All groups to practise just that list. Your own words are under My words.</p>
+      <div id="builtins" class="stack"></div>
+    </div>
   </section>
 
   <!-- NOTES -->
   <section class="panel" id="panel-notes" hidden>
     <div class="row">
-      <input id="nsearch" class="grow" type="search" placeholder="Search notes and grammar" aria-label="Search notes" style="width:auto">
+      <input id="nsearch" class="grow" type="search" placeholder="Search my notes" aria-label="Search notes" style="width:auto">
       <button class="btn" id="newnote" type="button">New note</button>
     </div>
     <form class="fbox" id="neditor" hidden autocomplete="off">
@@ -320,12 +378,16 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
     <h2>My notes</h2>
     <div id="mynotes" class="stack"></div>
 
-    <h2>Sentence structure guide</h2>
+  </section>
+
+  <!-- GRAMMAR -->
+  <section class="panel" id="panel-grammar" hidden>
+    <input id="gsearch" type="search" placeholder="Search grammar, e.g. BIFF, adjektiv, sin" aria-label="Search grammar">
     <div class="legend" id="legend"></div>
     <div id="guide" class="stack"></div>
   </section>
 
-  <footer>On your phone: open this page in Chrome, tap ⋮ and choose “Install app” or “Add to home screen”. It then opens full screen and works offline.</footer>
+  <footer><span class="sync" id="sync">Loading…</span><br>On your phone: open this page in Chrome, tap ⋮ and choose “Install app” or “Add to home screen”. It then opens full screen and works offline.</footer>
 </div>
 
 <script>
@@ -772,7 +834,7 @@ async function doSync(){
     lastSync=Date.now();
     setSync("Synced with GitHub "+new Date().toLocaleTimeString("sv-SE",{hour:"2-digit",minute:"2-digit"}));
   }catch(e){
-    if(e.status===401){ setSync("Your GitHub key stopped working. Open Sync & backup to paste a new one."); gh.token=""; ghSave(); renderSyncBox() }
+    if(e.status===401){ setSync("Your GitHub key stopped working. Open Settings to paste a new one."); gh.token=""; ghSave(); renderSyncBox() }
     else if(e.status===404 && gh.gist){ gh.gist=""; ghSave(); setSync("Couldn't find your sync file. Tap Sync now to set it up again.") }
     else if(e.status===403||e.status===429) setSync("GitHub is busy. Will try again soon.");
     else setSync("Couldn't reach GitHub. Your changes are safe on this device.");
@@ -785,6 +847,7 @@ function renderSyncBox(){
   if(on) document.getElementById("gh-info").textContent = "This device is connected. Your data is in a private gist named “"+FILE+"”."+(lastSync?" Last synced at "+new Date(lastSync).toLocaleTimeString("sv-SE",{hour:"2-digit",minute:"2-digit"})+".":"");
 }
 document.getElementById("synctoggle").onclick=e=>{ const b=document.getElementById("syncbox"); b.hidden=!b.hidden; e.currentTarget.setAttribute("aria-expanded",String(!b.hidden)); renderSyncBox() };
+document.getElementById("closesettings").onclick=()=>{ document.getElementById("syncbox").hidden=true; const t=document.getElementById("synctoggle"); t.setAttribute("aria-expanded","false"); t.focus() };
 document.getElementById("gh-connect").onclick=async()=>{
   const t=document.getElementById("gh-token").value.trim();
   if(!t){ setSync("Paste your key first."); return }
@@ -820,7 +883,7 @@ document.getElementById("importfile").onchange=async e=>{
   }catch(err){ msg.textContent="That file isn't a backup from this app. Choose a file named larsig-backup-….json." }
 };
 
-setSync(gh.token ? "Syncing…" : "Saved on this device. Open Sync & backup to sync with GitHub.");
+setSync(gh.token ? "Syncing…" : "Saved on this device. Open Settings to sync with GitHub.");
 if(gh.token) sync();
 if("serviceWorker" in navigator && location.protocol==="https:") navigator.serviceWorker.register("sw.js").catch(()=>{});
 
@@ -864,11 +927,21 @@ let tab="cards"; try{ tab=localStorage.getItem(LSKEY+"-tab")||"cards" }catch(e){
 function showTab(t){
   tab=t;
   document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===t));
-  for(const p of ["cards","forms","sent","words","notes"]) document.getElementById("panel-"+p).hidden = p!==t;
+  for(const p of ["cards","forms","sent","words","grammar","notes"]) document.getElementById("panel-"+p).hidden = p!==t;
   try{localStorage.setItem(LSKEY+"-tab",t)}catch(e){}
   renderAll();
 }
 document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab)));
+
+/* ================= DUPLICATES ================= */
+const COMMON = new Set(["vara","ha","göra","gå","komma","säga","se","ta","få","ge","kunna","vilja","veta","bli","tala","prata","arbeta","bo","äta","dricka","sova","skriva","läsa","köpa","tycka","tänka","tro","förstå","heta","behöva","börja","fråga","svara","titta","lyssna","höra","ringa","träffa","vänta","hitta","använda","hjälpa","glömma","känna","lära","sitta","stå","ligga","lägga","köra","åka","resa","handla","betala","laga","sluta","lämna","försöka","finnas","sätta","ställa","öppna","stänga","flytta","leva"]);
+const nk = t => String(t).toLowerCase().replace(/[.!?…]+$/,"").replace(/\s+/g," ").trim().replace(/^(att|en|ett) /,"");
+const keysOf = sv => String(sv).split("/").map(nk).filter(Boolean);
+const BUILT_KEYS = new Map();
+for(const v of VERBS){ const k=nk(v[0]); if(!BUILT_KEYS.has(k)) BUILT_KEYS.set(k, COMMON.has(v[0])?"Common verbs":"Verbs") }
+for(const e of BUILT) for(const k of keysOf(e.sv)) if(!BUILT_KEYS.has(k)) BUILT_KEYS.set(k, e.group);
+function builtMatch(sv){ for(const k of keysOf(sv)) if(BUILT_KEYS.has(k)) return BUILT_KEYS.get(k); return null }
+function mineMatch(sv){ const ks=keysOf(sv); return state.words.find(w=>keysOf(w.sv).some(k=>ks.includes(k))) }
 
 /* ================= FLASHCARDS ================= */
 let dir="sv", ftype="all", fgroup="", onlyMine=false, cs=null;
@@ -881,7 +954,9 @@ function faces(id){
 function poolIds(){
   const out=[];
   for(const w of state.words) out.push("w:"+w.id);
-  if(!onlyMine){ for(const v of VERBS) out.push("m:"+v[0]); for(const e of BUILT) out.push(e.id) }
+  if(!onlyMine){ const mine=new Set(state.words.flatMap(w=>keysOf(w.sv)));  // your own version wins over a built-in duplicate
+    for(const v of VERBS) if(!mine.has(nk(v[0]))) out.push("m:"+v[0]);
+    for(const e of BUILT) if(!keysOf(e.sv).some(k=>mine.has(k))) out.push(e.id) }
   return out.filter(id=>{ const f=faces(id); if(!f) return false; if(ftype!=="all"&&f.type!==ftype) return false; if(fgroup&&f.group!==fgroup) return false; return true });
 }
 function renderFilters(){
@@ -939,8 +1014,11 @@ document.addEventListener("keydown",e=>{
 
 /* ================= VERB FORMS ================= */
 let fs=null;
-const formIds=()=>{const o=[];for(const v of VERBS)for(const k of ["pres","past","sup"])o.push("f:"+v[0]+":"+k);return o};
+let vset="common"; try{ vset=localStorage.getItem(LSKEY+"-vset")||"common" }catch(e){}
+document.querySelectorAll("[data-vset]").forEach(b=>b.onclick=()=>{ vset=b.dataset.vset; try{localStorage.setItem(LSKEY+"-vset",vset)}catch(e){} fs=null; renderForms() });
+const formIds=()=>{const o=[];for(const v of VERBS){ if(vset==="common"&&!COMMON.has(v[0])) continue; for(const k of ["pres","past","sup"])o.push("f:"+v[0]+":"+k) }return o};
 function renderForms(){
+  document.querySelectorAll("[data-vset]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.vset===vset));
   stats($("#stats-forms"),counts(formIds()));
   const st=$("#forms-stage");
   if(!fs){
@@ -993,40 +1071,59 @@ function answerForm(id,v,F,given){
 }
 $("#verbcount").textContent=VERBS.length;
 function renderVerbTable(){ const q=norm($("#verbsearch").value||"");
-  $("#verbtable").innerHTML=VERBS.filter(v=>!q||v.some(x=>String(x).toLowerCase().includes(q))).map(v=>`<tr><td class="nw"><b>${esc(v[0])}</b></td><td class="nw">${esc(v[1])}</td><td class="nw">${esc(v[2])}</td><td class="nw">${esc(v[3])}</td><td>${esc(v[4])}</td><td class="g">${v[5]}</td></tr>`).join("") }
+  const row=v=>`<tr><td class="nw"><b>${esc(v[0])}</b></td><td class="nw">${esc(v[1])}</td><td class="nw">${esc(v[2])}</td><td class="nw">${esc(v[3])}</td><td>${esc(v[4])}</td><td class="g">${v[5]}</td></tr>`;
+  const hit=v=>!q||v.some(x=>String(x).toLowerCase().includes(q));
+  const c=VERBS.filter(v=>COMMON.has(v[0])&&hit(v)), m=VERBS.filter(v=>!COMMON.has(v[0])&&hit(v));
+  $("#verbtable").innerHTML=c.map(row).join("")||`<tr><td colspan="6" class="note">No match</td></tr>`;
+  $("#verbtable2").innerHTML=m.map(row).join("")||`<tr><td colspan="6" class="note">No match</td></tr>`;
+  $("#vcn").textContent=c.length; $("#vmn").textContent=m.length;
+  if(q){ $("#vcommon").open=c.length>0; $("#vmore").open=m.length>0 }
+  $("#ccount").textContent=VERBS.filter(v=>COMMON.has(v[0])).length; }
 $("#verbsearch").addEventListener("input",renderVerbTable);
 
 /* ================= MY WORDS ================= */
-let wby="group", editingWord=null; const openGroups=new Set();
+let wview="mine"; let wby="group", editingWord=null; const openGroups=new Set();
 $("#add-type").innerHTML=typeOptions("other"); $("#bulk-type").innerHTML=typeOptions("other");
 function addWord(sv,en,note,type,group){
-  sv=sv.trim(); en=en.trim(); if(!sv||!en) return false;
-  if(state.words.some(w=>w.sv.toLowerCase()===sv.toLowerCase()&&w.en.toLowerCase()===en.toLowerCase())) return false;
+  sv=sv.trim(); en=en.trim(); if(!sv||!en) return "empty";
+  const own=mineMatch(sv); if(own) return "mine:"+(own.group||"No group");
+  const b=builtMatch(sv); if(b) return "built:"+b;
   state.words.unshift({id:uidGen(),sv,en,note:(note||"").trim(),type:type||"other",group:(group||"").trim()}); return true;
 }
 $("#addform").addEventListener("submit",e=>{
   e.preventDefault();
-  if(addWord($("#add-sv").value,$("#add-en").value,$("#add-note").value,$("#add-type").value,$("#add-group").value)){
-    save("p"); $("#add-sv").value=""; $("#add-en").value=""; $("#add-note").value=""; renderWords();  // keep type + group for the next word
-  }
+  const sv=$("#add-sv").value.trim(), r=addWord(sv,$("#add-en").value,$("#add-note").value,$("#add-type").value,$("#add-group").value);
+  const msg=$("#addmsg");
+  if(r===true){ save("p"); $("#add-sv").value=""; $("#add-en").value=""; $("#add-note").value=""; msg.textContent=`Added “${sv}”.`; renderWords() }  // keep type + group for the next word
+  else if(typeof r==="string"&&r.startsWith("built:")) msg.textContent=`“${sv}” is already in the built-in list ${r.slice(6)}, so it's in your flashcards. Not added again.`;
+  else if(typeof r==="string"&&r.startsWith("mine:")) msg.textContent=`“${sv}” is already in My words (${r.slice(5)}). Use Edit on it to change the meaning or note.`;
   $("#add-sv").focus();
 });
 $("#bulkadd").onclick=()=>{
-  let n=0,skipped=0; const t=$("#bulk-type").value, g=$("#bulk-group").value;
+  let n=0,bad=0; const t=$("#bulk-type").value, g=$("#bulk-group").value, inBuilt=[], inMine=[];
   for(const line of $("#bulk").value.split(/\n/)){ if(!line.trim()) continue;
     const p=line.split(/\s*(?:=|\t|;)\s*/);
-    if(p.length>=2&&addWord(p[0],p[1],p.slice(2).join(" "),t,g)) n++; else skipped++ }
+    if(p.length<2){ bad++; continue }
+    const r=addWord(p[0],p[1],p.slice(2).join(" "),t,g);
+    if(r===true) n++; else if(String(r).startsWith("built:")) inBuilt.push(p[0].trim()); else if(String(r).startsWith("mine:")) inMine.push(p[0].trim()); else bad++ }
   if(n){ save("p"); $("#bulk").value="" }
-  $("#bulkmsg").textContent = n?`Added ${n} word${n>1?"s":""}${skipped?`, skipped ${skipped} (duplicate or no = sign)`:""}.`:"Nothing added. Use one line per word, like: glad = happy";
+  const parts=[`Added ${n} word${n===1?"":"s"}.`];
+  if(inBuilt.length) parts.push(`Already built in: ${inBuilt.join(", ")}.`);
+  if(inMine.length) parts.push(`Already in My words: ${inMine.join(", ")}.`);
+  if(bad) parts.push(`${bad} line${bad===1?"":"s"} had no = sign.`);
+  $("#bulkmsg").textContent = parts.join(" ");
   renderWords();
 };
 document.querySelectorAll("[data-by]").forEach(b=>b.onclick=()=>{wby=b.dataset.by;renderWords()});
+document.querySelectorAll("[data-wview]").forEach(b=>b.onclick=()=>{wview=b.dataset.wview;renderWords()});
 $("#wsearch").addEventListener("input",()=>renderWords());
 function wordLevel(w){const c=state.cards["w:"+w.id]; return !c?"new":c.b>=4?"know well":"learning"}
 function renderWords(){
   refreshLists();
   document.querySelectorAll("[data-by]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.by===wby));
-  $("#wordcount").textContent=state.words.length;
+  $("#wordcount").textContent=state.words.length; $("#wordcount2").textContent=state.words.length;
+  document.querySelectorAll("[data-wview]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.wview===wview));
+  $("#wmine").hidden = wview!=="mine"; $("#wbuilt").hidden = wview!=="built";
   const q=($("#wsearch").value||"").toLowerCase().trim();
   const list=state.words.filter(w=>!q||[w.sv,w.en,w.note,w.group,TYPE_LABEL[w.type]].some(x=>(x||"").toLowerCase().includes(q)));
   const el=$("#wordlist");
@@ -1058,7 +1155,7 @@ function wordRow(w){
     <span class="acts"><button class="link" data-wedit="${w.id}">Edit</button><button class="link del" data-wdel="${w.id}" aria-label="Delete ${esc(w.sv)}">Delete</button></span>
     <span class="sub">${other?`<span class="tag">${esc(other)}</span>`:""}<span class="tag">${wordLevel(w)}</span>${w.note?`<span class="n">${esc(w.note)}</span>`:""}</span></div>`;
 }
-$("#builtins").innerHTML = LISTS.map(L=>`<details><summary>${esc(L.group)} (${L.items.length})</summary><div class="tablewrap"><table><thead><tr><th>Svenska</th><th>English</th><th>Example / note</th></tr></thead><tbody>${L.items.map(it=>`<tr><td class="nw"><b>${esc(it[0])}</b></td><td>${esc(it[1])}</td><td>${esc(it[2]||"").replace(/\n/g,"<br>")}</td></tr>`).join("")}</tbody></table></div></details>`).join("");
+$("#builtins").innerHTML = LISTS.map(L=>`<details class="wgroup"><summary><span>${esc(L.group)}</span><span class="cnt">${L.items.length}</span></summary><div class="tablewrap"><table><thead><tr><th>Svenska</th><th>English</th><th>Example / note</th></tr></thead><tbody>${L.items.map(it=>`<tr><td class="nw"><b>${esc(it[0])}</b></td><td>${esc(it[1])}</td><td>${esc(it[2]||"").replace(/\n/g,"<br>")}</td></tr>`).join("")}</tbody></table></div></details>`).join("");
 
 /* ================= NOTES ================= */
 let editingNote=null;
@@ -1089,9 +1186,7 @@ function renderNotes(){
     el.querySelectorAll("[data-nedit]").forEach(b=>b.onclick=()=>openEditor(b.dataset.nedit));
     el.querySelectorAll("[data-ndel]").forEach(b=>b.onclick=()=>armDelete(b,()=>{state.notes=state.notes.filter(n=>n.id!==b.dataset.ndel);save("n");renderNotes()}));
   }
-  // grammar guide
-  const gs=GUIDE.filter(g=>!q||JSON.stringify(g).toLowerCase().includes(q));
-  $("#guide").innerHTML = gs.length ? gs.map((g,i)=>guidePage(g, q ? true : i===0)).join("") : `<p class="note">No grammar pages match “${esc(q)}”.</p>`;
+
 }
 function openEditor(id){
   editingNote=id||null; const n=id?state.notes.find(n=>n.id===id):null;
@@ -1108,6 +1203,12 @@ $("#neditor").addEventListener("submit",e=>{
   save("n"); $("#neditor").hidden=true; editingNote=null; renderNotes();
 });
 $("#nsearch").addEventListener("input",renderNotes);
+function renderGrammar(){
+  const q=($("#gsearch").value||"").toLowerCase().trim();
+  const gs=GUIDE.filter(g=>!q||JSON.stringify(g).toLowerCase().includes(q));
+  $("#guide").innerHTML = gs.length ? gs.map((g,i)=>guidePage(g, q ? true : i===0)).join("") : `<p class="note">No grammar pages match “${esc(q)}”.</p>`;
+}
+$("#gsearch").addEventListener("input",renderGrammar);
 
 /* ================= SENTENCES ================= */
 let smode="gap", ss=null;
@@ -1177,10 +1278,21 @@ function scoreSent(id,ok){
 }
 function nextSent(){ ss.i++; if(ss.i<ss.queue.length) prepItem(); renderSent() }
 
+/* ================= THEME ================= */
+function applyTheme(t){
+  if(t==="light"||t==="dark") document.documentElement.setAttribute("data-theme",t); else document.documentElement.removeAttribute("data-theme");
+  document.querySelectorAll("[data-theme-btn]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.themeBtn===(t||"auto")));
+  const dark = t==="dark" || (t!=="light" && matchMedia("(prefers-color-scheme: dark)").matches);
+  document.querySelector('meta[name="theme-color"]').setAttribute("content", dark?"#11151F":"#2446A8");
+}
+let theme="auto"; try{ theme=localStorage.getItem(LSKEY+"-theme")||"auto" }catch(e){}
+applyTheme(theme);
+document.querySelectorAll("[data-theme-btn]").forEach(b=>b.onclick=()=>{ theme=b.dataset.themeBtn; try{localStorage.setItem(LSKEY+"-theme",theme)}catch(e){} applyTheme(theme) });
+
 /* ================= BOOT ================= */
-function renderAll(){ if(tab==="cards") renderCards(); else if(tab==="forms") renderForms(); else if(tab==="sent") renderSent(); else if(tab==="words") renderWords(); else renderNotes() }
+function renderAll(){ if(tab==="cards") renderCards(); else if(tab==="forms") renderForms(); else if(tab==="sent") renderSent(); else if(tab==="words") renderWords(); else if(tab==="grammar") renderGrammar(); else renderNotes() }
 renderVerbTable();
-showTab(["cards","forms","sent","words","notes"].includes(tab)?tab:"cards");
+showTab(["cards","forms","sent","words","grammar","notes"].includes(tab)?tab:"cards");
 </script>
 </body>
 </html>
