@@ -540,7 +540,7 @@ const ADVS = [ // sv, en, example, satsadverb?
  ["kanske","maybe","Vi kommer kanske imorgon.",1],["bara","only, just","Jag vill bara sova.",1],["också","also, too","Jag talar också spanska.",1],["gärna","gladly, I'd like to","Jag tar gärna en kaffe.",1],
  ["verkligen","really","Det var verkligen gott.",1],["nästan","almost","Jag är nästan klar.",1],["säkert","surely, probably","Hon kommer säkert.",1],["tyvärr","unfortunately","Jag kan tyvärr inte komma.",1],
  ["egentligen","actually, really","Jag vill egentligen inte.",1],["faktiskt","actually, in fact","Det är faktiskt sant.",1],["ännu inte","not yet","Jag har inte ätit ännu.",0],
- ["snart","soon","Bussen kommer snart.",0],["sedan / sen","then, later","Vi äter och sen går vi.",0],["nu","now","Jag måste gå nu.",0],["då","then (at that time)","Då bodde jag i Kanada.",0],
+ ["snart","soon","Bussen kommer snart.",0],["sedan / sen","then, later","Vi äter och sen går vi.\nSedan also means since: Jag har bott här sedan 2017.",0],["nu","now","Jag måste gå nu.",0],["då","then (at that time)","Då bodde jag i Kanada.",0],
  ["igen","again","Kan du säga det igen?",0],["tidigt","early","Jag vaknar tidigt.",0],["sent","late","Det är sent.",0],["genast","immediately","Kom hit genast!",0],
  ["ganska","quite, fairly","Det är ganska kallt.",0],["mycket","very, a lot","Tack så mycket!",0],["lite","a little","Jag talar lite svenska.",0],["ungefär","about, roughly","Det tar ungefär en timme.",0],
  ["tillsammans","together","Vi lagar mat tillsammans.",0],["hem","(to) home, motion","Jag går hem.",0],["hemma","at home, place","Jag är hemma.",0],
@@ -657,10 +657,10 @@ const LISTS = [
   ["över","over, above","Lampan hänger över bordet."],["bakom","behind","Cykeln står bakom huset."],["framför","in front of","Bussen stannar framför skolan."],
   ["bredvid","next to","Jag sitter bredvid Anna."],["mellan","between","Apoteket ligger mellan banken och kaféet."],["hos","at someone's place","Jag är hos min syster."],
   ["till","to","Jag åker till Lund."],["från","from","Jag kommer från Kanada."],["med","with","Jag åker med bussen."],
-  ["utan","without","Kaffe utan mjölk, tack.\nAfter a no, utan can also mean but (rather): Jag dricker inte kaffe utan te."],["om","about","Vi pratar om filmen."],["för","for","Tack för hjälpen!"],
+  ["utan","without","Kaffe utan mjölk, tack.\nAfter a no, utan can also mean but (rather): Jag dricker inte kaffe utan te."],["om","about","Vi pratar om filmen.\nAs a bindeord, om means if or whether: Om du har tid, ring mig."],["för","for","Tack för hjälpen!\nAs a bindeord, för means because: Jag gick hem, för jag var trött."],
   ["av","of, by","En kopp av glas. Boken är skriven av henne."],["efter","after","Vi ses efter jobbet."],["före","before","Kom före klockan åtta."],
   ["genom","through","Vi gick genom parken."],["mot","towards, against","Bussen åker mot centrum."],["vid","by, at","Vi bor vid havet."],
-  ["sedan","since","Jag har bott här sedan 2017."]]},
+  ["sedan","since","Jag har bott här sedan 2017.\nSedan (or sen) also means then, later: Vi äter och sen går vi."]]},
  {key:"Time words", group:"Tidsord (time words)", type:"phrase", items:[
   ["idag","today",""],["igår","yesterday",""],["imorgon","tomorrow",""],["i förrgår","the day before yesterday",""],["i övermorgon","the day after tomorrow",""],
   ["i morse","this morning (already past)","Jag drack kaffe i morse."],["ikväll","this evening, tonight","Ska vi ses ikväll?"],["i natt","tonight / last night","Jag sov dåligt i natt."],
@@ -672,7 +672,7 @@ const LISTS = [
   ["kvart i tre","quarter to three (2:45)",""],["fem i halv tre","2:25","Five minutes before half past two."]]},
  {key:"Question words", group:"Frågeord (question words)", type:"question", items:[
   ["vad","what","Vad heter du?"],["vem","who","Vem är det?"],["vems","whose","Vems jacka är det här?"],["var","where (place)","Var bor du?"],
-  ["vart","where to","Vart ska du?"],["varifrån","where from","Varifrån kommer du?"],["när","when","När börjar kursen?"],["hur","how","Hur mår du?"],
+  ["vart","where to","Vart ska du?"],["varifrån","where from","Varifrån kommer du?"],["när","when","När börjar kursen?\nNär also starts a bisats: När jag kom hem åt jag."],["hur","how","Hur mår du?"],
   ["varför","why","Varför är du trött?"],["vilken / vilket / vilka","which","Vilken buss tar du? Vilket rum? Vilka skor?"],
   ["hur mycket","how much","Hur mycket kostar det?"],["hur många","how many","Hur många barn har du?"],["hur länge","how long","Hur länge har du bott här?"],
   ["hur dags","what time","Hur dags slutar du?"]]},
@@ -688,17 +688,17 @@ const LISTS = [
   ["ändå","still, anyway","Det regnade men vi gick ut ändå."],["i stället","instead","Vi tog bussen i stället."]]},
  {key:"Bindeord: cause & result", group:"Bindeord: orsak och följd (cause & result)", type:"conjunction", items:[
   ["eftersom","because, since","Starts a bisats: …eftersom jag inte hade tid."],["därför att","because","Starts a bisats: …därför att jag var sjuk."],
-  ["för","because (for)","Main clause follows: Jag gick hem, för jag var trött."],["så","so","Main clause follows: Jag var trött, så jag gick hem."],
+  ["för","because (for)","Main clause follows: Jag gick hem, för jag var trött.\nAs a preposition, för means for: Tack för hjälpen!"],["så","so","Main clause follows: Jag var trött, så jag gick hem."],
   ["därför","therefore, that's why","Adverb, verb comes next: Därför kom jag inte."],["följaktligen","consequently","Formal: Följaktligen höjdes priset."],
   ["så att","so that","Starts a bisats: Prata långsamt så att alla förstår."]]},
  {key:"Bindeord: time", group:"Bindeord: tid (time)", type:"conjunction", items:[
-  ["när","when","Starts a bisats: När jag kom hem åt jag."],["sedan / sen","then, after that","Adverb, verb comes next: Sen åt vi middag."],
+  ["när","when","Starts a bisats: När jag kom hem åt jag.\nIt is also a question word: När börjar kursen?"],["sedan / sen","then, after that","Adverb, verb comes next: Sen åt vi middag.\nSedan also means since: Jag har bott här sedan 2017."],
   ["innan","before","Starts a bisats: …innan jag går."],["medan","while","Starts a bisats: Jag lyssnar på radio medan jag lagar mat."],
   ["efter att","after","Starts a bisats: Efter att vi hade ätit gick vi ut."],["tills","until","Starts a bisats: Vänta tills jag kommer."],
   ["först","first","Först äter vi, sen går vi."],["till slut","in the end","Till slut hittade jag nyckeln."],
   ["för det första / för det andra","firstly / secondly","För det första är det billigt. (verb before subject)"]]},
  {key:"Bindeord: condition & other", group:"Bindeord: villkor m.m. (condition & other)", type:"conjunction", items:[
-  ["om","if, whether","Starts a bisats: Om du har tid, ring mig."],["att","that","Starts a bisats: Jag vet att hon inte kommer."],
+  ["om","if, whether","Starts a bisats: Om du har tid, ring mig.\nAs a preposition, om means about: Vi pratar om filmen."],["att","that","Starts a bisats: Jag vet att hon inte kommer."],
   ["som","who, which, that","Starts a bisats: en person som var ny i Sverige"],["jämfört med","compared to","Malmö är mindre jämfört med Köpenhamn."],
   ["till exempel (t.ex.)","for example","Jag gillar frukt, till exempel äpplen."]]},
  {key:"Work", group:"Arbete (work)", type:"noun", items:[
@@ -739,7 +739,7 @@ const LISTS = [
   ["ett avslut","an ending, close","Vi tog en fika som avslut på kursen."],["en avslutning","end-of-term party, ending","Barnen har avslutning i juni."]]},
  {key:"Home", group:"Hemmet (home)", type:"noun", items:[
   ["en lägenhet","an apartment",""],["ett hus","a house",""],["ett kök","a kitchen",""],["ett sovrum","a bedroom",""],["ett vardagsrum","a living room",""],
-  ["ett badrum","a bathroom",""],["en hyra","a rent","Hur mycket är hyran?"],["en hyresvärd","a landlord",""],["ett hyreskontrakt","a rental contract",""],
+  ["ett badrum","a bathroom",""],["en hyra","a rent","Hur mycket är hyran?\nAtt hyra is the verb, to rent: Vi hyr en lägenhet."],["en hyresvärd","a landlord",""],["ett hyreskontrakt","a rental contract",""],
   ["en tvättstuga","a shared laundry room","Jag har bokat tvättstugan."],["en balkong","a balcony",""],["ett fönster","a window","fönster (plural)"],
   ["en dörr","a door",""],["en säng","a bed",""],["ett bord","a table",""],["en stol","a chair",""],["en soffa","a sofa",""],
   ["en diskmaskin","a dishwasher",""],["ett kylskåp","a fridge",""],["en spis","a stove",""],["en granne","a neighbour","grannar (plural)"]]}
