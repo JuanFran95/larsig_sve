@@ -131,6 +131,7 @@ button.stat:hover span{color:var(--ink)}
 .keys{display:flex;gap:.35rem}
 .keys button{font:inherit;font-size:1.1rem;font-weight:700;width:2.6rem;height:2.6rem;border-radius:.4rem;border:1.5px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
 .verdict{margin:0;font-weight:700}
+@media (max-width:40rem){ #smodes{display:grid;grid-template-columns:1fr 1fr} #smodes button{white-space:nowrap} }
 .bigrow{display:flex;align-items:center;gap:.6rem}
 .saybtn{border:0;background:var(--chip);border-radius:50%;width:2.4rem;height:2.4rem;flex-shrink:0;font-size:1.1rem;cursor:pointer;line-height:1}
 .big.g-en{color:var(--sSi)} .big.g-ett{color:var(--sKi)}
@@ -379,9 +380,11 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
 
   <!-- SENTENCES -->
   <section class="panel" id="panel-sent" hidden>
-    <div class="seg" role="group" aria-label="Exercise">
+    <div class="seg" id="smodes" role="group" aria-label="Exercise">
       <button id="smode-gap" aria-pressed="true" data-smode="gap" data-en="Fill the gap">Fyll i luckan</button>
       <button id="smode-order" aria-pressed="false" data-smode="order" data-en="Word order">Ordföljd</button>
+      <button id="smode-word" aria-pressed="false" data-smode="word" data-en="Right word">Rätt ord</button>
+      <button id="smode-test" aria-pressed="false" data-smode="test" data-en="Grammar test">Grammatiktest</button>
     </div>
     <div class="stats" id="stats-sent"></div>
     <div id="sent-stage"></div>
@@ -941,6 +944,98 @@ const GAPS = [
  ["Efter maratonet var jag helt ___.","slut",["klar","avslut","färdig"],"Helt slut = completely exhausted."],
  ["Till ___ hittade vi huset.","slut",["slutet","klar","avslut"],"Till slut = in the end, finally."],
 ];
+/* Rätt ord: words that mean nearly the same thing, but only one fits */
+const WORDQ = [
+ ["Vad ___ du om maten? – Den var god.","tycker",["tror","tänker","menar"],"Your opinion about something: tycka."],
+ ["Jag ___ att det blir regn imorgon, men jag är inte säker.","tror",["tycker","tänker","vet"],"A guess or belief: tro."],
+ ["Jag ___ på dig hela dagen igår.","tänkte",["tyckte","trodde","mindes"],"Think about someone: tänka på."],
+ ["___ du var stationen ligger?","Vet",["Känner","Kan","Förstår"],"Know a fact: veta."],
+ ["Jag ___ hennes bror, vi jobbar ihop.","känner",["vet","kan","förstår"],"Know a person: känna."],
+ ["Hon ___ tre språk.","kan",["vet","känner","förstår"],"Know a skill or a language: kunna."],
+ ["Får jag ___ din penna en stund?","låna",["hyra","låna ut","ge"],"Borrow something: låna."],
+ ["Vi ___ en lägenhet av ett bostadsbolag.","hyr",["lånar","hyr ut","lånar ut"],"Pay to live somewhere or use something: hyra."],
+ ["Mobilen ___ på bordet.","ligger",["står","sitter","hänger"],"Flat things lie: ligga."],
+ ["Glaset ___ på bordet.","står",["ligger","sitter","hänger"],"Things standing upright: stå."],
+ ["Tavlan ___ på väggen.","hänger",["står","ligger","lägger"],"Things on a hook or nail: hänga."],
+ ["Nyckeln ___ i dörren.","sitter",["ligger","står","sätter"],"Things fixed or stuck in place: sitta."],
+ ["___ glaset på bordet, tack.","Ställ",["Lägg","Sätt","Stå"],"Put something upright: ställa."],
+ ["Jag ___ boken i väskan.","lägger",["ställer","sätter","ligger"],"Put something down flat: lägga."],
+ ["___ dig här bredvid mig!","Sätt",["Sitt","Ställ","Lägg"],"Sit down: sätta sig. Sitta is to be sitting."],
+ ["Vi ___ till Stockholm med tåg.","åker",["går","kör","flyger"],"Travel by vehicle: åka."],
+ ["Jag ___ till affären till fots.","går",["åker","kör","cyklar"],"Walk: gå."],
+ ["Min pappa lärde mig att ___ bil när jag var arton.","köra",["åka","gå","resa"],"Drive a car yourself: köra."],
+ ["Erik älskar ___ fru.","sin",["hans","hennes","deras"],"It belongs to the subject (Erik): sin."],
+ ["Erik och ___ fru bor i Lund.","hans",["sin","sina","hennes"],"Sin can't be part of the subject, so use hans."],
+ ["Det finns ___ människor på stranden.","många",["mycket","lite","mer"],"Things you can count: många."],
+ ["Jag dricker ___ kaffe.","mycket",["många","flera","få"],"Things you can't count: mycket."],
+ ["Kan jag få ___ vatten?","lite",["liten","litet","små"],"A little of something: lite. Liten describes a noun: en liten kopp."],
+ ["Hon ___ mig att stänga dörren.","bad",["frågade","ställde","undrade"],"Ask someone to do something: be (bad)."],
+ ["Får jag ___ en sak?","fråga",["be","ställa","undra"],"Ask a question: fråga."],
+ ["Jag ___ på musik varje morgon.","lyssnar",["hör","ser","tittar"],"Listen on purpose: lyssna på."],
+ ["___ du vad jag säger?","Hör",["Lyssnar","Ser","Tittar"],"Hear: höra. Lyssna always needs på."],
+ ["Vi ___ en film igår.","såg",["tittade","visade","märkte"],"Se + something. Titta needs på: vi tittade på en film."],
+ ["Bussen ___ vid varje hållplats.","stannar",["slutar","avslutar","ligger"],"Stop moving: stanna."],
+ ["Kan du ___ prata? Jag försöker läsa.","sluta",["stanna","avsluta","stoppa"],"Stop doing something: sluta."],
+ ["Jag ___ klockan sju varje morgon och går upp direkt.","vaknar",["väcker","somnar","lägger"],"Wake up yourself: vakna."],
+ ["Kan du ___ mig klockan sex?","väcka",["vakna","somna","sova"],"Wake someone else up: väcka."],
+ ["Jag ___ i Malmö.","bor",["lever","finns","stannar"],"Live somewhere (your home): bo."],
+ ["Jag lär ___ svenska.","mig",["dig","oss","sig"],"Learn: lära sig. Jag lär mig, du lär dig."],
+ ["Kan du ___ radion? Jag vill höra nyheterna.","sätta på",["stänga av","ta på","sätta av"],"Turn on: sätta på."],
+ ["Glöm inte att ___ datorn innan du går hem.","stänga av",["sätta på","ta av","slänga bort"],"Turn off: stänga av."],
+ ["Det är kallt ute, ___ dig jackan!","ta på",["ta av","ta med","ta bort"],"Put on clothes: ta på sig."],
+ ["Vi ska ___ mormor på söndag.","hälsa på",["hälsa","hälsa ut","gå ut"],"Visit someone: hälsa på. Hälsa alone means to greet."],
+ ["Du har rätt, jag ___ dig.","håller med",["håller på","tycker om","känner igen"],"Agree: hålla med."],
+ ["Du ser trött ___. Sov du dåligt?","ut",["på","upp","av"],"Look (appearance): se ut."],
+ ["Jag ___ helgen!","ser fram emot",["ser ut","ser på","tittar fram"],"Look forward to: se fram emot."],
+ ["Vi kommer bra ___, jag och mina grannar.","överens",["ihåg","tillbaka","ut"],"Get along: komma överens."],
+ ["Telefonen ramlade i golvet och ___.","gick sönder",["slog sönder","gick ut","gick över"],"Break by itself: gå sönder. Slå sönder needs an object."],
+ ["Huvudvärken ___ efter en timme.","gick över",["gick sönder","gick ut","gav upp"],"Pain that passes: gå över."],
+ ["Ge inte ___! Du klarar det.","upp",["av","ut","bort"],"Give up: ge upp."],
+];
+/* Grammatiktest: quick grammar questions */
+const TESTQ = [
+ ["En stol – två ___.","stolar",["stoler","stolor","stol"],"Group 2: -ar."],
+ ["En flicka – två ___.","flickor",["flickar","flicker","flickorna"],"En-words ending in -a: -or."],
+ ["Ett äpple – två ___.","äpplen",["äpplar","äppler","äpple"],"Ett-words ending in a vowel: -n."],
+ ["Ett hus – två ___.","hus",["husar","huser","husen"],"Ett-words ending in a consonant: no ending."],
+ ["En stad – två ___.","städer",["stader","stadar","städar"],"Group 3 with a vowel change: a → ä."],
+ ["Jag har ___ katt.","en",["ett","den","det"],"Katt is an en-word: en katt, katten."],
+ ["Var är boken? – ___ ligger på bordet.","Den",["Det","Han","Hon"],"Boken is an en-word, so den."],
+ ["Var är bordet? – ___ står i köket.","Det",["Den","Han","Hon"],"Bordet is an ett-word, so det."],
+ ["Vi bor i ett ___ hus. (stor)","stort",["stor","stora","större"],"Ett-word: add -t."],
+ ["Jag gillar den ___ bilen. (röd)","röda",["röd","rött","rödt"],"After den/det/de the adjective ends in -a."],
+ ["Huset är ___. (röd)","rött",["röd","röda","rödt"],"Ett-word after the verb: röd → rött."],
+ ["Han är ___ än sin bror. (lång)","längre",["långare","längst","mer lång"],"Irregular: lång, längre, längst."],
+ ["Det är den ___ filmen jag har sett. (bra)","bästa",["bättre","bra","godaste"],"Irregular: bra, bättre, bäst. After den: bästa."],
+ ["Det här är ___ bok.","min",["mitt","mina","mig"],"En-word: min."],
+ ["Det här är ___ hus.","mitt",["min","mina","mig"],"Ett-word: mitt."],
+ ["Har du sett ___ nya skor?","mina",["min","mitt","mig"],"Plural: mina."],
+ ["Peter tog ___ jacka och gick.","sin",["hans","sitt","sina"],"Peter's own jacket, an en-word: sin."],
+ ["Hon tvättar ___ varje morgon.","sig",["henne","hon","sin"],"Reflexive for han/hon/de: sig."],
+ ["Ni måste skynda ___ nu.","er",["sig","dem","oss"],"Reflexive for ni: er."],
+ ["Igår ___ jag på bio.","gick",["går","gått","gå"],"Igår = finished time, so preteritum."],
+ ["Jag har aldrig ___ i Japan.","varit",["var","är","vara"],"Har + supinum."],
+ ["Vad ___ du igår kväll?","gjorde",["gör","gjort","göra"],"Igår kväll = preteritum."],
+ ["Har du ___ boken?","läst",["läste","läsa","läser"],"Har + supinum."],
+ ["Imorgon ___ jag åka till Lund.","ska",["skulle","har","var"],"Future plan: ska + infinitive."],
+ ["Idag ___ kaffe.","dricker jag inte",["jag dricker inte","jag inte dricker","inte dricker jag"],"Omvänd ordföljd: verb second, then the subject, then inte."],
+ ["Hon säger att hon ___ trött idag.","inte är",["är inte","inte vara","vara inte"],"BIFF: in a bisats, inte comes before the verb."],
+ ["Om du har tid, ___ mig.","ring",["ringer","ringa","ringde"],"A command: imperativ."],
+ ["Jag har bott här ___ 2017.","sedan",["för","i","på"],"Since a point in time: sedan."],
+ ["Jag har bott här ___ tre år.","i",["sedan","på","till"],"For a length of time: i."],
+ ["Vi ses ___ fredag kväll.","på",["i","om","till"],"Days of the week: på."],
+ ["Jag föddes ___ juli.","i",["på","om","till"],"Months: i."],
+ ["Vi ses ___ en vecka.","om",["i","på","till"],"In a week from now: om."],
+ ["Har du barn? – Nej, det ___ jag inte.","har",["gör","är","kan"],"The question has har, so the answer reuses har."],
+ ["Är du hungrig? – Ja, det ___ jag.","är",["gör","har","blir"],"The question has är, so the answer reuses är."],
+ ["Jobbar du idag? – Ja, det ___ jag.","gör",["jobbar","är","har"],"Any other verb: answer with gör."],
+ ["Var du sjuk igår? – Ja, det ___ jag.","var",["gjorde","är","hade"],"The question has var, so the answer reuses var."],
+ ["Åt du frukost? – Nej, det ___ jag inte.","gjorde",["åt","gör","var"],"Another verb in preteritum: answer with gjorde."],
+ ["Är du inte trött? – ___, jag är jättetrött!","Jo",["Ja","Nej","Jaha"],"Yes to a question with inte: jo."],
+ ["Gillar du inte kaffe? – ___, jag älskar kaffe!","Jo",["Ja","Nej","Jaha"],"Yes to a question with inte: jo."],
+ ["Kan du simma? – Ja, ___.","det kan jag",["det jag kan","jag det kan","kan det jag"],"Det first, then the verb, then jag."],
+];
+
 
 /* ---------- word order: w(ords in correct order), end mark, en hint, alt orders ---------- */
 const ORDER = [
@@ -1641,8 +1736,13 @@ $("#gsearch").addEventListener("input",renderGrammar);
 
 /* ================= SENTENCES ================= */
 let smode="gap", ss=null;
+const SMODES={
+ gap:{get title(){return L("Fyll i luckan","Fill the gap")},get tag(){return L("fyll i luckan","fill the gap")},intro:"Pick the right word for the sentence. All four choices look possible, so think about the grammar: tense, en/ett, prepositions and word order."},
+ order:{get title(){return L("Sätt orden i rätt ordning","Put the words in order")},get tag(){return L("ordföljd","word order")},intro:"Tap the words to build the sentence. Watch where the verb goes, and where inte and other satsadverb go."},
+ word:{get title(){return L("Rätt ord","The right word")},get tag(){return L("rätt ord","right word")},intro:"The choices all mean something similar, but only one fits the sentence. Think about tycka or tro, ligga or stå, partikelverb and more."},
+ test:{get title(){return L("Grammatiktest","Grammar test")},get tag(){return L("grammatik","grammar")},intro:"Quick questions on plurals, en/ett, adjectives, sin/hans, verb tenses, prepositions, word order and short yes/no answers."}};
 const gapId=g=>"g:"+hash(g[0]), ordId=o=>"o:"+hash(o[0].join(" "));
-const GBY=Object.fromEntries(GAPS.map(g=>[gapId(g),g])), OBY=Object.fromEntries(ORDER.map(o=>[ordId(o),o]));
+const GBY=Object.fromEntries([...GAPS,...WORDQ,...TESTQ].map(g=>[gapId(g),g])), OBY=Object.fromEntries(ORDER.map(o=>[ordId(o),o]));
 /* ---------- word lookup: hover or tap a word in Meningar ---------- */
 const BASIC={ // small words and grammar words, only used for lookup
  jag:"I",du:"you",han:"he",hon:"she",den:"it, the (en-words)",det:"it, that, there",vi:"we",ni:"you (more than one)",de:"they",
@@ -1654,7 +1754,7 @@ const BASIC={ // small words and grammar words, only used for lookup
  någonsin:"ever",förut:"before",ihåg:"komma ihåg = to remember",ses:"to see each other, meet",
  måste:"must, have to",ska:"will, going to, should",kan:"can",vill:"want to",skulle:"would, was going to",borde:"should, ought to",
  röka:"to smoke",röker:"smokes",dansa:"to dance",leka:"to play (like children)",leker:"plays",skynda:"to hurry",stanna:"to stay, stop",stannade:"stayed, stopped",
- undra:"to wonder",hälsa:"health; to greet (hälsa på = to visit)",undrar:"wonders",jobba:"to work",
+ undra:"to wonder",bad:"asked (att be)",ramlade:"fell (att ramla)",föddes:"was born",stannar:"stops, stays",väcka:"to wake someone up",ihop:"together",direkt:"right away",emot:"towards (se fram emot = look forward to)",fram:"forward",upp:"up",sönder:"broken (gå sönder = to break)",överens:"komma överens = to get along",er:"you, your (ni)",många:"many",varje:"every, each",tack:"thanks",rätt:"right, correct",god:"good, tasty",säker:"sure, safe",jättetrött:"very tired",japan:"Japan",stockholm:"Stockholm",peter:"a name",hälsa:"health; to greet (hälsa på = to visit)",undrar:"wonders",jobba:"to work",
  två:"two",tre:"three",fyra:"four",fem:"five",sex:"six",sju:"seven",åtta:"eight",nio:"nine",tio:"ten",elva:"eleven",tolv:"twelve",tjugo:"twenty",hundra:"hundred",
  måndag:"Monday",tisdag:"Tuesday",onsdag:"Wednesday",torsdag:"Thursday",fredag:"Friday",lördag:"Saturday",söndag:"Sunday",måndags:"i måndags = last Monday",
  röd:"red",rött:"red (ett-words)",bästa:"best",varmare:"warmer",
@@ -1664,7 +1764,7 @@ const BASIC_N={ // nouns and adjectives: other forms are found too (bussen, gula
  hund:"dog",hundar:"dogs",jacka:"jacket",kaffe:"coffee",katt:"cat",katter:"cats",kväll:"evening",kött:"meat",lampa:"lamp",leksak:"toy",leksaker:"toys",
  middag:"dinner",minut:"minute",minuter:"minutes",morgon:"morning",mormor:"grandmother (mum's mum)",musik:"music",namn:"name",ont:"pain (ha ont = to hurt)",
  ord:"word",sko:"shoe",skor:"shoes",surströmming:"fermented herring",timme:"hour",timmar:"hours",tåg:"train",väska:"bag",äpple:"apple",äpplen:"apples",år:"year",
- barn:"child, children",bror:"brother",sommar:"summer",bok:"book",gul:"yellow",gift:"married",intresserad:"interested",rädd:"afraid, scared",svensk:"Swedish"};
+ barn:"child, children",affär:"shop",bil:"car",bio:"cinema",bostadsbolag:"housing company",dag:"day",fru:"wife",glas:"glass",golv:"floor",helg:"weekend",hållplats:"bus stop",juli:"July",klocka:"clock (klockan sju = at seven)",mat:"food",mobil:"mobile phone",människa:"person",människor:"people",nyckel:"key",nyheter:"news",pappa:"dad",penna:"pen",radio:"radio",regn:"rain",sak:"thing",språk:"language",stad:"town, city",städer:"towns, cities",station:"station",strand:"beach",stund:"a while",tavla:"painting, picture",telefon:"phone",tid:"time",vatten:"water",vecka:"week",vägg:"wall",arton:"eighteen",bror:"brother",sommar:"summer",bok:"book",gul:"yellow",gift:"married",intresserad:"interested",rädd:"afraid, scared",svensk:"Swedish"};
 let LEX=null, LEXN=-1;
 function buildLex(){
   const m=new Map(), put=(f,sv,en,how,fz)=>{ const k=String(f).toLowerCase(); if(k&&!k.includes(" ")&&!m.has(k)) m.set(k,{sv,en,how:how||"",fz:!!fz}) }, FZ=new Set(["noun","adjective","other"]);
@@ -1710,7 +1810,7 @@ document.addEventListener("click",e=>{
   if(!e.target.closest("#lkpop")) lkHide();
 });
 addEventListener("scroll",()=>lkOpen&&lkHide(),{passive:true});
-const sentIds=()=>smode==="gap"?GAPS.map(gapId):ORDER.map(ordId);
+const sentIds=()=>smode==="gap"?GAPS.map(gapId):smode==="word"?WORDQ.map(gapId):smode==="test"?TESTQ.map(gapId):ORDER.map(ordId);
 const cap=t=>t.charAt(0).toUpperCase()+t.slice(1);
 document.querySelectorAll("[data-smode]").forEach(b=>b.onclick=()=>{smode=b.dataset.smode;ss=null;renderSent()});
 /* sentence-type badges */
@@ -1731,14 +1831,14 @@ function tagsFor(id){
 }
 function badgesHTML(id){
   const t=tagsFor(id); if(!t.length) return "";
-  const answered = smode==="gap" ? ss.choice!==null : ss.checked;
+  const answered = smode!=="order" ? ss.choice!==null : ss.checked;
   if(!answered && !ss.showHint) return `<div class="badges"><button type="button" class="badge hintbtn" data-showhint="1">💡 ${L("Ledtråd","Hint")}</button></div>`;
   return `<div class="badges">${t.map(k=>`<button type="button" class="badge s-${TAGS[k].cls}${ss.tagOpen===k?" on":""}" data-tag="${k}">${TAGS[k].name} <span aria-hidden="true">ⓘ</span></button>`).join("")}</div>${ss.tagOpen&&t.includes(ss.tagOpen)?`<p class="taghint">${esc(TAGS[ss.tagOpen].hint)}</p>`:""}`;
 }
 function wireBadges(st){ st.querySelectorAll("[data-showhint]").forEach(b=>b.onclick=()=>{ ss.showHint=true; renderSent() }); st.querySelectorAll("[data-tag]").forEach(b=>b.onclick=()=>{ ss.tagOpen = ss.tagOpen===b.dataset.tag ? null : b.dataset.tag; renderSent() }) }
 function prepItem(){
   const id=ss.queue[ss.i]; ss.tagOpen=null; ss.showHint=false;
-  if(smode==="gap"){ const g=GBY[id]; ss.opts=shuffle([g[1],...g[2]]); ss.choice=null }
+  if(smode!=="order"){ const g=GBY[id]; ss.opts=shuffle([g[1],...g[2]]); ss.choice=null }
   else { const o=OBY[id]; ss.bank=shuffle(o[0].map((_,i)=>i)); ss.picked=[]; ss.checked=false }
 }
 function renderSent(){
@@ -1747,8 +1847,8 @@ function renderSent(){
   const st=$("#sent-stage");
   if(!ss){
     const n=buildQueue(ids).length;
-    st.innerHTML=`<div class="empty"><h2>${smode==="gap"?L("Fyll i luckan","Fill the gap"):L("Sätt orden i rätt ordning","Put the words in order")}</h2>
-      <p style="margin:0">${smode==="gap"?"Pick the right word for the sentence. All four choices look possible, so think about the grammar: tense, en/ett, prepositions and word order.":"Tap the words to build the sentence. Watch where the verb goes, and where inte and other satsadverb go."}</p>
+    st.innerHTML=`<div class="empty"><h2>${SMODES[smode].title}</h2>
+      <p style="margin:0">${SMODES[smode].intro}</p>
       <button class="btn" id="sstart" ${n?"":"disabled"}>${n?L("Starta ("+n+" meningar)","Start ("+n+" sentences)"):L("Klart för idag","All done for now")}</button></div>`;
     if(n) $("#sstart").onclick=()=>{ss={queue:buildQueue(ids),i:0,right:0,wrong:0};prepItem();renderSent()};
     return;
@@ -1759,8 +1859,8 @@ function renderSent(){
       <div class="row"><button class="btn" id="sback">${L("Tillbaka","Back to overview")}</button></div></div>`;
     $("#sback").onclick=()=>{ss=null;renderSent()}; return;
   }
-  const id=ss.queue[ss.i], meta=`<div class="meta"><span>${ss.i+1} / ${ss.queue.length}${!state.cards[id]?L(" · ny"," · new"):""}</span><span>${smode==="gap"?L("fyll i luckan","fill the gap"):L("ordföljd","word order")}</span></div>`;
-  if(smode==="gap"){
+  const id=ss.queue[ss.i], meta=`<div class="meta"><span>${ss.i+1} / ${ss.queue.length}${!state.cards[id]?L(" · ny"," · new"):""}</span><span>${SMODES[smode].tag}</span></div>`;
+  if(smode!=="order"){
     const g=GBY[id], [a,b]=g[0].split("___"), done=ss.choice!==null;
     st.innerHTML=`${bar(ss.i,ss.queue.length)}<div class="card">${meta}
       ${badgesHTML(id)}
