@@ -385,6 +385,19 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
     </div>
     <div class="stats" id="stats-sent"></div>
     <div id="sent-stage"></div>
+    <details class="fbox" id="ownbox">
+      <summary><h2 style="display:inline"><span data-en="My own sentences">Egna meningar</span> · <span id="owncount">0</span></h2></summary>
+      <p class="note">One sentence per line. They get mixed in with the others.<br>
+        <b>Fill the gap:</b> put [ ] around the missing word, then | and the wrong choices.<br>
+        <code>Igår [cyklade] jag till jobbet. | cyklar, cykla, har cyklat</code><br>
+        For a verb you can skip the wrong choices and the app uses the other forms: <code>Hon [åt] frukost klockan sju.</code><br>
+        You can add a tip after a second |: <code>… | cyklar, cykla | Igår = preteritum</code><br>
+        <b>Word order:</b> the sentence, = and the English.<br>
+        <code>Idag äter jag inte kött. = Today I'm not eating meat.</code></p>
+      <textarea id="ownin" aria-label="New sentences" placeholder="Igår [cyklade] jag till jobbet. | cyklar, cykla&#10;Idag äter jag inte kött. = Today I'm not eating meat."></textarea>
+      <div class="row end"><span class="note grow" id="ownmsg"></span><button class="btn" id="ownadd" type="button" data-en="Add">Lägg till</button></div>
+      <div id="ownsents" class="stack"></div>
+    </details>
   </section>
 
   <!-- MY WORDS -->
@@ -984,10 +997,10 @@ const hash = s=>{let h=5381;for(const c of s)h=((h<<5)+h+c.charCodeAt(0))|0;retu
 
 /* ================= STATE + SAVING ================= */
 const LSKEY = "svenska-varje-dag-v1";
-let state = {v:2,tp:0,tn:0,cards:{},words:[],notes:[]};
+let state = {v:2,tp:0,tn:0,cards:{},words:[],notes:[],sents:[]};
 function lsGet(){try{return JSON.parse(localStorage.getItem(LSKEY)||"null")}catch(e){return null}}
 function lsSet(){try{localStorage.setItem(LSKEY,JSON.stringify(state))}catch(e){}}
-(function(){const l=lsGet(); if(l && l.cards){ state.cards=l.cards; state.words=l.words||[]; state.notes=l.notes||[]; state.tp=l.tp||l.t||0; state.tn=l.tn||0 }})();
+(function(){const l=lsGet(); if(l && l.cards){ state.cards=l.cards; state.words=l.words||[]; state.sents=l.sents||[]; state.notes=l.notes||[]; state.tp=l.tp||l.t||0; state.tn=l.tn||0 }})();
 for(const w of state.words){ if(!w.type) w.type="other"; if(w.group==null) w.group="" }
 const GROUP_RENAME = {"Expressions & idioms":"Uttryck och idiom (expressions & idioms)","My partikelverb":"Mina partikelverb (my phrasal verbs)",
  "Small words & adverbs":"Småord och adverb (small words & adverbs)","Feelings & describing words":"Känslor och beskrivande ord (feelings & describing words)",
@@ -1012,7 +1025,7 @@ function save(kind){
   if(gh.token){ clearTimeout(syncTimer); setSync(L("Sparar…","Saving…")); syncTimer=setTimeout(()=>{syncTimer=null;sync()},2500) }
   else setSync(L("Sparat på den här enheten","Saved on this device"));
 }
-function payload(){ return {app:"svenska-varje-dag",v:2,tp:state.tp,tn:state.tn,cards:state.cards,words:state.words,notes:state.notes} }
+function payload(){ return {app:"svenska-varje-dag",v:2,tp:state.tp,tn:state.tn,cards:state.cards,words:state.words,sents:state.sents,notes:state.notes} }
 async function api(path, opts={}){
   const r = await fetch("https://api.github.com"+path,{...opts,cache:"no-store",headers:{Authorization:"Bearer "+gh.token,Accept:"application/vnd.github+json",...(opts.body?{"Content-Type":"application/json"}:{})}});
   if(!r.ok){ const e=new Error("github "+r.status); e.status=r.status; throw e }
@@ -1040,7 +1053,7 @@ async function doSync(){
     if(f){ const text = f.truncated ? await (await fetch(f.raw_url,{cache:"no-store"})).text() : f.content; try{ remote=JSON.parse(text) }catch(e){} }
     let changed=false, push=!remote;
     if(remote){
-      if((remote.tp||0)>state.tp){ state.cards=remote.cards||{}; state.words=remote.words||[]; state.tp=remote.tp; changed=true }
+      if((remote.tp||0)>state.tp){ state.cards=remote.cards||{}; state.words=remote.words||[]; state.sents=remote.sents||[]; state.tp=remote.tp; changed=true }
       else if(state.tp>(remote.tp||0)) push=true;
       if((remote.tn||0)>state.tn){ state.notes=remote.notes||[]; state.tn=remote.tn; changed=true }
       else if(state.tn>(remote.tn||0)) push=true;
@@ -1096,6 +1109,7 @@ document.getElementById("importfile").onchange=async e=>{
     let w=0,n=0;
     for(const x of d.words||[]){ if(x&&x.id&&!state.words.some(y=>y.id===x.id||(y.sv===x.sv&&y.en===x.en))){ state.words.push({type:"other",group:"",note:"",...x}); w++ } }
     for(const x of d.notes||[]){ if(x&&x.id&&!state.notes.some(y=>y.id===x.id)){ state.notes.push(x); n++ } }
+    for(const x of d.sents||[]){ if(x&&x.id&&!state.sents.some(y=>y.id===x.id)) state.sents.push(x) }
     for(const [k,v] of Object.entries(d.cards||{})){ if(!state.cards[k]) state.cards[k]=v }
     migrateGroups(); save("p"); save("n"); renderAll();
     msg.textContent=`Loaded backup: ${w} new word${w===1?"":"s"}, ${n} new note${n===1?"":"s"}.`;
@@ -1710,6 +1724,56 @@ document.addEventListener("click",e=>{
   if(!e.target.closest("#lkpop")) lkHide();
 });
 addEventListener("scroll",()=>lkOpen&&lkHide(),{passive:true});
+/* ---------- your own sentences (saved and synced with your words) ---------- */
+const GAPS0=GAPS.length, ORDER0=ORDER.length;
+function verbForms(w){ const h=lookup(w); if(!h||!/^att /.test(h.sv)) return null; const v=VBY[h.sv.slice(4)]; if(!v) return null;
+  return [...new Set([v[0],v[1],...String(v[2]).split("/"),v[3],"har "+v[3]])].filter(x=>x&&x!=="–"&&x!==w.toLowerCase()) }
+function parseSentLine(line){
+  const t=line.trim(); if(!t) return null;
+  const m=t.match(/\[([^\]]+)\]/);
+  if(m){
+    const parts=t.split("|").map(x=>x.trim()), sent=parts[0], ans=m[1].trim();
+    let wrong=(parts[1]||"").split(",").map(x=>x.trim()).filter(Boolean);
+    if(!wrong.length){ const vf=verbForms(ans); if(vf) wrong=shuffle(vf).slice(0,3) }
+    if(!wrong.length) return {err:L("Skriv några fel alternativ efter |, t.ex. … | cyklar, cykla","Add some wrong choices after |, e.g. … | cyklar, cykla")};
+    return {kind:"gap",text:sent.replace(/\[[^\]]+\]/,"___").replace(/\s+/g," "),ans,wrong:wrong.slice(0,3),tip:parts[2]||""};
+  }
+  const eq=t.indexOf("=");
+  if(eq>0){
+    const sv=t.slice(0,eq).trim(), en=t.slice(eq+1).trim(), pm=sv.match(/[.!?…]+$/), body=sv.replace(/[.!?…]+$/,"").trim();
+    const toks=body.split(/\s+/); if(toks.length<3) return {err:L("Meningen behöver minst tre ord.","The sentence needs at least three words.")};
+    toks[0]=/^[A-ZÅÄÖ][a-zåäö]+$/.test(toks[0])&&!lookup(toks[0])&&!["Jag"].includes(toks[0])?toks[0]:toks[0].toLowerCase();
+    return {kind:"order",toks,punct:pm?pm[0]:".",en};
+  }
+  return {err:L("Använd [ ] runt ordet som ska bort, eller = för en översättning.","Put [ ] around the missing word, or use = for a translation.")};
+}
+function rebuildSents(){
+  GAPS.length=GAPS0; ORDER.length=ORDER0;
+  for(const x of state.sents||[]){ if(x.kind==="gap") GAPS.push([x.text,x.ans,x.wrong,x.tip||L("Din egen mening.","Your own sentence.")]); else if(x.kind==="order") ORDER.push([x.toks,x.punct,x.en,[]]) }
+  for(const k in GBY) delete GBY[k]; for(const k in OBY) delete OBY[k];
+  for(const g of GAPS) GBY[gapId(g)]=g; for(const o of ORDER) OBY[ordId(o)]=o;
+}
+function renderOwnSents(){
+  const box=$("#ownsents"); if(!box) return; const list=state.sents||[];
+  $("#owncount").textContent=list.length;
+  box.innerHTML = list.length ? list.map(x=>`<div class="item"><span class="sv" style="grid-column:1/3">${x.kind==="gap"?esc(x.text).replace("___",`<b class="gapslot">${esc(x.ans)}</b>`):esc(cap(x.toks.join(" "))+x.punct)}</span>
+      <span class="acts"><button class="link del" data-sdel="${x.id}">${L("Ta bort","Delete")}</button></span>
+      <span class="sub"><span class="tag">${x.kind==="gap"?L("fyll i luckan","fill the gap"):L("ordföljd","word order")}</span><span class="n">${x.kind==="gap"?esc(L("Fel alternativ: ","Wrong choices: ")+x.wrong.join(", ")):esc(x.en)}</span></span></div>`).join("")
+    : `<p class="note">${L("Inga egna meningar än.","No sentences of your own yet.")}</p>`;
+  box.querySelectorAll("[data-sdel]").forEach(b=>b.onclick=()=>armDelete(b,()=>{ state.sents=state.sents.filter(x=>x.id!==b.dataset.sdel); save("p"); ss=null; renderSent() }));
+}
+document.addEventListener("click",e=>{
+  if(e.target.id!=="ownadd") return;
+  const ta=$("#ownin"), msg=$("#ownmsg"), lines=ta.value.split("\n"); let added=0; const bad=[];
+  state.sents=state.sents||[];
+  for(const line of lines){ const r=parseSentLine(line); if(!r) continue; if(r.err){ bad.push(line.trim()+"  →  "+r.err); continue }
+    const key=r.kind==="gap"?r.text+"|"+r.ans:r.toks.join(" "); if(state.sents.some(x=>(x.kind==="gap"?x.text+"|"+x.ans:(x.toks||[]).join(" "))===key)) continue;
+    state.sents.push({id:uidGen(),...r}); added++ }
+  if(added){ save("p"); ss=null }
+  ta.value=bad.map(b=>b.split("  →  ")[0]).join("\n");
+  msg.textContent=(added?L(`Lade till ${added} ${added===1?"mening":"meningar"}.`,`Added ${added} sentence${added===1?"":"s"}.`):"")+(bad.length?" "+L("De här behöver fixas: ","These need fixing: ")+bad.map(b=>b.split("  →  ")[1]).filter((v,i,a)=>a.indexOf(v)===i).join(" · "):"");
+  renderSent();
+});
 const sentIds=()=>smode==="gap"?GAPS.map(gapId):ORDER.map(ordId);
 const cap=t=>t.charAt(0).toUpperCase()+t.slice(1);
 document.querySelectorAll("[data-smode]").forEach(b=>b.onclick=()=>{smode=b.dataset.smode;ss=null;renderSent()});
@@ -1742,6 +1806,7 @@ function prepItem(){
   else { const o=OBY[id]; ss.bank=shuffle(o[0].map((_,i)=>i)); ss.picked=[]; ss.checked=false }
 }
 function renderSent(){
+  rebuildSents(); renderOwnSents();
   document.querySelectorAll("[data-smode]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.smode===smode));
   const ids=sentIds(); stats($("#stats-sent"),counts(ids),ids);
   const st=$("#sent-stage");
