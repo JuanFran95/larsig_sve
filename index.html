@@ -304,6 +304,9 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
     <h3 data-en="Language">Språk</h3>
     <div class="seg" role="group" aria-label="Language" style="align-self:flex-start"><button type="button" data-lang-btn="sv" aria-pressed="true">Svenska</button><button type="button" data-lang-btn="en" aria-pressed="false">English</button></div>
     <p class="note">Changes the buttons, tabs and labels. Explanations stay in English.</p>
+    <h3 data-en="Voice">Röst</h3>
+    <div class="row" style="flex-wrap:wrap"><select id="voicesel" aria-label="Swedish voice" style="width:auto;max-width:100%"></select><button type="button" class="btn ghost small" id="voicetest" data-en="Test">Testa</button></div>
+    <p class="note" id="voicenote"></p>
     <h3 data-en="Sync with GitHub">Synka med GitHub</h3>
     <div id="sync-off" class="stack">
       <p class="note">Paste your GitHub access key (it starts with <b>ghp_</b>) to keep your words, notes and progress the same on your Mac and phone. They're saved in a private gist in your account. You do this once on each device.</p>
@@ -1251,9 +1254,28 @@ function renderCards(){
 }
 /* ---- sound: the phone's or Mac's own Swedish voice ---- */
 const canSay = "speechSynthesis" in window;
-function svVoice(){ const vs=speechSynthesis.getVoices(); return vs.find(v=>/^sv/i.test(v.lang)&&/premium|enhanced|alva|klara/i.test(v.name)) || vs.find(v=>/^sv/i.test(v.lang)) }
-function say(t){ if(!canSay) return; speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(String(t).replace(/\//g,", ")); u.lang="sv-SE"; const v=svVoice(); if(v) u.voice=v; u.rate=.9; speechSynthesis.speak(u) }
-if(canSay) speechSynthesis.getVoices();
+let voicePref=""; try{ voicePref=localStorage.getItem("larsig-voice")||"" }catch(e){}
+const svVoices = () => canSay ? speechSynthesis.getVoices().filter(v=>/^sv/i.test(v.lang)) : [];
+function svVoice(){ const vs=svVoices(); return vs.find(v=>v.name===voicePref) || vs.find(v=>/premium|enhanced|förbättrad/i.test(v.name)) || vs.find(v=>/alva|klara|oskar/i.test(v.name)) || vs[0] }
+function say(t){
+  if(!canSay) return;
+  if(!speechSynthesis.getVoices().length){ speechSynthesis.addEventListener("voiceschanged",()=>say(t),{once:true}); return }
+  speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(String(t).replace(/\//g,", ")); u.lang="sv-SE";
+  const v=svVoice(); if(v){ u.voice=v; u.lang=v.lang } u.rate=.9; speechSynthesis.speak(u);
+}
+function renderVoices(){
+  const sel=$("#voicesel"), note=$("#voicenote"); if(!sel) return;
+  if(!canSay){ sel.hidden=true; $("#voicetest").hidden=true; note.textContent=L("Den här webbläsaren kan inte läsa upp ord.","This browser can't read words aloud."); return }
+  const vs=svVoices(), cur=svVoice();
+  sel.innerHTML = vs.length ? vs.map(v=>`<option value="${esc(v.name)}"${cur&&v.name===cur.name?" selected":""}>${esc(v.name)} (${esc(v.lang)})</option>`).join("") : `<option>${L("Ingen svensk röst hittades","No Swedish voice found")}</option>`;
+  sel.disabled=!vs.length;
+  note.textContent = vs.length ? L("Rösten som används när du trycker på 🔊.","The voice used when you tap 🔊.")
+    : L("Den här webbläsaren hittar ingen svensk röst, så den läser med en engelsk röst. Prova appen i Safari på Macen, eller lägg till en svensk röst i telefonens inställningar för text till tal.","This browser can't find a Swedish voice, so it reads with an English one. Try the app in Safari on the Mac, or add a Swedish voice in your phone's text-to-speech settings.");
+}
+if(canSay){ speechSynthesis.getVoices(); speechSynthesis.addEventListener("voiceschanged",renderVoices) }
+document.addEventListener("change",e=>{ if(e.target.id==="voicesel"){ voicePref=e.target.value; try{ localStorage.setItem("larsig-voice",voicePref) }catch(_){} say("Hej! Jag lär mig svenska.") } });
+document.addEventListener("click",e=>{ if(e.target.id==="voicetest") say("Hej! Jag lär mig svenska.") });
+document.addEventListener("click",e=>{ if(e.target.closest("#synctoggle")) setTimeout(renderVoices,50) });
 const sayBtn = t => canSay?`<button type="button" class="saybtn" data-say="${esc(t)}" aria-label="${L("Lyssna","Listen")}" title="${L("Lyssna","Listen")}">🔊</button>`:"";
 /* ---- en/ett: from the word itself, or from the note (en läroplan) ---- */
 function genderOf(f){
