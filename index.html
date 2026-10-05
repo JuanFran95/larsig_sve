@@ -504,7 +504,7 @@ const VERBS = [
  ["åka","åker","åkte","åkt","to go (by vehicle), travel",2],["simma","simmar","simmade","simmat","to swim",1],["tvätta","tvättar","tvättade","tvättat","to wash",1],
  ["duscha","duschar","duschade","duschat","to shower",1],["byta","byter","bytte","bytt","to change, swap",2],["gilla","gillar","gillade","gillat","to like",1],
  ["älska","älskar","älskade","älskat","to love",1],["hata","hatar","hatade","hatat","to hate",1],["sätta","sätter","satte","satt","to put, set",4],
- ["ställa","ställer","ställde","ställt","to put (standing)",2],["hänga","hänger","hängde","hängt","to hang",2],["sluta","slutar","slutade","slutat","to stop, quit",1],
+ ["ställa","ställer","ställde","ställt","to put (standing)",2],["hänga","hänger","hängde","hängt","to hang",2],["sluta","slutar","slutade","slutat","to stop, quit",1],["avsluta","avslutar","avslutade","avslutat","to end, finish (something)",1],
  ["fortsätta","fortsätter","fortsatte","fortsatt","to continue",4],["lämna","lämnar","lämnade","lämnat","to leave",1],["skratta","skrattar","skrattade","skrattat","to laugh",1],
  ["le","ler","log","lett","to smile",4],["ljuga","ljuger","ljög","ljugit","to lie (not tell the truth)",4],["bita","biter","bet","bitit","to bite",4],
  ["njuta","njuter","njöt","njutit","to enjoy",4],["stjäla","stjäl","stal","stulit","to steal",4],["förklara","förklarar","förklarade","förklarat","to explain",1],
@@ -733,6 +733,10 @@ const LISTS = [
   ["Tack på förhand!","Thanks in advance!","Formal emails."],["Tack för hjälpen!","Thanks for the help!",""],
   ["Kram / Kramar","Hug / Hugs","To friends and family."],["Puss","Kiss","Close friends and family."],["Hälsningar","Regards","Neutral."],
   ["Med vänlig hälsning","Kind regards (formal)","Often shortened MVH. Also: Med vänliga hälsningar."],["Bästa hälsningar","Best regards",""],["Allt gott","All the best",""]]},
+ {key:"Finishing", group:"Klar, slut, avslut (finishing & ending)", type:"other", items:[
+  ["klar","done, ready; clear","Jag är klar med läxan. · Maten är klar!"],["färdig","finished, ready","Jag är färdig. (same as klar, a bit more formal)"],
+  ["slut","the end; used up, over","Mjölken är slut. · i slutet av filmen · Jag är helt slut. (exhausted)"],["till slut","in the end, finally","Till slut hittade vi huset."],
+  ["ett avslut","an ending, close","Vi tog en fika som avslut på kursen."],["en avslutning","end-of-term party, ending","Barnen har avslutning i juni."]]},
  {key:"Home", group:"Hemmet (home)", type:"noun", items:[
   ["en lägenhet","an apartment",""],["ett hus","a house",""],["ett kök","a kitchen",""],["ett sovrum","a bedroom",""],["ett vardagsrum","a living room",""],
   ["ett badrum","a bathroom",""],["en hyra","a rent","Hur mycket är hyran?"],["en hyresvärd","a landlord",""],["ett hyreskontrakt","a rental contract",""],
@@ -802,6 +806,17 @@ GUIDE.push(
   table:{head:["Swedish","English","when"],rows:[["på måndag","next Monday","future"],["i måndags","last Monday","past"],["på måndagar","on Mondays","every time"],["i sommar","this summer","future / now"],["i somras","last summer","past"],["om en vecka","in a week","from now"],["för en vecka sedan","a week ago","past"],["i en vecka","for a week","how long"],["på en vecka","within a week","how fast"],["i morse","this morning","past"],["i år / i fjol","this year / last year",""]]},
   tips:["Ask: is it before now, after now, or every time? Then pick the form."]}
 );
+GUIDE.push({id:"klar-slut",title:"Klar, färdig, slut eller avslut?",tag:"finishing & ending",
+  rule:"They all have to do with things ending. <b>Klar</b> is for a person or task that is done. <b>Slut</b> is for something that has run out or is over. <b>Avsluta</b> and <b>avslut</b> are for ending something on purpose. <b>Sluta</b> means to stop.",
+  table:{head:["ord","betyder","exempel"],rows:[
+   ["klar (adj)","done, ready","Jag är klar med läxan. Maten är klar!"],
+   ["färdig (adj)","finished, ready","Jag är färdig. (same as klar, said a bit less)"],
+   ["slut (adj)","used up, over","Mjölken är slut. Biljetterna är slut. Det är slut mellan oss."],
+   ["slutet (noun)","the end","i slutet av filmen · till slut = in the end"],
+   ["ett avslut (noun)","an ending, close","Vi tog en fika som avslut på kursen."],
+   ["sluta (verb)","to stop, quit","Jag har slutat röka. Lektionen slutar klockan tre."],
+   ["avsluta (verb)","to end something","Hon avslutade mötet."]]},
+  tips:["Done with a task? Use klar: Jag är klar. Not: Jag är slut (that means you're exhausted!).","Ran out or over? Use slut: Kaffet är slut.","Someone ends something on purpose? Use avsluta: Vi avslutar dagen med fika.","Stop doing something? Use sluta + infinitive: Sluta prata!"]});
 GUIDE.push({id:"bindeord",title:"Bindeord och ordföljd",tag:"linking words",
   rule:"Bindeord link sentences. They come in three kinds, and each kind does something different to the word order. Learn which kind a word is together with its meaning.",
   table:{head:["kind","examples","what happens next"],rows:[
@@ -917,6 +932,14 @@ const GAPS = [
  ["Var du hemma igår? – Nej, det ___ jag inte.","var",["gjorde","är","hade"],"The question uses var (past of vara), so reuse var."],
  ["Bodde du i Kanada förut? – Ja, det ___ jag.","gjorde",["bodde","gör","var"],"A normal verb in preteritum, so use gjorde."],
  ["Vill du ha kaffe? – Ja, ___!","gärna",["varsågod","förlåt","ursäkta"],"Ja, gärna = yes please. Varsågod is what you say when you give something."],
+ ["Jag är ___ med läxan, nu kan vi gå ut.","klar",["slut","avslut","sluta"],"Done with a task: klar."],
+ ["Mjölken är ___. Kan du köpa mer?","slut",["klar","avslut","färdig"],"Something has run out: slut."],
+ ["Han har ___ röka.","slutat",["slut","avslutat","klar"],"To stop doing something: sluta (har slutat)."],
+ ["Hon ___ mötet med en fråga.","avslutade",["slutade","slut","klar"],"To end something on purpose: avsluta."],
+ ["Vi såg hela filmen, men jag förstod inte ___.","slutet",["avslut","slut","klar"],"The end of something: slutet."],
+ ["Vi tog en fika som ___ på kursen.","avslut",["slut","klar","sluta"],"An ending you choose: ett avslut."],
+ ["Efter maratonet var jag helt ___.","slut",["klar","avslut","färdig"],"Helt slut = completely exhausted."],
+ ["Till ___ hittade vi huset.","slut",["slutet","klar","avslut"],"Till slut = in the end, finally."],
 ];
 
 /* ---------- word order: w(ords in correct order), end mark, en hint, alt orders ---------- */
