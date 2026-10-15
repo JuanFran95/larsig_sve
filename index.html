@@ -514,7 +514,7 @@ const VERBS = [
  ["berätta","berättar","berättade","berättat","to tell",1],["lova","lovar","lovade","lovat","to promise",1],["minnas","minns","mindes","mints","to remember",4],
  ["hoppas","hoppas","hoppades","hoppats","to hope",1],["verka","verkar","verkade","verkat","to seem",1],["märka","märker","märkte","märkt","to notice",2],
  ["tappa","tappar","tappade","tappat","to drop, lose",1],["låna","lånar","lånade","lånat","to borrow, lend",1],["hyra","hyr","hyrde","hyrt","to rent",2],
- ["flytta","flyttar","flyttade","flyttat","to move (home)",1],["studera","studerar","studerade","studerat","to study",1],["plugga","pluggar","pluggade","pluggat","to study (informal)",1],
+ ["flytta","flyttar","flyttade","flyttat","to move (home)",1],["påverka","påverkar","påverkade","påverkat","to influence, affect",1],["vårda","vårdar","vårdade","vårdat","to take care of, nurse",1],["förbättra","förbättrar","förbättrade","förbättrat","to improve",1],["erbjuda","erbjuder","erbjöd","erbjudit","to offer",4],["bero","beror","berodde","berott","to depend (bero på = depend on)",3],["teckna","tecknar","tecknade","tecknat","to draw",1],["måla","målar","målade","målat","to paint",1],["motivera","motiverar","motiverade","motiverat","to motivate; to give reasons for",1],["rösta","röstar","röstade","röstat","to vote",1],["studera","studerar","studerade","studerat","to study",1],["plugga","pluggar","pluggade","pluggat","to study (informal)",1],
  ["söka","söker","sökte","sökt","to search, apply for",2],["tjäna","tjänar","tjänade","tjänat","to earn",1],["gifta sig","gifter sig","gifte sig","gift sig","to get married",2],
  ["tända","tänder","tände","tänt","to light, switch on",2],["vända","vänder","vände","vänt","to turn",2],["skina","skiner","sken","skinit","to shine",4],
  ["regna","regnar","regnade","regnat","to rain",1],["snöa","snöar","snöade","snöat","to snow",1],["sy","syr","sydde","sytt","to sew",3],
@@ -740,6 +740,51 @@ const LISTS = [
   ["klar","done, ready; clear","Jag är klar med läxan. · Maten är klar!"],["färdig","finished, ready","Jag är färdig. (same as klar, a bit more formal)"],
   ["slut","the end; used up, over","Mjölken är slut. · i slutet av filmen · Jag är helt slut. (exhausted)"],["till slut","in the end, finally","Till slut hittade vi huset."],
   ["ett avslut","an ending, close","Vi tog en fika som avslut på kursen."],["en avslutning","end-of-term party, ending","Barnen har avslutning i juni."]]},
+ {key:"Municipality", group:"Kommunen (the municipality)", type:"noun", items:[
+  ["en kommun","a municipality","kommunen, kommuner. Jag bor i Malmö kommun."],
+  ["en rättighet","a right","rättigheter. Alla har rättigheter och skyldigheter. (rätt = right: Barn har rätt att gå i skolan.)"],
+  ["ett värde","a value, worth","värden. Demokrati är ett viktigt värde."],
+  ["en åsikt","an opinion","åsikter. Vad är din åsikt? Hon säger alltid sin åsikt."],
+  ["en insändare","a letter to the editor","insändare (same in plural). Hon skrev en insändare i tidningen."],
+  ["omsorg","care","omsorgen (en-word). äldreomsorg = elderly care, barnomsorg = childcare."],
+  ["en nämnd","a committee, board","nämnder. Politikerna i kommunen sitter i olika nämnder, t.ex. socialnämnden."],
+  ["renhållning","waste collection, sanitation","renhållningen (en-word). Renhållningen hämtar soporna och städar gatorna."],
+  ["räddningstjänst","fire and rescue service","räddningstjänsten (en-word). Ring 112 om det brinner."],
+  ["ett bidrag","an allowance, benefit, grant","bidrag (same in plural). barnbidrag = child benefit, bostadsbidrag = housing allowance."],
+  ["en avgift","a fee, charge","avgifter. Man betalar en avgift för förskolan."],
+  ["ett råd","advice; a council","råd, rådet. Kan du ge mig ett råd? (a piece of advice) · ett elevråd (a student council)\nha råd med = to afford: Jag har inte råd med en ny bil."],
+  ["ha råd","to afford","Jag har inte råd med en ny bil. · Vi har inte råd att resa i år.","phrase"],
+  ["en politiker","a politician","politiker (same in plural). Politikerna bestämmer om skolor och parker."],
+  ["ett förslag","a suggestion, proposal","förslag (same in plural). Jag har ett förslag: fler parker!"],
+  ["en stadsmiljö","an urban environment","Hur kan kommunen göra stadsmiljön trevligare?"]]},
+ {key:"Housing", group:"Boende (housing)", type:"noun", items:[
+  ["ett boende","housing, accommodation","Vad är viktigt när man väljer boende?"],
+  ["en bostad","a home, a place to live","bostäder. Bostaden ligger nära centrum."],
+  ["ett närområde","a local area, neighbourhood","närområden. Det finns en park och en skola i närområdet."],
+  ["ett erbjudande","an offer","erbjudanden. Butiken har ett bra erbjudande idag. (att erbjuda = to offer)"],
+  ["trivas","to feel at home, enjoy (a place)","trivs, trivdes. Jag trivs i Malmö. Trivs du med dina grannar?","phrase"]]},
+ {key:"School", group:"Skolan (school)", type:"noun", items:[
+  ["ett ämne","a subject","ämnen. Vilket var ditt favoritämne i skolan?"],
+  ["ett favoritämne","a favourite subject","Mitt favoritämne var bild."],
+  ["bild","art (school subject)","I bild lär man sig olika tekniker, som teckning och målning.\nOtherwise en bild = a picture."],
+  ["en teknik","a technique; technology","tekniker. Man lär sig olika tekniker. (Teknik is also a school subject: technology.)"],
+  ["en teckning","a drawing","teckningar. (att teckna = to draw)"],
+  ["en målning","a painting","målningar. (att måla = to paint)"],
+  ["slöjd","crafts (school subject)","slöjden (en-word). I slöjd gör man saker med händerna."],
+  ["textilslöjd","textile crafts","(en-word) I textilslöjd syr man och stickar."],
+  ["träslöjd","woodwork","(en-word) I träslöjd gör man saker av trä."],
+  ["metallslöjd","metalwork","(en-word) I metallslöjd gör man saker av metall."],
+  ["motiverad","motivated","motiverat, motiverade. Jag var inte så motiverad i skolan.","adjective"],
+  ["motivera ditt svar","give reasons for your answer","Vilket var ditt favoritämne? Motivera ditt svar.","phrase"]]},
+ {key:"Feelings & phrases", group:"Känslor och fraser (feelings & phrases)", type:"phrase", items:[
+  ["taggad","excited, psyched (casual)","taggat, taggade. Jag kände mig taggad när jag flyttade hit.","adjective"],
+  ["orolig","worried","oroligt, oroliga. Jag kände mig orolig i början.","adjective"],
+  ["en badkruka","someone who won't go in the (cold) water","badkrukor. Jag badar aldrig i havet, jag är en riktig badkruka!","noun"],
+  ["det beror på","it depends (on)","Det beror på vädret. · Past: Det berodde på läraren.\nDet beror på att … = it's because …"],
+  ["i början","at the beginning","I början var det svårt, men nu trivs jag."],
+  ["på olika sätt","in different ways","Jag lär mig svenska på olika sätt."],
+  ["väldigt","very","Hon är väldigt snäll. (= mycket snäll, jättesnäll)","adverb"],
+  ["jätte-","very (casual, written together)","jättebra, jättetrött, jättegod. Never jätte bra.","other"]]},
  {key:"Home", group:"Hemmet (home)", type:"noun", items:[
   ["en lägenhet","an apartment",""],["ett hus","a house",""],["ett kök","a kitchen",""],["ett sovrum","a bedroom",""],["ett vardagsrum","a living room",""],
   ["ett badrum","a bathroom",""],["en hyra","a rent","Hur mycket är hyran?\nAtt hyra is the verb, to rent: Vi hyr en lägenhet."],["en hyresvärd","a landlord",""],["ett hyreskontrakt","a rental contract",""],
@@ -748,7 +793,7 @@ const LISTS = [
   ["en diskmaskin","a dishwasher",""],["ett kylskåp","a fridge",""],["en spis","a stove",""],["en granne","a neighbour","grannar (plural)"]]}
 ];
 const BUILT = []; const BBY = {};
-for(const L of LISTS) for(const it of L.items){ const id="b:"+(L.key||L.group)+":"+it[0]; const e={id,sv:it[0],en:it[1],note:it[2]||"",type:L.type,group:L.group}; BUILT.push(e); BBY[id]=e }
+for(const L of LISTS) for(const it of L.items){ const id="b:"+(L.key||L.group)+":"+it[0]; const e={id,sv:it[0],en:it[1],note:it[2]||"",type:it[3]||L.type,group:L.group}; BUILT.push(e); BBY[id]=e }
 const BUILT_GROUPS = ["Vanliga verb (common verbs)",...LISTS.map(l=>l.group)];
 
 /* ---------- more grammar pages ---------- */
@@ -820,6 +865,36 @@ GUIDE.push({id:"klar-slut",title:"Klar, färdig, slut eller avslut?",tag:"finish
    ["sluta (verb)","to stop, quit","Jag har slutat röka. Lektionen slutar klockan tre."],
    ["avsluta (verb)","to end something","Hon avslutade mötet."]]},
   tips:["Done with a task? Use klar: Jag är klar. Not: Jag är slut (that means you're exhausted!).","Ran out or over? Use slut: Kaffet är slut.","Someone ends something on purpose? Use avsluta: Vi avslutar dagen med fika.","Stop doing something? Use sluta + infinitive: Sluta prata!"]});
+GUIDE.push({id:"kanna",title:"Känna, känna sig eller kännas?",tag:"feel",
+  rule:"<b>Känna</b> + a person = to know someone. <b>Känna sig</b> + adjective = how <i>you</i> feel. <b>Kännas</b> + adjective = how <i>something</i> feels, usually with <b>det</b>. After <b>det</b>, the adjective gets <b>-t</b>.",
+  table:{head:["verb","presens","preteritum","exempel"],rows:[
+   ["känna (någon)","känner","kände","Jag kände ingen när jag kom hit."],
+   ["känna sig","känner mig / dig / sig","kände mig / dig / sig","Jag kände mig taggad. Hur känner du dig?"],
+   ["kännas","känns","kändes","Det kändes konstigt i början. Hur känns det?"]]},
+  tips:["How did it feel? Hur kändes det? – Det kändes bra / roligt / jobbigt.","How did you feel? Hur kände du dig? – Jag kände mig glad / orolig / taggad.","Det + kändes + -t: Det kändes jobbigt. Jag + kände mig + no -t: Jag kände mig orolig.","Det kändes oroligt sounds odd. Say Jag kände mig orolig, or Det kändes läskigt (scary)."]});
+GUIDE.push({id:"valdigt",title:"Väldigt, mycket eller jätte- (very)",tag:"very",
+  rule:"All three mean <b>very</b>. <b>Mycket</b> and <b>väldigt</b> are separate words before the adjective. <b>Jätte-</b> is glued onto the word and is more casual.",
+  table:{head:["ord","betyder","exempel"],rows:[
+   ["mycket","very; much, a lot","Det var mycket bra. Jag har mycket att göra."],
+   ["väldigt","very","Hon är väldigt snäll."],
+   ["jätte-","very (casual)","Det var jättebra! Jag är jättetrött."],
+   ["ganska","quite, fairly","Det är ganska kallt idag."],
+   ["lite","a bit","Jag är lite trött."],
+   ["för","too","Kaffet är för varmt."]]},
+  tips:["Before a comparative, use mycket: mycket bättre, mycket större. Not väldigt bättre.","Jätte is written together with the next word: jättebra, not jätte bra.","Mycket on its own means a lot: Tack så mycket! Jag jobbar mycket."]});
+GUIDE.push({id:"prata",title:"Prata om dig själv och din åsikt",tag:"speaking phrases",
+  rule:"Handy phrases for the speaking tasks, when you tell a story about yourself and say what you think. When the sentence starts with one of these phrases, the <b>verb comes next</b>: <i>I början <b>var</b> det svårt.</i>",
+  table:{head:["fras","betyder","exempel"],rows:[
+   ["Det beror på …","It depends on …","Det beror på vädret."],
+   ["Det beror på att …","It's because …","Jag gillade bild. Det berodde på att jag fick vara kreativ."],
+   ["I början …","At the beginning …","I början var det svårt, men nu trivs jag."],
+   ["Nu …","Now …","Nu är jag mer motiverad."],
+   ["På olika sätt","In different ways","Jag lär mig svenska på olika sätt."],
+   ["Jag tycker att …","I think that …","Jag tycker att Malmö är en trevlig stad."],
+   ["Enligt mig …","In my opinion …","Enligt mig borde kommunen bygga fler parker."],
+   ["Till exempel …","For example …","Vi hade slöjd, till exempel textilslöjd och träslöjd."],
+   ["Å ena sidan … å andra sidan …","On one hand … on the other …","Å ena sidan är det dyrt, å andra sidan ligger det nära jobbet."]]},
+  tips:["Talking about the past? Det berodde på …","Motivera ditt svar = say why. Use eftersom or därför att: Jag gillade bild eftersom jag fick vara kreativ.","After a time phrase the verb comes second: Nu bor jag i Malmö. När jag kom hit kände jag mig taggad."]});
 GUIDE.push({id:"bindeord",title:"Bindeord och ordföljd",tag:"linking words",
   rule:"Bindeord link sentences. They come in three kinds, and each kind does something different to the word order. Learn which kind a word is together with its meaning.",
   table:{head:["kind","examples","what happens next"],rows:[
@@ -943,6 +1018,18 @@ const GAPS = [
  ["Vi tog en fika som ___ på kursen.","avslut",["slut","klar","sluta"],"An ending you choose: ett avslut."],
  ["Efter maratonet var jag helt ___.","slut",["klar","avslut","färdig"],"Helt slut = completely exhausted."],
  ["Till ___ hittade vi huset.","slut",["slutet","klar","avslut"],"Till slut = in the end, finally."],
+ ["Hur ___ det att flytta till Sverige? – Det kändes spännande.","kändes",["kände","kände sig","känner"],"How something felt: kännas (kändes)."],
+ ["Jag ___ mig taggad när jag kom hit.","kände",["kändes","känner sig","känt"],"Känna sig in preteritum: jag kände mig."],
+ ["Ska ni grilla imorgon? – Det ___ på vädret.","beror",["berodde","berott","bero"],"Det beror på = it depends on. Now, so presens."],
+ ["Varför slutade du? – Det ___ på att jag flyttade.","berodde",["beror","berott","bero"],"About the past: det berodde på."],
+ ["Jag har inte ___ med en ny bil just nu.","råd",["rådet","råder","råden"],"Ha råd med = to afford."],
+ ["Kan du ge mig ett ___? Jag vet inte vad jag ska välja.","råd",["rådet","råder","råden"],"Ett råd = a piece of advice."],
+ ["Alla barn har ___ att gå i skolan.","rätt",["rättighet","rättigheter","rätta"],"Ha rätt att = to have the right to. The noun: Barn har rättigheter."],
+ ["Man betalar en ___ för att parkera här.","avgift",["bidrag","värde","förslag"],"En avgift = a fee. Bidrag, värde and förslag are ett-words."],
+ ["Kommunen ___ kurser i svenska varje termin.","erbjuder",["erbjudande","erbjuda","erbjudit"],"The verb in presens: erbjuder."],
+ ["Butiken har ett bra ___ på kaffe idag.","erbjudande",["erbjuder","erbjuda","erbjöd"],"The noun: ett erbjudande = an offer."],
+ ["Alla kan ___ politiken genom att rösta.","påverka",["påverkan","påverkar","påverkade"],"Kan + infinitive: kan påverka."],
+ ["Jag ___ i Malmö, jag har bra grannar och en park nära.","trivs",["trivas","trivdes","trivts"],"Now, so presens: trivs."],
 ];
 /* Rätt ord: words that mean nearly the same thing, but only one fits */
 const WORDQ = [
@@ -991,6 +1078,21 @@ const WORDQ = [
  ["Telefonen ramlade i golvet och ___.","gick sönder",["slog sönder","gick ut","gick över"],"Break by itself: gå sönder. Slå sönder needs an object."],
  ["Huvudvärken ___ efter en timme.","gick över",["gick sönder","gick ut","gav upp"],"Pain that passes: gå över."],
  ["Ge inte ___! Du klarar det.","upp",["av","ut","bort"],"Give up: ge upp."],
+ ["Ring 112! Det brinner och vi behöver ___.","räddningstjänsten",["renhållningen","omsorgen","nämnden"],"Räddningstjänsten puts out fires and helps in accidents."],
+ ["___ hämtar soporna varje tisdag.","Renhållningen",["Räddningstjänsten","Omsorgen","Nämnden"],"Renhållningen = waste collection."],
+ ["Hon var arg på kommunen och skrev en ___ i tidningen.","insändare",["nämnd","avgift","rättighet"],"En insändare = a letter to the editor."],
+ ["Familjer med barn får ett ___ varje månad. Det heter barnbidrag.","bidrag",["avgift","värde","förslag"],"Ett bidrag = money you get. En avgift = money you pay."],
+ ["Sjuksköterskan ___ patienterna på sjukhuset.","vårdar",["värdar","påverkar","erbjuder"],"Vårda = take care of (sick or old people). Värdar = hosts."],
+ ["Kommunen ansvarar för äldre___.","omsorgen",["nämnden","avgiften","renhållningen"],"Äldreomsorg = elderly care."],
+ ["Jag håller inte med. Jag har en annan ___.","åsikt",["åsikter","värde","råd"],"En åsikt = an opinion (en-word)."],
+ ["I ___ lärde vi oss att teckna och måla.","bild",["slöjd","textilslöjd","träslöjd"],"Bild = art class."],
+ ["I ___ gjorde vi en pall av trä.","träslöjd",["textilslöjd","metallslöjd","bild"],"Trä = wood: träslöjd."],
+ ["I ___ sydde vi en väska.","textilslöjd",["träslöjd","metallslöjd","bild"],"Sy = to sew, so textilslöjd."],
+ ["Han ___ ett porträtt med blyertspenna.","tecknade",["målade","teckning","målning"],"With a pencil you draw: teckna."],
+ ["Hon ___ en tavla med oljefärg.","målade",["tecknade","målning","teckning"],"With paint you paint: måla."],
+ ["Jag badar aldrig i havet, jag är en riktig ___.","badkruka",["bastu","simmare","badrock"],"En badkruka = someone who won't go in the water."],
+ ["Det finns en park och en skola i ___.","närområdet",["bostaden","grannen","boendet"],"Närområdet = the area around where you live."],
+ ["Vilket var ditt favorit___ i skolan?","ämne",["ämnen","teknik","bild"],"Ett ämne = a school subject."],
 ];
 /* Grammatiktest: quick grammar questions */
 const TESTQ = [
@@ -1034,6 +1136,21 @@ const TESTQ = [
  ["Är du inte trött? – ___, jag är jättetrött!","Jo",["Ja","Nej","Jaha"],"Yes to a question with inte: jo."],
  ["Gillar du inte kaffe? – ___, jag älskar kaffe!","Jo",["Ja","Nej","Jaha"],"Yes to a question with inte: jo."],
  ["Kan du simma? – Ja, ___.","det kan jag",["det jag kan","jag det kan","kan det jag"],"Det first, then the verb, then jag."],
+ ["Hur ___ du dig idag?","känner",["känns","kändes","kännas"],"Känna sig: hur känner du dig?"],
+ ["Det ___ konstigt i början, men nu trivs jag.","kändes",["kände","kände sig","känner"],"Det + kännas: det kändes."],
+ ["Jag ___ ingen i klassen när jag började.","kände",["kändes","kände mig","känns"],"Know a person: känna (kände)."],
+ ["Det kändes ___ att flytta. (jobbig)","jobbigt",["jobbig","jobbiga","jobbigare"],"After det, the adjective gets -t."],
+ ["Jag kände mig ___ när jag flyttade. (orolig)","orolig",["oroligt","oroliga","oroligare"],"It describes jag, so no ending."],
+ ["Filmen var ___ bättre än boken.","mycket",["väldigt","jätte","för"],"Before a comparative, use mycket: mycket bättre."],
+ ["Maten var ___!","jättegod",["jätte god","jätte","väldigt"],"Jätte is written together with the word."],
+ ["En åsikt – två ___.","åsikter",["åsikar","åsikt","åsiktor"],"Group 3: -er."],
+ ["En rättighet – många ___.","rättigheter",["rättighetar","rättighet","rättighetor"],"Words ending in -het: -er."],
+ ["Ett bidrag – två ___.","bidrag",["bidragar","bidragen","bidrager"],"Ett-word ending in a consonant: no ending."],
+ ["En bostad – två ___.","bostäder",["bostader","bostadar","bostadsor"],"Like stad – städer: a → ä and -er."],
+ ["Ett ämne – två ___.","ämnen",["ämnar","ämner","ämne"],"Ett-word ending in a vowel: -n."],
+ ["Ett erbjudande – två ___.","erbjudanden",["erbjudander","erbjudandar","erbjudande"],"Ett-word ending in a vowel: -n."],
+ ["En insändare – två ___.","insändare",["insändarer","insändarar","insändaren"],"Words ending in -are: no ending."],
+ ["En nämnd – två ___.","nämnder",["nämndar","nämndor","nämnd"],"Group 3: -er."],
 ];
 
 
@@ -1072,7 +1189,12 @@ const ORDER = [
  [["nej","det","gör","jag","inte"],".","Do you smoke? No, I don't.",[]],
  [["ja","det","har","jag"],".","Have you eaten? Yes, I have.",[]],
  [["jo","det","kan","jag"],"!","Can't you swim? Yes, I can!",[]],
- [["nej","det","var","jag","inte"],".","Were you at home? No, I wasn't.",[]]
+ [["nej","det","var","jag","inte"],".","Were you at home? No, I wasn't.",[]],
+ [["i","början","kändes","det","konstigt"],".","At the beginning it felt strange.",[["det","kändes","konstigt","i","början"]]],
+ [["jag","kände","mig","taggad","när","jag","flyttade","hit"],".","I felt excited when I moved here.",[["när","jag","flyttade","hit","kände","jag","mig","taggad"]]],
+ [["enligt","mig","borde","kommunen","bygga","fler","parker"],".","In my opinion the municipality should build more parks.",[]],
+ [["jag","har","inte","råd","med","en","ny","bil"],".","I can't afford a new car.",[]],
+ [["i","skolan","var","jag","inte","så","motiverad"],".","At school I wasn't very motivated.",[["jag","var","inte","så","motiverad","i","skolan"]]],
 ];
 const hash = s=>{let h=5381;for(const c of s)h=((h<<5)+h+c.charCodeAt(0))|0;return (h>>>0).toString(36)};
 
@@ -1398,6 +1520,7 @@ const sayBtn = t => canSay?`<button type="button" class="saybtn" data-say="${esc
 /* ---- en/ett: from the word itself, or from the note (en läroplan) ---- */
 function genderOf(f){
   const m=String(f.sv).match(/^(en|ett) /i); if(m) return m[1].toLowerCase();
+  const w=String(f.note||"").match(/\((en|ett)-word\)/); if(w&&f.type==="noun") return w[1];
   if(f.type!=="noun") return "";
   const k=keysOf(f.sv)[0]; if(!k||/\s/.test(k)) return "";
   const r=String(f.note||"").toLowerCase().match(new RegExp("(?:^|[^a-zåäö])(en|ett) "+k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"(?![a-zåäö])"));
@@ -1754,7 +1877,7 @@ const BASIC={ // small words and grammar words, only used for lookup
  någonsin:"ever",förut:"before",ihåg:"komma ihåg = to remember",ses:"to see each other, meet",
  måste:"must, have to",ska:"will, going to, should",kan:"can",vill:"want to",skulle:"would, was going to",borde:"should, ought to",
  röka:"to smoke",röker:"smokes",dansa:"to dance",leka:"to play (like children)",leker:"plays",skynda:"to hurry",stanna:"to stay, stop",stannade:"stayed, stopped",
- undra:"to wonder",bad:"asked (att be)",ramlade:"fell (att ramla)",föddes:"was born",stannar:"stops, stays",väcka:"to wake someone up",ihop:"together",direkt:"right away",emot:"towards (se fram emot = look forward to)",fram:"forward",upp:"up",sönder:"broken (gå sönder = to break)",överens:"komma överens = to get along",er:"you, your (ni)",många:"many",varje:"every, each",tack:"thanks",rätt:"right, correct",god:"good, tasty",säker:"sure, safe",jättetrött:"very tired",japan:"Japan",stockholm:"Stockholm",peter:"a name",hälsa:"health; to greet (hälsa på = to visit)",undrar:"wonders",jobba:"to work",
+ undra:"to wonder",bättre:"better",mer:"more",helt:"completely",hämtar:"picks up, fetches (att hämta)",grilla:"to barbecue",just:"just (just nu = right now)",nära:"near, close",äldre:"older; elderly",vädret:"the weather",sverige:"Sweden",favorit:"favourite",jättegod:"very tasty",kändes:"felt (att kännas)",känns:"feels (att kännas)",kände:"felt; knew (att känna)",trivs:"feels at home (att trivas)",trivdes:"felt at home (att trivas)",borde:"should, ought to",enligt:"according to (enligt mig = in my opinion)",hit:"here (motion)",fler:"more (countable)",så:"so",konstigt:"strange (det-form)",spännande:"exciting",brinner:"is burning (att brinna)",ansvarar:"is responsible (att ansvara)",badar:"swims, bathes (att bada)",riktig:"real",annan:"other, different",genom:"through, by",ingen:"nobody, no",början:"the beginning",bad:"asked (att be)",ramlade:"fell (att ramla)",föddes:"was born",stannar:"stops, stays",väcka:"to wake someone up",ihop:"together",direkt:"right away",emot:"towards (se fram emot = look forward to)",fram:"forward",upp:"up",sönder:"broken (gå sönder = to break)",överens:"komma överens = to get along",er:"you, your (ni)",många:"many",varje:"every, each",tack:"thanks",rätt:"right, correct",god:"good, tasty",säker:"sure, safe",jättetrött:"very tired",japan:"Japan",stockholm:"Stockholm",peter:"a name",hälsa:"health; to greet (hälsa på = to visit)",undrar:"wonders",jobba:"to work",
  två:"two",tre:"three",fyra:"four",fem:"five",sex:"six",sju:"seven",åtta:"eight",nio:"nine",tio:"ten",elva:"eleven",tolv:"twelve",tjugo:"twenty",hundra:"hundred",
  måndag:"Monday",tisdag:"Tuesday",onsdag:"Wednesday",torsdag:"Thursday",fredag:"Friday",lördag:"Saturday",söndag:"Sunday",måndags:"i måndags = last Monday",
  röd:"red",rött:"red (ett-words)",bästa:"best",varmare:"warmer",
@@ -1764,7 +1887,7 @@ const BASIC_N={ // nouns and adjectives: other forms are found too (bussen, gula
  hund:"dog",hundar:"dogs",jacka:"jacket",kaffe:"coffee",katt:"cat",katter:"cats",kväll:"evening",kött:"meat",lampa:"lamp",leksak:"toy",leksaker:"toys",
  middag:"dinner",minut:"minute",minuter:"minutes",morgon:"morning",mormor:"grandmother (mum's mum)",musik:"music",namn:"name",ont:"pain (ha ont = to hurt)",
  ord:"word",sko:"shoe",skor:"shoes",surströmming:"fermented herring",timme:"hour",timmar:"hours",tåg:"train",väska:"bag",äpple:"apple",äpplen:"apples",år:"year",
- barn:"child, children",affär:"shop",bil:"car",bio:"cinema",bostadsbolag:"housing company",dag:"day",fru:"wife",glas:"glass",golv:"floor",helg:"weekend",hållplats:"bus stop",juli:"July",klocka:"clock (klockan sju = at seven)",mat:"food",mobil:"mobile phone",människa:"person",människor:"people",nyckel:"key",nyheter:"news",pappa:"dad",penna:"pen",radio:"radio",regn:"rain",sak:"thing",språk:"language",stad:"town, city",städer:"towns, cities",station:"station",strand:"beach",stund:"a while",tavla:"painting, picture",telefon:"phone",tid:"time",vatten:"water",vecka:"week",vägg:"wall",arton:"eighteen",bror:"brother",sommar:"summer",bok:"book",gul:"yellow",gift:"married",intresserad:"interested",rädd:"afraid, scared",svensk:"Swedish"};
+ barn:"child, children",barnbidrag:"child benefit",bostäder:"homes",familj:"family",familjer:"families",fika:"coffee break",jobbig:"tough, annoying",kurs:"course",kurser:"courses",läxa:"homework",maraton:"marathon",mjölk:"milk",skola:"school",väder:"weather",park:"park",parker:"parks",termin:"term, semester",butik:"shop",tidning:"newspaper",sopor:"rubbish, trash",tisdag:"Tuesday",månad:"month",sjuksköterska:"nurse",patient:"patient",patienter:"patients",sjukhus:"hospital",pall:"stool",trä:"wood",metall:"metal",porträtt:"portrait",blyertspenna:"pencil",tavla:"painting, picture",oljefärg:"oil paint",hav:"sea",bastu:"sauna",simmare:"swimmer",badrock:"bathrobe",politik:"politics",klass:"class",affär:"shop",bil:"car",bio:"cinema",bostadsbolag:"housing company",dag:"day",fru:"wife",glas:"glass",golv:"floor",helg:"weekend",hållplats:"bus stop",juli:"July",klocka:"clock (klockan sju = at seven)",mat:"food",mobil:"mobile phone",människa:"person",människor:"people",nyckel:"key",nyheter:"news",pappa:"dad",penna:"pen",radio:"radio",regn:"rain",sak:"thing",språk:"language",stad:"town, city",städer:"towns, cities",station:"station",strand:"beach",stund:"a while",tavla:"painting, picture",telefon:"phone",tid:"time",vatten:"water",vecka:"week",vägg:"wall",arton:"eighteen",bror:"brother",sommar:"summer",bok:"book",gul:"yellow",gift:"married",intresserad:"interested",rädd:"afraid, scared",svensk:"Swedish"};
 let LEX=null, LEXN=-1;
 function buildLex(){
   const m=new Map(), put=(f,sv,en,how,fz)=>{ const k=String(f).toLowerCase(); if(k&&!k.includes(" ")&&!m.has(k)) m.set(k,{sv,en,how:how||"",fz:!!fz}) }, FZ=new Set(["noun","adjective","other"]);
@@ -1821,7 +1944,7 @@ const TAGS={
  F:{name:"Fråga",cls:"V",hint:"Yes/no question: verb first (Bor du…?). With a question word: question word, then verb (Var bor du?)."},
  I:{name:"Imperativ",cls:"A",hint:"A command: the verb comes first (Ring mig!)."},
  K:{name:"Kort svar",cls:"R",hint:"Ja / Nej / Jo + det + verb + jag (+ inte): Nej, det gör jag inte."}};
-const ORDER_TAGS=[["R"],["O"],["R"],["R","B"],["O"],["F"],["F"],["B","O"],["R"],["F"],["R","B"],["R"],["R"],["O"],["R","B"],["F"],["R"],["R","B"],["I","B"],["F"],["R"],["F"],["O"],["O"],["R","B"],["R"],["O"],["O"],["O"],["F"],["K"],["K"],["K"],["K"]];
+const ORDER_TAGS=[["R"],["O"],["R"],["R","B"],["O"],["F"],["F"],["B","O"],["R"],["F"],["R","B"],["R"],["R"],["O"],["R","B"],["F"],["R"],["R","B"],["I","B"],["F"],["R"],["F"],["O"],["O"],["R","B"],["R"],["O"],["O"],["O"],["F"],["K"],["K"],["K"],["K"],["O"],["R","B"],["O"],["R"],["O"]];
 const GAP_TAGS=[["Idag ___ kallt","O"],["När jag kom hem ___","B","O"],["Jag vet att han ___","B"],["Han sa att han ___","B"],["Jag vet inte ___ hon","B"],["Jag stannade hemma ___","B"],["___ bor du","F"],["___ ska du åka","F"]];
 function tagsFor(id){
   if(id.startsWith("o:")){ const i=ORDER.findIndex(o=>ordId(o)===id); return (ORDER_TAGS[i]||[]) }
