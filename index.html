@@ -915,6 +915,24 @@ GUIDE.push({id:"imperativ",title:"Imperativ: Skriv! Kom! Glöm inte!",tag:"comma
          [[["V","Glöm"],["A","inte"],["R","nyckeln!"]],"Don't forget the key! inte comes right after the verb."],
          [[["V","Var"],["R","snäll och"],["V2","hjälp"],["R","mig."]],"Please help me. A polite way to ask."] ],
   tips:["To sound polite, Swedes often ask instead: <b>Kan du stänga dörren?</b>","Reflexive verbs keep their small word: <b>Skynda dig!</b> <b>Sätt dig!</b>","Modal verbs like kunna and vilja have no imperativ."]});
+GUIDE.push({id:"den-det",title:"Den eller det (it)?",tag:"it",
+  rule:"<b>Den</b> and <b>det</b> only split by gender when they replace a real noun: <b>den</b> for en-words, <b>det</b> for ett-words. When “it” just means the situation, the activity, or nothing in particular, Swedish always uses <b>det</b>.",
+  table:{head:["","exempel","why"],rows:[
+   ["den","Har du sett filmen? Ja, den var rolig.","den = filmen (en-word)"],
+   ["det","Har du läst brevet? Ja, det var långt.","det = brevet (ett-word)"],
+   ["det","Det regnar.","weather, no noun"],
+   ["det","Det är kallt ute.","the situation"],
+   ["det","Det ska bli roligt att resa.","points forward to att resa"]]},
+  tips:["Ask: does “it” point back to a specific noun? Yes → match it (den/det). No → always det.","Det ska bli roligt att resa till Norge: det is a placeholder for the activity (att resa till Norge), so it's det even though Norge is an en-word."]});
+GUIDE.push({id:"adj-a",title:"Adjektiv efter min, den, Annas: alltid -a",tag:"adjective -a form",
+  rule:"After a <b>possessive</b> (min, din, hans, hennes, vår, deras…), after <b>den / det / de</b>, and after a <b>genitive -s</b> (Annas), the adjective always takes the <b>-a</b> form. It doesn't matter if the noun is an en-word, ett-word or plural.",
+  table:{head:["","en","ett","plural"],rows:[
+   ["possessive","min gamla lärare","mitt gamla hus","mina gamla böcker"],
+   ["den / det / de","den nya bilen","det nya huset","de nya skorna"],
+   ["genitive -s","Annas nya bil","Annas nya hus","Annas nya skor"],
+   ["nothing in front","en gammal lärare","ett gammalt hus","gamla böcker"]]},
+  rows:[ [[["F","Min gamla lärare"],["V","var"],["A","mycket"],["R","bättre än min nya."]],"My old teacher was much better than my new one."] ],
+  tips:["Plain gammal, ny etc. are only used with nothing like that in front: en gammal lärare, Läraren är gammal.","You can leave out the noun at the end: än min nya, just like “than my new one” in English.","Note the noun: after min / Annas it has no “the” ending (min bil), but after den / det / de it does (den nya bilen)."]});
 GUIDE.unshift({id:"verbgrupper",title:"Verbgrupper: 1, 2a, 2b, 3, 4",tag:"verb groups",
   rule:"Swedish verbs follow a few patterns. <b>1</b>: the verb keeps its -a. <b>2a, 2b</b>: drop the -a to get the stem. <b>3</b>: short verbs. <b>4</b>: the vowel changes. For group 2, look at the <b>stem</b> (the verb without -a: ring-, köp-). Whether the last sound is <b>tonande</b> (voiced: your throat buzzes, like b, d, g, j, l, m, n, r, v) or <b>tonlös</b> (voiceless: just air, like k, p, t, s, x) decides if preteritum ends in <b>-de</b> or <b>-te</b>.",
   table:{head:["grupp","infinitiv","imperativ","presens","preteritum","supinum"],rows:[
@@ -1166,6 +1184,14 @@ const TESTQ = [
  ["Tror du att det regnar imorgon? – Ja, det ___ jag.","tror",["är","har","kan"],"With tro, repeat the verb: det tror jag (I think so). Det gör jag also works."],
  ["Hoppas du att hon kommer? – Ja, det ___ jag.","hoppas",["är","har","ska"],"With hoppas, repeat the verb: det hoppas jag (I hope so)."],
  ["Vet du var Erik bor? – Nej, det ___ jag inte.","vet",["är","har","ska"],"With veta, repeat the verb: det vet jag inte (I don't know)."],
+ ["Har du sett filmen? – Ja, ___ var rolig.","den",["det","han","hon"],"den = filmen, an en-word."],
+ ["Har du läst brevet? – Ja, ___ var långt.","det",["den","han","de"],"det = brevet, an ett-word."],
+ ["___ ska bli roligt att resa till Norge.","Det",["Den","Han","Hon"],"No real noun: “it” means the activity, so always det."],
+ ["___ är kallt ute idag.","Det",["Den","Han","Hon"],"Weather and situations always take det."],
+ ["Min ___ lärare var mycket bättre än min nya. (gammal)","gamla",["gammal","gammalt","gamle"],"After a possessive (min, din, hans…), always the -a form."],
+ ["Vi har sålt vårt ___ hus. (gammal)","gamla",["gammalt","gammal","gamle"],"After vårt it's still -a, even with an ett-word."],
+ ["Annas ___ bil är röd. (ny)","nya",["ny","nytt","nyare"],"After a genitive -s, the adjective takes -a."],
+ ["Hon har en ___ lärare. (ny)","ny",["nya","nytt","nyare"],"Nothing like min or den in front, so plain ny."],
 ];
 
 
