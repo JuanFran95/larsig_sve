@@ -944,7 +944,7 @@ GUIDE.splice(GUIDE.findIndex(g=>g.id==="fragor")+1,0,{id:"svara",title:"Svara ja
    ["Kommer du inte?","Jo, det gör jag!","Nej, det gör jag inte."]]},
   rows:[ [[["x","Nej,"],["F","det"],["V","gör"],["S","jag"],["A","inte."]],"Det comes first, so the verb is second and jag comes after it (inversion)."],
          [[["x","Jo,"],["F","det"],["V","har"],["S","jag!"]],"Har du inte varit där? Jo, det har jag! = Yes, I have."] ],
-  tips:["Ja = yes to a normal question. <b>Jo</b> = yes to a question with inte: Är du inte hungrig? Jo! (Ja would sound confusing here.)",
+  tips:["With verbs about thinking and knowing (<b>tro, hoppas, veta, tycka</b>), Swedes very often repeat the verb, and <b>det</b> means “that”: <i>Det tror jag.</i> (I think so.) <i>Det hoppas jag.</i> (I hope so.) <i>Det vet jag inte.</i> (I don’t know.) So <i>Tror Erik att föraren är skadad? – Ja, det tror han.</i> is the most natural answer. <i>Ja, det gör han</i> isn’t wrong, just less common.","Ja = yes to a normal question. <b>Jo</b> = yes to a question with inte: Är du inte hungrig? Jo! (Ja would sound confusing here.)",
         "In everyday speech a short Ja! / Nej! / Jo! is fine too. Other handy answers: Ja, gärna! (yes please), Nej tack (no thanks), Kanske (maybe), Absolut! (absolutely).",
         "Jaha = I see, oh okay. Jaså? = Really? Is that so?"]});
 const _rikt = GUIDE.find(g=>g.id==="riktning"); _rikt.table={head:["motion","place","example"],rows:_rikt.table};
@@ -1163,6 +1163,9 @@ const TESTQ = [
  ["Det var ___ att inte säga tack. (oartig)","oartigt",["oartig","oartiga","oartigare"],"After det, the adjective gets -t."],
  ["Han var ___ mot läraren. (respektlös)","respektlös",["respektlöst","respektlösa","respektlösare"],"It describes han, so no ending."],
  ["Det är ___ att avbryta någon hela tiden. (respektlös)","respektlöst",["respektlös","respektlösa","respektlösare"],"After det: -t. Lös + t = löst."],
+ ["Tror du att det regnar imorgon? – Ja, det ___ jag.","tror",["är","har","kan"],"With tro, repeat the verb: det tror jag (I think so). Det gör jag also works."],
+ ["Hoppas du att hon kommer? – Ja, det ___ jag.","hoppas",["är","har","ska"],"With hoppas, repeat the verb: det hoppas jag (I hope so)."],
+ ["Vet du var Erik bor? – Nej, det ___ jag inte.","vet",["är","har","ska"],"With veta, repeat the verb: det vet jag inte (I don't know)."],
 ];
 
 
@@ -1207,6 +1210,7 @@ const ORDER = [
  [["enligt","mig","borde","kommunen","bygga","fler","parker"],".","In my opinion the municipality should build more parks.",[]],
  [["jag","har","inte","råd","med","en","ny","bil"],".","I can't afford a new car.",[]],
  [["i","skolan","var","jag","inte","så","motiverad"],".","At school I wasn't very motivated.",[["jag","var","inte","så","motiverad","i","skolan"]]],
+ [["det","tror","jag","inte"],".","I don't think so.",[]],
 ];
 const hash = s=>{let h=5381;for(const c of s)h=((h<<5)+h+c.charCodeAt(0))|0;return (h>>>0).toString(36)};
 
@@ -1889,7 +1893,7 @@ const BASIC={ // small words and grammar words, only used for lookup
  någonsin:"ever",förut:"before",ihåg:"komma ihåg = to remember",ses:"to see each other, meet",
  måste:"must, have to",ska:"will, going to, should",kan:"can",vill:"want to",skulle:"would, was going to",borde:"should, ought to",
  röka:"to smoke",röker:"smokes",dansa:"to dance",leka:"to play (like children)",leker:"plays",skynda:"to hurry",stanna:"to stay, stop",stannade:"stayed, stopped",
- undra:"to wonder",läraren:"the teacher",någon:"someone, anyone",läkaren:"the doctor",polisen:"the police",olyckan:"the accident",avbryta:"to interrupt",tiden:"the time (hela tiden = all the time)",artig:"polite",träffas:"to meet (each other)",svar:"an answer",lärarna:"the teachers",reglerna:"the rules",bättre:"better",mer:"more",helt:"completely",hämtar:"picks up, fetches (att hämta)",grilla:"to barbecue",just:"just (just nu = right now)",nära:"near, close",äldre:"older; elderly",vädret:"the weather",sverige:"Sweden",favorit:"favourite",jättegod:"very tasty",kändes:"felt (att kännas)",känns:"feels (att kännas)",kände:"felt; knew (att känna)",trivs:"feels at home (att trivas)",trivdes:"felt at home (att trivas)",borde:"should, ought to",enligt:"according to (enligt mig = in my opinion)",hit:"here (motion)",fler:"more (countable)",så:"so",konstigt:"strange (det-form)",spännande:"exciting",brinner:"is burning (att brinna)",ansvarar:"is responsible (att ansvara)",badar:"swims, bathes (att bada)",riktig:"real",annan:"other, different",genom:"through, by",ingen:"nobody, no",början:"the beginning",bad:"asked (att be)",ramlade:"fell (att ramla)",föddes:"was born",stannar:"stops, stays",väcka:"to wake someone up",ihop:"together",direkt:"right away",emot:"towards (se fram emot = look forward to)",fram:"forward",upp:"up",sönder:"broken (gå sönder = to break)",överens:"komma överens = to get along",er:"you, your (ni)",många:"many",varje:"every, each",tack:"thanks",rätt:"right, correct",god:"good, tasty",säker:"sure, safe",jättetrött:"very tired",japan:"Japan",stockholm:"Stockholm",peter:"a name",hälsa:"health; to greet (hälsa på = to visit)",undrar:"wonders",jobba:"to work",
+ undra:"to wonder",regnar:"is raining (att regna)",hoppas:"to hope",kommer:"comes (att komma)",läraren:"the teacher",någon:"someone, anyone",läkaren:"the doctor",polisen:"the police",olyckan:"the accident",avbryta:"to interrupt",tiden:"the time (hela tiden = all the time)",artig:"polite",träffas:"to meet (each other)",svar:"an answer",lärarna:"the teachers",reglerna:"the rules",bättre:"better",mer:"more",helt:"completely",hämtar:"picks up, fetches (att hämta)",grilla:"to barbecue",just:"just (just nu = right now)",nära:"near, close",äldre:"older; elderly",vädret:"the weather",sverige:"Sweden",favorit:"favourite",jättegod:"very tasty",kändes:"felt (att kännas)",känns:"feels (att kännas)",kände:"felt; knew (att känna)",trivs:"feels at home (att trivas)",trivdes:"felt at home (att trivas)",borde:"should, ought to",enligt:"according to (enligt mig = in my opinion)",hit:"here (motion)",fler:"more (countable)",så:"so",konstigt:"strange (det-form)",spännande:"exciting",brinner:"is burning (att brinna)",ansvarar:"is responsible (att ansvara)",badar:"swims, bathes (att bada)",riktig:"real",annan:"other, different",genom:"through, by",ingen:"nobody, no",början:"the beginning",bad:"asked (att be)",ramlade:"fell (att ramla)",föddes:"was born",stannar:"stops, stays",väcka:"to wake someone up",ihop:"together",direkt:"right away",emot:"towards (se fram emot = look forward to)",fram:"forward",upp:"up",sönder:"broken (gå sönder = to break)",överens:"komma överens = to get along",er:"you, your (ni)",många:"many",varje:"every, each",tack:"thanks",rätt:"right, correct",god:"good, tasty",säker:"sure, safe",jättetrött:"very tired",japan:"Japan",stockholm:"Stockholm",peter:"a name",hälsa:"health; to greet (hälsa på = to visit)",undrar:"wonders",jobba:"to work",
  två:"two",tre:"three",fyra:"four",fem:"five",sex:"six",sju:"seven",åtta:"eight",nio:"nine",tio:"ten",elva:"eleven",tolv:"twelve",tjugo:"twenty",hundra:"hundred",
  måndag:"Monday",tisdag:"Tuesday",onsdag:"Wednesday",torsdag:"Thursday",fredag:"Friday",lördag:"Saturday",söndag:"Sunday",måndags:"i måndags = last Monday",
  röd:"red",rött:"red (ett-words)",bästa:"best",varmare:"warmer",
@@ -1956,7 +1960,7 @@ const TAGS={
  F:{name:"Fråga",cls:"V",hint:"Yes/no question: verb first (Bor du…?). With a question word: question word, then verb (Var bor du?)."},
  I:{name:"Imperativ",cls:"A",hint:"A command: the verb comes first (Ring mig!)."},
  K:{name:"Kort svar",cls:"R",hint:"Ja / Nej / Jo + det + verb + jag (+ inte): Nej, det gör jag inte."}};
-const ORDER_TAGS=[["R"],["O"],["R"],["R","B"],["O"],["F"],["F"],["B","O"],["R"],["F"],["R","B"],["R"],["R"],["O"],["R","B"],["F"],["R"],["R","B"],["I","B"],["F"],["R"],["F"],["O"],["O"],["R","B"],["R"],["O"],["O"],["O"],["F"],["K"],["K"],["K"],["K"],["O"],["R","B"],["O"],["R"],["O"]];
+const ORDER_TAGS=[["R"],["O"],["R"],["R","B"],["O"],["F"],["F"],["B","O"],["R"],["F"],["R","B"],["R"],["R"],["O"],["R","B"],["F"],["R"],["R","B"],["I","B"],["F"],["R"],["F"],["O"],["O"],["R","B"],["R"],["O"],["O"],["O"],["F"],["K"],["K"],["K"],["K"],["O"],["R","B"],["O"],["R"],["O"],["K"]];
 const GAP_TAGS=[["Idag ___ kallt","O"],["När jag kom hem ___","B","O"],["Jag vet att han ___","B"],["Han sa att han ___","B"],["Jag vet inte ___ hon","B"],["Jag stannade hemma ___","B"],["___ bor du","F"],["___ ska du åka","F"]];
 function tagsFor(id){
   if(id.startsWith("o:")){ const i=ORDER.findIndex(o=>ordId(o)===id); return (ORDER_TAGS[i]||[]) }
