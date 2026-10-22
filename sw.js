@@ -2,7 +2,7 @@
 // The page itself is fetched fresh from the network first, so updates show up the next time the app opens.
 // Everything else (icons, manifest) is served from the saved copy and refreshed in the background.
 // When offline, the saved copies are used.
-const CACHE = "larsig-v38";
+const CACHE = "larsig-v39";
 const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL.map(u => new Request(u, { cache: "reload" })))));
