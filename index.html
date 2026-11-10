@@ -280,6 +280,15 @@ td.g{font-family:var(--mono);color:var(--muted)}
 .badge.hintbtn{background:var(--chip);color:var(--muted);text-transform:none;letter-spacing:0;font-size:.85rem}
 .badge.on{box-shadow:inset 0 0 0 2px currentColor}
 .taghint{margin:0;font-size:.92rem;background:var(--paper);border-radius:.4rem;padding:.45rem .65rem;color:var(--ink)}
+.qbar{position:relative}
+.qbar input{padding-left:2.3rem;font-size:1rem;border-radius:.6rem}
+.qbar svg{position:absolute;left:.75rem;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none}
+.qhead{display:flex;justify-content:space-between;align-items:baseline;gap:.5rem;margin:0}
+.qhit{display:flex;flex-wrap:wrap;gap:.3rem .6rem;align-items:baseline;width:100%;text-align:left;font:inherit;color:var(--ink);background:none;border:0;border-bottom:1px solid var(--line);padding:.6rem 0;cursor:pointer}
+.qhit:hover b{text-decoration:underline}
+.qhit .n{flex-basis:100%;font-size:.85rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wgroup.parent>.stack{margin-top:.6rem}
+.wgroup.parent .wgroup{box-shadow:inset 0 0 0 1px var(--line)}
 footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);padding-top:.8rem}
 @media (prefers-reduced-motion:reduce){.progress i{transition:none}}
 </style>
@@ -323,6 +332,11 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
     <p class="note" id="backupmsg" aria-live="polite"></p>
   </section>
 
+  <div class="qbar" role="search">
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+    <input id="qsearch" type="search" placeholder="Sök ord, verb, grammatik, anteckningar" data-en-ph="Search words, verbs, grammar, notes" aria-label="Search the whole app" autocomplete="off" enterkeyhint="search">
+  </div>
+
   <nav role="tablist" aria-label="Sections">
     <button role="tab" id="tab-cards" aria-selected="true" data-tab="cards" data-en="Cards">Kort</button>
     <button role="tab" id="tab-forms" aria-selected="false" data-tab="forms" data-en="Verbs">Verb</button>
@@ -331,6 +345,9 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
     <button role="tab" id="tab-grammar" aria-selected="false" data-tab="grammar" data-en="Grammar">Grammatik</button>
     <button role="tab" id="tab-notes" aria-selected="false" data-tab="notes" data-en="Notes">Anteckningar</button>
   </nav>
+
+  <!-- SEARCH RESULTS (shown instead of the tab while searching) -->
+  <section class="panel" id="panel-search" hidden aria-live="polite"><div id="qresults" class="stack"></div></section>
 
   <!-- FLASHCARDS -->
   <section class="panel" id="panel-cards">
@@ -522,7 +539,13 @@ const VERBS = [
  ["försvinna","försvinner","försvann","försvunnit","to disappear",4],["hända","händer","hände","hänt","to happen",2],["skära","skär","skar","skurit","to cut",4],
  ["bryta","bryter","bröt","brutit","to break",4],["gälla","gäller","gällde","gällt","to apply, be valid",2],["rida","rider","red","ridit","to ride (a horse)",4],
  ["kliva","kliver","klev","klivit","to step, climb",4],["stiga","stiger","steg","stigit","to rise, step",4],["vila","vilar","vilade","vilat","to rest",1],
- ["boka","bokar","bokade","bokat","to book",1],["vinka","vinkar","vinkade","vinkat","to wave",1],["gå ut","går ut","gick ut","gått ut","to go out",4]
+ ["boka","bokar","bokade","bokat","to book",1],["vinka","vinkar","vinkade","vinkat","to wave",1],["gå ut","går ut","gick ut","gått ut","to go out",4],
+ ["öka","ökar","ökade","ökat","to increase",1],["anordna","anordnar","anordnade","anordnat","to organise, arrange",1],["fundera","funderar","funderade","funderat","to think about, ponder",1],
+ ["kolla","kollar","kollade","kollat","to check, look, watch (casual)",1],["riva","river","rev","rivit","to tear, demolish; to scratch",4],["svälja","sväljer","svalde","svalt","to swallow",4],
+ ["gapa","gapar","gapade","gapat","to open your mouth wide; to gape",1],["motstå","motstår","motstod","motstått","to resist",4],["inse","inser","insåg","insett","to realise",4],
+ ["bromsa","bromsar","bromsade","bromsat","to brake",1],["klaga","klagar","klagade","klagat","to complain",1],["genera","generar","generade","generat","to embarrass, bother",1],
+ ["be","ber","bad","bett","to ask (for), to pray",4],["kyssa","kysser","kysste","kysst","to kiss",2],["råka","råkar","råkade","råkat","to happen to (by chance)",1],
+ ["stinka","stinker","stank","stunkit","to stink",4]
 ];
 const PVERBS = [
  ["tycka om","to like","Jag tycker om kaffe."],["hålla med","to agree","Jag håller med dig."],["komma ihåg","to remember","Kommer du ihåg hennes namn?"],
@@ -535,7 +558,8 @@ const PVERBS = [
  ["ta reda på","to find out","Jag ska ta reda på det."],["lägga till","to add","Lägg till ett ord."],["ta bort","to remove","Ta bort ditt namn."],
  ["stå ut med","to put up with","Jag står inte ut med bullret."],["gå sönder","to break (by itself)","Telefonen gick sönder."],["bli av med","to get rid of","Jag vill bli av med soffan."],
  ["tycka synd om","to feel sorry for","Jag tycker synd om honom."],["komma överens","to get along","Vi kommer bra överens."],["gå över","to pass, go away (pain)","Huvudvärken gick över."],
- ["ringa upp","to call back","Jag ringer upp dig sen."],["stiga upp","to get up (out of bed)","Jag stiger upp klockan sju."]
+ ["ringa upp","to call back","Jag ringer upp dig sen."],["stiga upp","to get up (out of bed)","Jag stiger upp klockan sju."],
+ ["ta emot","to receive, accept","Hon tog emot paketet. · Tack, jag tar gärna emot hjälp."],["tacka ja","to say yes (to an offer)","Jag har tackat ja till jobbet. · Opposite: tacka nej. Jag tackade nej."]
 ];
 const ADVS = [ // sv, en, example, satsadverb?
  ["inte","not","Jag äter inte kött.",1],["aldrig","never","Hon röker aldrig.",1],["alltid","always","Vi äter alltid frukost.",1],["ofta","often","Jag dricker ofta te.",1],
@@ -548,7 +572,9 @@ const ADVS = [ // sv, en, example, satsadverb?
  ["ganska","quite, fairly","Det är ganska kallt.",0],["mycket","very, a lot","Tack så mycket!",0],["lite","a little","Jag talar lite svenska.",0],["ungefär","about, roughly","Det tar ungefär en timme.",0],
  ["tillsammans","together","Vi lagar mat tillsammans.",0],["hem","(to) home, motion","Jag går hem.",0],["hemma","at home, place","Jag är hemma.",0],
  ["ut","out, motion","Hon går ut.",0],["ute","outside, place","Barnen leker ute.",0],["in","in, motion","Kom in!",0],["inne","inside, place","Vi är inne.",0],
- ["här","here","Jag bor här.",0],["där","there","Bor du där?",0],["dit","(to) there, motion","Hur kommer jag dit?",0],["hit","(to) here, motion","Kom hit!",0],["dessutom","besides, also","Dessutom är det billigt.",0],["därför","therefore, that's why","Därför kom jag inte.",0]
+ ["här","here","Jag bor här.",0],["där","there","Bor du där?",0],["dit","(to) there, motion","Hur kommer jag dit?",0],["hit","(to) here, motion","Kom hit!",0],["dessutom","besides, also","Dessutom är det billigt.",0],["nog","probably; enough","Han kommer nog. (probably)\nDet räcker nog. Also: Nu får det vara nog! (enough)",1],
+ ["alldeles","completely, quite","Det är alldeles tyst. · alldeles för = way too: Det är alldeles för dyrt.",0],["häromdagen","the other day","Jag träffade henne häromdagen.",0],
+ ["försiktigt","carefully, gently","Kör försiktigt! · Hon stängde dörren försiktigt.\nThe adjective is försiktig (careful).",0],["därför","therefore, that's why","Därför kom jag inte.",0]
 ];
 const TYPES = [["verb","Verb"],["partikelverb","Partikelverb"],["adverb","Adverb"],["noun","Substantiv"],["adjective","Adjektiv"],["preposition","Preposition"],["conjunction","Bindeord"],["question","Frågeord"],["phrase","Fras"],["other","Övrigt"]];
 const TYPE_LABEL = Object.fromEntries(TYPES);
@@ -649,7 +675,7 @@ const LISTS = [
   ["dålig","bad","ett dåligt väder · dåliga nyheter"],["glad","happy","ett glatt barn · glada barn"],["ledsen","sad","ett ledset barn · ledsna barn"],
   ["trött","tired","ett trött barn · trötta barn"],["arg","angry","ett argt barn · arga barn"],["varm","warm","ett varmt bad · varma dagar"],
   ["kall","cold","ett kallt rum · kalla vintrar"],["dyr","expensive","ett dyrt hotell · dyra skor"],["billig","cheap","ett billigt hotell · billiga skor"],
-  ["lätt","easy, light","ett lätt prov · lätta frågor"],["svår","difficult","ett svårt prov · svåra frågor"],["snäll","kind","ett snällt barn · snälla grannar"],
+  ["lätt","easy, light","ett lätt prov · lätta frågor"],["svår","difficult","ett svårt prov · svåra frågor"],
   ["rolig","fun, funny","ett roligt spel · roliga filmer"],["tråkig","boring","ett tråkigt möte · tråkiga möten"],["vacker","beautiful","ett vackert land · vackra blommor"],
   ["ful","ugly","ett fult hus · fula skor"],["lång","long, tall","ett långt möte · långa dagar"],["kort","short","ett kort möte · korta dagar"],
   ["hög","high, tall","ett högt hus · höga berg"],["låg","low","ett lågt pris · låga priser"],["snabb","fast","ett snabbt tåg · snabba bilar"],
@@ -657,16 +683,14 @@ const LISTS = [
   ["hungrig","hungry","ett hungrigt barn · hungriga barn"],["nöjd","satisfied","ett nöjt barn · nöjda kunder"],["viktig","important","ett viktigt möte · viktiga frågor"],
   ["ledig","free, off work","ett ledigt rum · lediga jobb"],["upptagen","busy","ett upptaget rum · upptagna människor"],["röd","red","ett rött äpple · röda äpplen"],
   ["vit","white","ett vitt hus · vita hus"],["svart","black","ett svart kaffe · svarta katter"],["blå","blue","ett blått hus · blå hus"],
-  ["bestämd","set, scheduled; definite, firm; strict","Three meanings:\n· set, scheduled: en bestämd tid\n· definite, firm (answer, decision): ett bestämt svar\n· firm, strict (a person): Lärarna är bestämda.\nbestämd (en-words) · bestämt (ett-words) · bestämda (plural, and after den/det/de)\nFrom att bestämma = to decide."],
-  ["oartig","impolite, rude","oartigt, oartiga. Det är oartigt att inte säga tack.\nThe opposite: artig = polite. o- means not, like in olycklig (unhappy)."],
-  ["respektlös","disrespectful","respektlöst, respektlösa. Han var respektlös mot läraren.\nStronger than oartig. -lös means without: respekt + lös = without respect."]]},
+  ["bestämd","set, scheduled; definite, firm; strict","Three meanings:\n· set, scheduled: en bestämd tid\n· definite, firm (answer, decision): ett bestämt svar\n· firm, strict (a person): Lärarna är bestämda.\nbestämd (en-words) · bestämt (ett-words) · bestämda (plural, and after den/det/de)\nFrom att bestämma = to decide."]]},
  {key:"Egenskaper positiva", group:"Egenskaper: positiva (good traits)", type:"adjective", items:[
   ["hjälpsam","helpful","hjälpsamt · hjälpsamma (double m)"],["omtänksam","thoughtful, caring","omtänksamt · omtänksamma"],["vänlig","friendly, kind","vänligt · vänliga"],
   ["generös","generous","generöst · generösa"],["modig","brave","modigt · modiga"],["lojal","loyal","lojalt · lojala"],["rättvis","fair","rättvist · rättvisa"],
   ["klok","wise","klokt · kloka"],["ärlig","honest","ärligt · ärliga"],["tålmodig","patient","tålmodigt · tålmodiga"],["ödmjuk","humble","ödmjukt · ödmjuka"],
   ["arbetsam","hardworking","arbetsamt · arbetsamma"],["energisk","energetic","energiskt · energiska"],["kreativ","creative","kreativt · kreativa"],
   ["flexibel","flexible","flexibelt · flexibla (drops the e)"],["trygg","secure, safe (feeling safe)","tryggt · trygga\nJag känner mig trygg här. A trygg person is calm and sure of themselves."],
-  ["empatisk","empathetic","empatiskt · empatiska"],["respektfull","respectful","respektfullt · respektfulla"],["positiv","positive","positivt · positiva"]]},
+  ["snäll","kind, nice","snällt · snälla. Han är så snäll mot alla."],["empatisk","empathetic","empatiskt · empatiska"],["respektfull","respectful","respektfullt · respektfulla"],["positiv","positive","positivt · positiva"]]},
  {key:"Egenskaper negativa", group:"Egenskaper: negativa (bad traits)", type:"adjective", items:[
   ["självisk","selfish","själviskt · själviska"],["elak","mean","elakt · elaka"],["arrogant","arrogant","arrogant (ett, already ends in -t) · arroganta"],
   ["lat","lazy","lat (ett, already ends in -t) · lata"],["snål","stingy, cheap (with money)","snålt · snåla\nFor things that cost little, use billig."],
@@ -674,12 +698,21 @@ const LISTS = [
   ["grinig","grumpy","grinigt · griniga"],["aggressiv","aggressive","aggressivt · aggressiva"],["dominant","dominant, bossy","dominant (ett) · dominanta"],
   ["falsk","fake, two-faced","falskt · falska"],["otålig","impatient","otåligt · otåliga (o- = not)"],["slarvig","careless, sloppy","slarvigt · slarviga"],
   ["misstänksam","suspicious","misstänksamt · misstänksamma"],["bitter","bitter","bittert · bittra (drops the e)"],
-  ["girig","greedy","girigt · giriga\ngirighet = greed"],["nonchalant","nonchalant, careless","nonchalant (ett) · nonchalanta"]]},
+  ["girig","greedy","girigt · giriga\ngirighet = greed"],["nonchalant","nonchalant, careless","nonchalant (ett) · nonchalanta"],
+  ["oartig","impolite, rude","oartigt, oartiga. Det är oartigt att inte säga tack.\nThe opposite: artig = polite. o- means not, like in olycklig (unhappy)."],
+  ["respektlös","disrespectful","respektlöst, respektlösa. Han var respektlös mot läraren.\nStronger than oartig. -lös means without: respekt + lös = without respect."]]},
  {key:"Egenskaper neutrala", group:"Egenskaper: neutrala (neutral traits)", type:"adjective", items:[
   ["tystlåten","quiet (doesn't talk much)","tystlåtet · tystlåtna"],["envis","stubborn","envist · envisa"],["självständig","independent","självständigt · självständiga"],
   ["noggrann","careful, thorough","noggrant (one n!) · noggranna"],["känslig","sensitive","känsligt · känsliga"],["försiktig","careful, cautious","försiktigt · försiktiga"],
   ["realistisk","realistic","realistiskt · realistiska"],["rak","straightforward, direct; straight","rakt · raka\nHon är väldigt rak: she says what she thinks."],
-  ["nyfiken","curious","nyfiket · nyfikna"],["reserverad","reserved","reserverat · reserverade (-ad words: -at, -ade)"]]},
+  ["nyfiken","curious","nyfiket · nyfikna"],["reserverad","reserved","reserverat · reserverade (-ad words: -at, -ade)"],
+  ["blyg","shy","blygt · blyga. Hon är lite blyg i början."],["sårbar","vulnerable","sårbart · sårbara. sår = a wound, -bar = able to be."],
+  ["oskyldig","innocent","oskyldigt · oskyldiga (o- = not, skyldig = guilty)\nHan är oskyldig. · en oskyldig fråga"]]},
+ {key:"Looks", group:"Utseende (looks)", type:"adjective", items:[
+  ["rufsig","messy, tousled (hair)","rufsigt · rufsiga. Du är rufsig i håret!"],["skäggig","bearded","skäggigt · skäggiga. en skäggig man\nett skägg = a beard"],
+  ["flott","fancy, smart, posh","flott (ett, already ends in -tt) · flotta. Vad flott du är idag! · en flott restaurang"],
+  ["glasögon","glasses","Always plural: mina glasögon, glasögonen. Var är mina glasögon? De ligger på bordet.\nett par glasögon = a pair of glasses","noun"],
+  ["ett skärp","a belt","skärpet, skärp. Jag har ett svart skärp.","noun"]]},
  {key:"Prepositions", group:"Prepositioner (prepositions)", type:"preposition", items:[
   ["i","in","Jag bor i Malmö. Hon är i köket."],["på","on, at","Boken ligger på bordet. Jag är på jobbet."],["under","under, during","Katten ligger under sängen."],
   ["över","over, above","Lampan hänger över bordet."],["bakom","behind","Cykeln står bakom huset."],["framför","in front of","Bussen stannar framför skolan."],
@@ -687,7 +720,7 @@ const LISTS = [
   ["till","to","Jag åker till Lund."],["från","from","Jag kommer från Kanada."],["med","with","Jag åker med bussen."],
   ["utan","without","Kaffe utan mjölk, tack.\nAfter a no, utan can also mean but (rather): Jag dricker inte kaffe utan te."],["om","about","Vi pratar om filmen.\nAs a bindeord, om means if or whether: Om du har tid, ring mig."],["för","for","Tack för hjälpen!\nAs a bindeord, för means because: Jag gick hem, för jag var trött."],
   ["av","of, by","En kopp av glas. Boken är skriven av henne."],["efter","after","Vi ses efter jobbet."],["före","before","Kom före klockan åtta."],
-  ["genom","through","Vi gick genom parken."],["mot","towards, against","Bussen åker mot centrum."],["vid","by, at","Vi bor vid havet."],
+  ["genom","through","Vi gick genom parken."],["mot","towards, against","Bussen åker mot centrum."],["emot","against (= mot)","Är du för eller emot? · Jag har inget emot det. (I don't mind.)\nta emot = to receive, accept: Hon tog emot blommorna."],["vid","by, at","Vi bor vid havet."],
   ["sedan","since","Jag har bott här sedan 2017.\nSedan (or sen) also means then, later: Vi äter och sen går vi."]]},
  {key:"Time words", group:"Tidsord (time words)", type:"phrase", items:[
   ["idag","today",""],["igår","yesterday",""],["imorgon","tomorrow",""],["i förrgår","the day before yesterday",""],["i övermorgon","the day after tomorrow",""],
@@ -747,12 +780,12 @@ const LISTS = [
   ["ett apotek","a pharmacy",""],["boka en tid","to book an appointment","Jag vill boka en tid."],["feber","fever","Jag har feber."],
   ["ont i halsen","a sore throat","Jag har ont i halsen."],["huvudvärk","headache",""],["en förkylning","a cold","Jag är förkyld."],
   ["hosta","a cough / to cough",""],["en tandläkare","a dentist",""],["en remiss","a referral",""],["en akutmottagning","an emergency room",""],
-  ["ett sjukintyg","a doctor's note",""]]},
+  ["ett sjukintyg","a doctor's note",""],["halsfluss","tonsillitis","(en-word) Jag har halsfluss."],["en smärta","a pain","smärtan, smärtor. More formal than ont: Jag har ont i ryggen."]]},
  {key:"Body", group:"Kroppen (body)", type:"noun", items:[
   ["ett huvud","a head",""],["en arm","an arm",""],["ett ben","a leg, a bone",""],["en mage","a stomach",""],["en rygg","a back",""],
   ["en hals","a throat, neck",""],["en axel","a shoulder",""],["ett knä","a knee","knän (plural)"],["en fot","a foot","fötter (plural)"],
   ["en hand","a hand","händer (plural)"],["ett öga","an eye","ögon (plural)"],["ett öra","an ear","öron (plural)"],["en tand","a tooth","tänder (plural)"],
-  ["ett finger","a finger","fingrar (plural)"],["en näsa","a nose",""]]},
+  ["ett finger","a finger","fingrar (plural)"],["en näsa","a nose",""],["ett lår","a thigh","låret, lår (same in plural)"],["en panna","a forehead","pannan, pannor. Hon kysste honom på pannan.\nAlso a pan: en stekpanna = a frying pan."]]},
  {key:"Greetings", group:"Hälsningsfraser (greetings)", type:"phrase", items:[
   ["Hej!","Hi!",""],["Hejsan!","Hi there!",""],["Tjena! / Tja!","Hey! (informal)","With friends."],["God morgon!","Good morning!",""],
   ["God dag!","Good day! (formal)",""],["God kväll!","Good evening!",""],["Hur mår du?","How are you?","Svar: Bra, tack! Och du?"],
@@ -816,18 +849,42 @@ const LISTS = [
   ["i början","at the beginning","I början var det svårt, men nu trivs jag."],
   ["på olika sätt","in different ways","Jag lär mig svenska på olika sätt."],
   ["väldigt","very","Hon är väldigt snäll. (= mycket snäll, jättesnäll)","adverb"],
-  ["jätte-","very (casual, written together)","jättebra, jättetrött, jättegod. Never jätte bra.","other"]]},
+  ["jätte-","very (casual, written together)","jättebra, jättetrött, jättegod. Never jätte bra.","other"],
+  ["sugen på","in the mood for, craving","Jag är sugen på glass. · Är du sugen på en fika?","adjective"],
+  ["generad","embarrassed","generat, generade. Jag blev så generad! (att genera = to embarrass)","adjective"],
+  ["ett leende","a smile","leendet, leenden. Hon har ett fint leende. (att le = to smile)","noun"],
+  ["medlidande","pity, compassion","(ett-word) Han kände medlidande med henne.","noun"],
+  ["ett bekymmer","a worry, a concern","bekymret, bekymmer. Inga bekymmer! (No worries!)","noun"],
+  ["ingen aning","no idea","Jag har ingen aning. · en aning = an idea, a hunch; also a little: en aning för salt"],
+  ["Kämpa på!","Keep at it! Hang in there!","Said to cheer someone on: Kämpa på nu, du är nästan klar!"],
+  ["får inte","mustn't, not allowed to","Imorgon får jag inte vara sjuk! · Man får inte röka här.\nmåste inte = don't have to (not the same)."],
+  ["massor (av)","lots (of)","Det finns massor av folk här. · Tack massor! (casual)"],
+  ["den ena … den andra","the one … the other","Den ena systern är blyg, den andra är pratig."]]},
  {key:"Home", group:"Hemmet (home)", type:"noun", items:[
   ["en lägenhet","an apartment",""],["ett hus","a house",""],["ett kök","a kitchen",""],["ett sovrum","a bedroom",""],["ett vardagsrum","a living room",""],
   ["ett badrum","a bathroom",""],["en hyra","a rent","Hur mycket är hyran?\nAtt hyra is the verb, to rent: Vi hyr en lägenhet."],["en hyresvärd","a landlord",""],["ett hyreskontrakt","a rental contract",""],
   ["en tvättstuga","a shared laundry room","Jag har bokat tvättstugan."],["en balkong","a balcony",""],["ett fönster","a window","fönster (plural)"],
   ["en dörr","a door",""],["en säng","a bed",""],["ett bord","a table",""],["en stol","a chair",""],["en soffa","a sofa",""],
   ["en diskmaskin","a dishwasher",""],["ett kylskåp","a fridge",""],["en spis","a stove",""],["en granne","a neighbour","grannar (plural)"],
-  ["en kudde","a pillow","kudden, kuddar. Min kudde är mjukare än din."],["ett täcke","a duvet","täcket, täcken. Mitt täcke är varmare än ditt."]]}
+  ["en kudde","a pillow","kudden, kuddar. Min kudde är mjukare än din."],["ett täcke","a duvet","täcket, täcken. Mitt täcke är varmare än ditt."]]},
+ {key:"Everyday", group:"Vardagsord (everyday words)", type:"noun", items:[
+  ["en släktträff","a family reunion","släktträffar. släkt = relatives, en träff = a meet-up"],["en förort","a suburb","förorter. Vi bor i en förort till Malmö."],
+  ["en skillnad","a difference","skillnaden, skillnader. Vad är skillnaden mellan råka och hända?"],["en slant","a coin","slantar. Singla slant = to flip a coin."],
+  ["ett stall","a stable","stallet, stall. Hästarna står i stallet."],["en svensk","a Swede","svenskar, svenskarna (the Swedes). Svenskarna älskar fika.\nThe language is svenska."],
+  ["ett besvär","trouble, bother","besväret. Tack för besväret! (Thanks for the trouble) · Inga besvär."],["en ormtjusare","a snake charmer","en orm = a snake, tjusa = to charm"],
+  ["ett bad","a bath, a swim","badet, bad. Ta ett bad. · allmänhetens bad = public swimming hours\nAlso bad = the past of be (to ask): Hon bad om hjälp."],
+  ["ett fordon","a vehicle","fordonet, fordon. Fordonen stod stilla."],["en förare","a driver","föraren, förare (same in plural). Föraren bromsade."],
+  ["ett dike","a ditch","diket, diken. Bilen körde ner i diket."],
+  ["giftig","poisonous, venomous","giftigt · giftiga. en giftig orm · giftiga svampar\nett gift = a poison, but gift (adj.) = married!","adjective"],
+  ["grov","coarse, rough; serious","grovt · grova. grovt bröd (wholegrain bread) · ett grovt brott (a serious crime)","adjective"],
+  ["tursam","lucky","tursamt · tursamma. Mer vanligt: Jag hade tur! (I was lucky)","adjective"]]}
 ];
 const BUILT = []; const BBY = {};
 for(const L of LISTS) for(const it of L.items){ const id="b:"+(L.key||L.group)+":"+it[0]; const e={id,sv:it[0],en:it[1],note:it[2]||"",type:it[3]||L.type,group:L.group}; BUILT.push(e); BBY[id]=e }
-const BUILT_GROUPS = ["Vanliga verb (common verbs)",...LISTS.map(l=>l.group)];
+/* words for describing people sit in their own lists but can be practised and browsed together */
+const PEOPLE = "Beskriva människor: alla (describing people: all)";
+const PEOPLE_GROUPS = new Set(["Egenskaper: positiva (good traits)","Egenskaper: negativa (bad traits)","Egenskaper: neutrala (neutral traits)","Utseende (looks)"]);
+const BUILT_GROUPS = ["Vanliga verb (common verbs)"]; for(const l of LISTS){ if(PEOPLE_GROUPS.has(l.group)&&!BUILT_GROUPS.includes(PEOPLE)) BUILT_GROUPS.push(PEOPLE); BUILT_GROUPS.push(l.group) }
 
 /* ---------- more grammar pages ---------- */
 GUIDE.push(
@@ -1015,6 +1072,13 @@ const _rikt = GUIDE.find(g=>g.id==="riktning"); _rikt.table={head:["motion","pla
 
 /* ---------- fill the gap: s(entence with ___), a(nswer), d(istractors), why ---------- */
 const GAPS = [
+ ["Jag läste att ni vill ___ en trevligare stadsmiljö.","ha",["vara","bli","göra"],"Vilja + a thing needs ha: Jag vill ha kaffe. Ni vill ha en trevligare stadsmiljö."],
+ ["Jag har några förslag ___ er.","till",["om","hos","från"],"Ett förslag till någon = a suggestion for/to someone."],
+ ["Grundskolan är gratis och ___ av skattepengar.","betalas",["betalar","betald","betalat"],"Passive with -s: betalas = is paid for. Who pays comes after av."],
+ ["Nyanlända barn börjar ___ en förberedelseklass.","i",["på","till","med"],"Börja i en klass, börja i skolan."],
+ ["De får hjälp med ___ lära sig svenska.","att",["för","till","och"],"After a preposition like med, a verb needs att: hjälp med att lära sig."],
+ ["När eleverna är redo ___ i en vanlig klass.","börjar de",["de börjar","börja de","de börja"],"The När-clause is the fundament, so the verb comes next (V2), then the subject."],
+ ["Varje termin ___ ett utvecklingssamtal med läraren.","har eleverna",["eleverna har","eleverna","har"],"Varje termin starts the sentence, so the verb comes second: har eleverna."],
  ["Igår ___ jag till jobbet.","cyklade",["cyklar","har cyklat","cykla"],"Igår is a finished time, so use preteritum."],
  ["Har du någonsin ___ surströmming?","ätit",["åt","äta","äter"],"After har comes supinum: har ätit."],
  ["Jag vet att han ___ kött.","inte äter",["äter inte","inte äta","inte ätit"],"BIFF: in a bisats, inte comes before the verb."],
@@ -1103,6 +1167,11 @@ const GAPS = [
 ];
 /* Rätt ord: words that mean nearly the same thing, but only one fits */
 const WORDQ = [
+ ["Förlåt, jag ___ ta din kaffe!","råkade",["hände","händer","råkar"],"Råka + verb = to do something by accident or by chance. Hända is for something that happens: Vad hände?"],
+ ["Vad ___ igår? Du ser trött ut.","hände",["råkade","råkar","händer"],"Something happened: hända (hände). Råka needs a person and another verb: Jag råkade somna."],
+ ["Jag ___ träffa min gamla lärare på stan.","råkade",["hände","hänt","händer"],"Meet someone by chance: råka träffa."],
+ ["Jag tycker att vi behöver ___ idrottshallar.","fler",["mer","mera","mycket"],"Things you can count (idrottshallar, barn): fler. Things you can't count (tid, vatten): mer."],
+ ["Jag har ett prov imorgon, så då ___ jag inte vara sjuk!","får",["behöver","brukar","hinner"],"Får inte = must not, not allowed to. Måste inte or behöver inte = don't have to."],
  ["Vad ___ du om maten? – Den var god.","tycker",["tror","tänker","menar"],"Your opinion about something: tycka."],
  ["Jag ___ att det blir regn imorgon, men jag är inte säker.","tror",["tycker","tänker","vet"],"A guess or belief: tro."],
  ["Jag ___ på dig hela dagen igår.","tänkte",["tyckte","trodde","mindes"],"Think about someone: tänka på."],
@@ -1166,6 +1235,8 @@ const WORDQ = [
 ];
 /* Grammatiktest: quick grammar questions */
 const TESTQ = [
+ ["En vinter – två ___.","vintrar",["vinterna","vinterar","vintrer"],"-er words drop the e and take -ar: vinter – vintrar, sommar – somrar. The vintrar = vintrarna."],
+ ["___ glasögon är nya.","Mina",["Min","Mitt","Minna"],"Glasögon is always plural: mina glasögon, de är nya."],
  ["En stol – två ___.","stolar",["stoler","stolor","stol"],"Group 2: -ar."],
  ["En flicka – två ___.","flickor",["flickar","flicker","flickorna"],"En-words ending in -a: -or."],
  ["Ett äpple – två ___.","äpplen",["äpplar","äppler","äpple"],"Ett-words ending in a vowel: -n."],
@@ -1317,6 +1388,9 @@ const GROUP_RENAME = {"Expressions & idioms":"Uttryck och idiom (expressions & i
  "Shopping & money":"Shopping och pengar (shopping & money)","Verbs from class":"Verb från lektionerna (verbs from class)"};
 function migrateGroups(){ let ch=false; for(const w of state.words){ const n=GROUP_RENAME[w.group]; if(n){ w.group=n; ch=true } } if(ch){ state.tp=Date.now(); lsSet() } return ch }
 migrateGroups();
+const ID_MOVE = {"b:Adjectives:oartig":"b:Egenskaper negativa:oartig","b:Adjectives:respektlös":"b:Egenskaper negativa:respektlös","b:Adjectives:snäll":"b:Egenskaper positiva:snäll"};
+function migrateIds(){ let ch=false; for(const [a,b] of Object.entries(ID_MOVE)) if(state.cards[a]){ if(!state.cards[b]) state.cards[b]=state.cards[a]; delete state.cards[a]; ch=true } if(ch){ state.tp=Date.now(); lsSet() } return ch }
+migrateIds();
 
 /* ---- GitHub gist sync ----
    Everything lives in one private gist file. Progress (cards + words) and notes each carry
@@ -1491,7 +1565,7 @@ function dueListHTML(ids){
 /* ================= TABS ================= */
 let tab="cards"; try{ tab=localStorage.getItem(LSKEY+"-tab")||"cards" }catch(e){}
 function showTab(t){
-  tab=t;
+  tab=t; $("#qsearch").value=""; $("#panel-search").hidden=true;
   document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===t));
   for(const p of ["cards","forms","sent","words","grammar","notes"]) document.getElementById("panel-"+p).hidden = p!==t;
   try{localStorage.setItem(LSKEY+"-tab",t)}catch(e){}
@@ -1523,7 +1597,7 @@ function poolIds(){
   if(!onlyMine){ const mine=new Set(state.words.flatMap(w=>keysOf(w.sv)));  // your own version wins over a built-in duplicate
     for(const v of VERBS) if(!mine.has(nk(v[0]))) out.push("m:"+v[0]);
     for(const e of BUILT) if(!keysOf(e.sv).some(k=>mine.has(k))) out.push(e.id) }
-  return out.filter(id=>{ const f=faces(id); if(!f) return false; if(ftype!=="all"&&f.type!==ftype) return false; if(fgroup&&f.group!==fgroup) return false; return true });
+  return out.filter(id=>{ const f=faces(id); if(!f) return false; if(ftype!=="all"&&f.type!==ftype) return false; if(fgroup===PEOPLE ? !PEOPLE_GROUPS.has(f.group) : (fgroup&&f.group!==fgroup)) return false; return true });
 }
 function renderFilters(){
   $("#typechips").innerHTML = [["all",L("Alla","All")],...TYPES.map(([k])=>[k,typeLabel(k)])].map(([k,l])=>`<button type="button" data-ft="${k}" aria-pressed="${k===ftype}">${l}</button>`).join("");
@@ -1903,7 +1977,11 @@ function wordRow(w){
     <span class="acts"><button class="link" data-wedit="${w.id}">${L("Ändra","Edit")}</button><button class="link del" data-wdel="${w.id}" aria-label="Delete ${esc(w.sv)}">${L("Ta bort","Delete")}</button></span>
     <span class="sub">${other?`<span class="tag">${esc(other)}</span>`:""}<span class="tag">${wordLevel(w)}</span>${w.note?`<span class="n">${esc(w.note)}</span>`:""}</span></div>`;
 }
-function renderBuiltins(){ $("#builtins").innerHTML = LISTS.map(LL=>`<details class="wgroup"><summary><span>${esc(LL.group)}</span><span class="cnt">${LL.items.length}</span></summary><div class="tablewrap"><table><thead><tr><th>${L("Svenska","Swedish")}</th><th>${L("Engelska","English")}</th><th>${L("Exempel / anteckning","Example / note")}</th></tr></thead><tbody>${LL.items.map(it=>`<tr><td class="nw"><b>${esc(it[0])}</b></td><td>${esc(it[1])}</td><td>${esc(it[2]||"").replace(/\n/g,"<br>")}</td></tr>`).join("")}</tbody></table></div></details>`).join(""); }
+function renderBuiltins(){
+  const one=LL=>`<details class="wgroup"><summary><span>${esc(LL.group)}</span><span class="cnt">${LL.items.length}</span></summary><div class="tablewrap"><table><thead><tr><th>${L("Svenska","Swedish")}</th><th>${L("Engelska","English")}</th><th>${L("Exempel / anteckning","Example / note")}</th></tr></thead><tbody>${LL.items.map(it=>`<tr><td class="nw"><b>${esc(it[0])}</b></td><td>${esc(it[1])}</td><td>${esc(it[2]||"").replace(/\n/g,"<br>")}</td></tr>`).join("")}</tbody></table></div></details>`;
+  const ppl=LISTS.filter(l=>PEOPLE_GROUPS.has(l.group)); let done=false;
+  $("#builtins").innerHTML = LISTS.map(LL=>{ if(!PEOPLE_GROUPS.has(LL.group)) return one(LL); if(done) return ""; done=true;
+    return `<details class="wgroup parent"><summary><span>${L("Beskriva människor","Describing people")}</span><span class="cnt">${ppl.reduce((n,l)=>n+l.items.length,0)}</span></summary><p class="note">${L("Egenskaper och utseende. Öva alla på en gång under Kort → Beskriva människor: alla.","Personality and looks. Practise them all at once under Cards → Beskriva människor: alla.")}</p><div class="stack">${ppl.map(one).join("")}</div></details>` }).join(""); }
 renderBuiltins();
 
 /* ================= NOTES ================= */
@@ -2158,8 +2236,43 @@ function applyLang(){
 document.querySelectorAll("[data-lang-btn]").forEach(b=>b.onclick=()=>{ lang=b.dataset.langBtn; try{localStorage.setItem(LSKEY+"-lang",lang)}catch(e){} applyLang(); renderVerbTable(); renderBuiltins(); renderAll(); renderSyncBox() });
 applyLang();
 
+/* ================= SEARCH EVERYTHING ================= */
+function renderSearch(){
+  const q=$("#qsearch").value.trim(), on=!!q;
+  $("#panel-search").hidden=!on;
+  for(const p of ["cards","forms","sent","words","grammar","notes"]) document.getElementById("panel-"+p).hidden = on || p!==tab;
+  if(!on) return;
+  const lq=q.toLowerCase(), nq=norm(q);
+  const has=x=>(x||"").toLowerCase().includes(lq);
+  // my words: exact or starting matches first
+  const rank=w=>{ const sv=norm(w.sv.replace(/^(en|ett) /,"")); return keysOf(w.sv).includes(nq)?0: sv.startsWith(nq)?1: has(w.en)?2: 3 };
+  const mine=state.words.filter(w=>[w.sv,w.en,w.note,w.group].some(has)).sort((a,b)=>rank(a)-rank(b)||a.sv.localeCompare(b.sv,"sv"));
+  const app=appSearch(q);
+  const gr=GUIDE.map((g,i)=>[i,has(g.title+" "+g.tag)?0:JSON.stringify(g).toLowerCase().includes(lq)?1:-1]).filter(x=>x[1]>=0).sort((a,b)=>a[1]-b[1]).slice(0,8).map(x=>x[0]);
+  const notes=state.notes.filter(n=>[n.title,n.topic,n.body].some(has));
+  const sec=(title,n,body)=>`<details class="wgroup appres" open><summary><span>${title}</span><span class="cnt">${n}</span></summary><div class="group">${body}</div></details>`;
+  const mineRow=w=>{ const gg=genderOf({sv:w.sv,note:w.note,type:w.type||"other"});
+    return `<div class="item"><span class="sv${gg?" g-"+gg:""}">${esc(w.sv)}</span><span class="en">${esc(w.en)}</span><span class="acts"></span>
+    <span class="sub">${w.group?`<span class="tag">${esc(w.group.replace(/ \(.*\)$/,""))}</span>`:""}<span class="tag">${wordLevel(w)}</span>${w.note?`<span class="n">${esc(w.note)}</span>`:""}</span></div>` };
+  const snip=t=>{ t=String(t||"").replace(/<[^>]+>/g,"").replace(/\s+/g," "); const i=t.toLowerCase().indexOf(lq); return i<0?t.slice(0,90):(i>30?"…":"")+t.slice(Math.max(0,i-30),i+70) };
+  let html="";
+  if(mine.length) html+=sec(L("Mina ord","My words"),mine.length,mine.slice(0,40).map(mineRow).join(""));
+  if(app.length) html+=sec(L("Ord och verb i appen","Words and verbs in the app"),app.length,app.map(appRow).join(""));
+  if(gr.length) html+=sec(L("Grammatik","Grammar"),gr.length,gr.map(i=>`<button type="button" class="qhit" data-qg="${i}"><b>${esc(GUIDE[i].title)}</b><span class="tag">${esc(GUIDE[i].tag)}</span><span class="n">${esc(snip(GUIDE[i].rule))}</span></button>`).join(""));
+  if(notes.length) html+=sec(L("Mina anteckningar","My notes"),notes.length,notes.map(n=>`<button type="button" class="qhit" data-qn="${n.id}"><b>${esc(n.title)}</b>${n.topic?`<span class="tag">${esc(n.topic)}</span>`:""}<span class="n">${esc(snip(n.body))}</span></button>`).join(""));
+  const el=$("#qresults");
+  el.innerHTML = html || `<p class="note">${L(`Inget matchar “${esc(q)}”. Du kan lägga till det som ett nytt ord under Ord.`,`Nothing matches “${esc(q)}”. You can add it as a new word under Words.`)}</p>`;
+  el.querySelectorAll("[data-appadd]").forEach(b=>b.onclick=()=>{ const x=app[+b.dataset.appadd]; wview="mine"; showTab("words");
+    $("#add-sv").value=x.sv; $("#add-en").value=x.en; $("#addform").scrollIntoView({behavior:"smooth",block:"start"}); $("#add-en").focus({preventScroll:true}) });
+  el.querySelectorAll("[data-qg]").forEach(b=>b.onclick=()=>{ $("#gsearch").value=GUIDE[+b.dataset.qg].title; showTab("grammar"); scrollTo({top:0}) });
+  el.querySelectorAll("[data-qn]").forEach(b=>b.onclick=()=>{ $("#nsearch").value=state.notes.find(n=>n.id===b.dataset.qn)?.title||q; showTab("notes"); scrollTo({top:0}) });
+}
+$("#qsearch").addEventListener("input",renderSearch);
+$("#qsearch").addEventListener("keydown",e=>{ if(e.key==="Escape"){ e.target.value=""; renderSearch(); e.target.blur() } });
+document.addEventListener("keydown",e=>{ if(e.key==="/"&&!/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)&&$("#syncbox").hidden){ e.preventDefault(); $("#qsearch").focus() } });
+
 /* ================= BOOT ================= */
-function renderAll(){ if(tab==="cards") renderCards(); else if(tab==="forms") renderForms(); else if(tab==="sent") renderSent(); else if(tab==="words") renderWords(); else if(tab==="grammar") renderGrammar(); else renderNotes() }
+function renderAll(){ if(tab==="cards") renderCards(); else if(tab==="forms") renderForms(); else if(tab==="sent") renderSent(); else if(tab==="words") renderWords(); else if(tab==="grammar") renderGrammar(); else renderNotes(); if($("#qsearch").value.trim()) renderSearch() }
 renderVerbTable(); renderVgroups();
 showTab(["cards","forms","sent","words","grammar","notes"].includes(tab)?tab:"cards");
 </script>
