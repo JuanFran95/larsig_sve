@@ -133,7 +133,8 @@ button.stat:hover span{color:var(--ink)}
 .verdict{margin:0;font-weight:700}
 @media (max-width:40rem){ #smodes{display:grid;grid-template-columns:1fr 1fr} #smodes button{white-space:nowrap} }
 .bigrow{display:flex;align-items:center;gap:.6rem}
-.item .saybtn{width:2rem;height:2rem;font-size:.95rem}
+.item .saybtn,.sayrow .saybtn{width:2rem;height:2rem;font-size:.95rem}
+.sayrow{display:inline-flex;align-items:center;gap:.5rem}
 .saybtn{border:0;background:var(--chip);border-radius:50%;width:2.4rem;height:2.4rem;flex-shrink:0;font-size:1.1rem;cursor:pointer;line-height:1}
 .big.g-en{color:var(--sSi)} .big.g-ett{color:var(--sKi)}
 .gtag{align-self:flex-start;width:max-content;font-size:.72rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:.1rem .45rem;border-radius:.3rem}
@@ -1977,14 +1978,14 @@ function wordRow(w){
   const other = wby==="group" ? typeLabel(w.type) : (w.group||"");
   const gg=genderOf({sv:w.sv,note:w.note,type:w.type||"other"});
   return `<div class="item"><span class="sv${gg?" g-"+gg:""}">${esc(w.sv)}</span><span class="en">${esc(w.en)}</span>
-    <span class="acts"><button class="link" data-wedit="${w.id}">${L("Ändra","Edit")}</button><button class="link del" data-wdel="${w.id}" aria-label="Delete ${esc(w.sv)}">${L("Ta bort","Delete")}</button></span>
+    <span class="acts">${sayBtn(w.sv)}<button class="link" data-wedit="${w.id}">${L("Ändra","Edit")}</button><button class="link del" data-wdel="${w.id}" aria-label="Delete ${esc(w.sv)}">${L("Ta bort","Delete")}</button></span>
     <span class="sub">${other?`<span class="tag">${esc(other)}</span>`:""}<span class="tag">${wordLevel(w)}</span>${w.note?`<span class="n">${esc(w.note)}</span>`:""}</span></div>`;
 }
 function renderBuiltins(){
-  const one=LL=>`<details class="wgroup"><summary><span>${esc(LL.group)}</span><span class="cnt">${LL.items.length}</span></summary><div class="tablewrap"><table><thead><tr><th>${L("Svenska","Swedish")}</th><th>${L("Engelska","English")}</th><th>${L("Exempel / anteckning","Example / note")}</th></tr></thead><tbody>${LL.items.map(it=>`<tr><td class="nw"><b>${esc(it[0])}</b></td><td>${esc(it[1])}</td><td>${esc(it[2]||"").replace(/\n/g,"<br>")}</td></tr>`).join("")}</tbody></table></div></details>`;
+  const one=LL=>`<details class="wgroup"><summary><span>${esc(LL.group)}</span><span class="cnt">${LL.items.length}</span></summary><div class="tablewrap"><table><thead><tr><th>${L("Svenska","Swedish")}</th><th>${L("Engelska","English")}</th><th>${L("Exempel / anteckning","Example / note")}</th></tr></thead><tbody>${LL.items.map(it=>`<tr><td class="nw"><span class="sayrow">${sayBtn(it[0])}<b>${esc(it[0])}</b></span></td><td>${esc(it[1])}</td><td>${esc(it[2]||"").replace(/\n/g,"<br>")}</td></tr>`).join("")}</tbody></table></div></details>`;
   const ppl=LISTS.filter(l=>PEOPLE_GROUPS.has(l.group)); let done=false;
   $("#builtins").innerHTML = LISTS.map(LL=>{ if(!PEOPLE_GROUPS.has(LL.group)) return one(LL); if(done) return ""; done=true;
-    return `<details class="wgroup parent"><summary><span>${L("Beskriva människor","Describing people")}</span><span class="cnt">${ppl.reduce((n,l)=>n+l.items.length,0)}</span></summary><p class="note">${L("Egenskaper och utseende. Öva alla på en gång under Kort → Beskriva människor: alla.","Personality and looks. Practise them all at once under Cards → Beskriva människor: alla.")}</p><div class="stack">${ppl.map(one).join("")}</div></details>` }).join(""); }
+    return `<details class="wgroup parent"><summary><span>Beskriva människor (describing people)</span><span class="cnt">${ppl.reduce((n,l)=>n+l.items.length,0)}</span></summary><p class="note">${L("Egenskaper och utseende. Öva alla på en gång under Kort → Beskriva människor: alla.","Personality and looks. Practise them all at once under Cards → Beskriva människor: alla.")}</p><div class="stack">${ppl.map(one).join("")}</div></details>` }).join(""); }
 renderBuiltins();
 
 /* ================= NOTES ================= */
@@ -2271,7 +2272,7 @@ function renderSearch(){
   el.querySelectorAll("[data-qn]").forEach(b=>b.onclick=()=>{ $("#nsearch").value=state.notes.find(n=>n.id===b.dataset.qn)?.title||q; showTab("notes"); scrollTo({top:0}) });
 }
 $("#qsearch").addEventListener("input",renderSearch);
-for(const id of ["#qresults","#wordlist"]) $(id).addEventListener("click",e=>{ const b=e.target.closest("[data-say]"); if(b) say(b.dataset.say) });
+for(const id of ["#qresults","#wordlist","#builtins"]) $(id).addEventListener("click",e=>{ const b=e.target.closest("[data-say]"); if(b) say(b.dataset.say) });
 $("#qsearch").addEventListener("keydown",e=>{ if(e.key==="Escape"){ e.target.value=""; renderSearch(); e.target.blur() } });
 document.addEventListener("keydown",e=>{ if(e.key==="/"&&!/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)&&$("#syncbox").hidden){ e.preventDefault(); $("#qsearch").focus() } });
 
