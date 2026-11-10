@@ -133,6 +133,7 @@ button.stat:hover span{color:var(--ink)}
 .verdict{margin:0;font-weight:700}
 @media (max-width:40rem){ #smodes{display:grid;grid-template-columns:1fr 1fr} #smodes button{white-space:nowrap} }
 .bigrow{display:flex;align-items:center;gap:.6rem}
+.item .saybtn{width:2rem;height:2rem;font-size:.95rem}
 .saybtn{border:0;background:var(--chip);border-radius:50%;width:2.4rem;height:2.4rem;flex-shrink:0;font-size:1.1rem;cursor:pointer;line-height:1}
 .big.g-en{color:var(--sSi)} .big.g-ett{color:var(--sKi)}
 .gtag{align-self:flex-start;width:max-content;font-size:.72rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:.1rem .45rem;border-radius:.3rem}
@@ -1931,7 +1932,7 @@ function appSearch(q){
 }
 function appRow(x,i){
   return `<div class="item"><span class="sv">${esc(x.sv)}</span><span class="en">${esc(x.en)}</span>
-    <span class="acts">${x.add?`<button class="link" data-appadd="${i}">${L("Lägg till","Add")}</button>`:""}</span>
+    <span class="acts">${sayBtn(x.sv)}${x.add?`<button class="link" data-appadd="${i}">${L("Lägg till","Add")}</button>`:""}</span>
     <span class="sub">${x.why?`<span class="tag on">${esc(x.why)}</span>`:""}${x.group?`<span class="tag">${esc(x.group.replace(/ \(.*\)$/,""))}</span>`:""}${x.note?`<span class="n">${esc(x.note)}</span>`:""}</span></div>`;
 }
 function renderWords(){
@@ -2252,7 +2253,7 @@ function renderSearch(){
   const notes=state.notes.filter(n=>[n.title,n.topic,n.body].some(has));
   const sec=(title,n,body)=>`<details class="wgroup appres" open><summary><span>${title}</span><span class="cnt">${n}</span></summary><div class="group">${body}</div></details>`;
   const mineRow=w=>{ const gg=genderOf({sv:w.sv,note:w.note,type:w.type||"other"});
-    return `<div class="item"><span class="sv${gg?" g-"+gg:""}">${esc(w.sv)}</span><span class="en">${esc(w.en)}</span><span class="acts"></span>
+    return `<div class="item"><span class="sv${gg?" g-"+gg:""}">${esc(w.sv)}</span><span class="en">${esc(w.en)}</span><span class="acts">${sayBtn(w.sv)}</span>
     <span class="sub">${w.group?`<span class="tag">${esc(w.group.replace(/ \(.*\)$/,""))}</span>`:""}<span class="tag">${wordLevel(w)}</span>${w.note?`<span class="n">${esc(w.note)}</span>`:""}</span></div>` };
   const snip=t=>{ t=String(t||"").replace(/<[^>]+>/g,"").replace(/\s+/g," "); const i=t.toLowerCase().indexOf(lq); return i<0?t.slice(0,90):(i>30?"…":"")+t.slice(Math.max(0,i-30),i+70) };
   let html="";
@@ -2268,6 +2269,7 @@ function renderSearch(){
   el.querySelectorAll("[data-qn]").forEach(b=>b.onclick=()=>{ $("#nsearch").value=state.notes.find(n=>n.id===b.dataset.qn)?.title||q; showTab("notes"); scrollTo({top:0}) });
 }
 $("#qsearch").addEventListener("input",renderSearch);
+for(const id of ["#qresults","#wordlist"]) $(id).addEventListener("click",e=>{ const b=e.target.closest("[data-say]"); if(b) say(b.dataset.say) });
 $("#qsearch").addEventListener("keydown",e=>{ if(e.key==="Escape"){ e.target.value=""; renderSearch(); e.target.blur() } });
 document.addEventListener("keydown",e=>{ if(e.key==="/"&&!/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)&&$("#syncbox").hidden){ e.preventDefault(); $("#qsearch").focus() } });
 
