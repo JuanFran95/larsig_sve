@@ -888,7 +888,7 @@ for(const L of LISTS) for(const it of L.items){ const id="b:"+(L.key||L.group)+"
 /* words for describing people sit in their own lists but can be practised and browsed together */
 const PEOPLE = "Beskriva människor: alla (describing people: all)";
 const PEOPLE_GROUPS = new Set(["Egenskaper: positiva (good traits)","Egenskaper: negativa (bad traits)","Egenskaper: neutrala (neutral traits)","Utseende (looks)"]);
-const BUILT_GROUPS = ["Vanliga verb (common verbs)"]; for(const l of LISTS){ if(PEOPLE_GROUPS.has(l.group)&&!BUILT_GROUPS.includes(PEOPLE)) BUILT_GROUPS.push(PEOPLE); BUILT_GROUPS.push(l.group) }
+const BUILT_GROUPS = ["Vanliga verb (common verbs)","Verb (verbs)"]; for(const l of LISTS){ if(PEOPLE_GROUPS.has(l.group)&&!BUILT_GROUPS.includes(PEOPLE)) BUILT_GROUPS.push(PEOPLE); BUILT_GROUPS.push(l.group) }
 
 /* ---------- more grammar pages ---------- */
 GUIDE.push(
@@ -1591,7 +1591,7 @@ function mineMatch(sv){ const ks=keysOf(sv); return state.words.find(w=>keysOf(w
 let dir="both", ftype="all", fgroup="", onlyMine=false, cs=null;
 function faces(id){
   const k=id.slice(0,1), key=id.slice(2);
-  if(k==="m"){ const v=VBY[key]; return v&&{sv:"att "+v[0],en:v[4],note:`${v[1]} · ${v[2]} · ${v[3]}`+(imperativ(v)!=="–"?` · ${imperativ(v)}!`:""),type:"verb",group:"Vanliga verb (common verbs)",mine:false} }
+  if(k==="m"){ const v=VBY[key]; return v&&{sv:"att "+v[0],en:v[4],note:`${v[1]} · ${v[2]} · ${v[3]}`+(imperativ(v)!=="–"?` · ${imperativ(v)}!`:""),type:"verb",group:COMMON.has(key)?"Vanliga verb (common verbs)":"Verb (verbs)",mine:false} }
   if(k==="b"){ const e=BBY[id]; return e&&{...e,mine:false} }
   const w=state.words.find(w=>w.id===key); return w&&{sv:w.sv,en:w.en,note:w.note||"",type:w.type||"other",group:w.group||"",mine:true};
 }
