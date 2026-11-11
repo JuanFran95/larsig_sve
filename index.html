@@ -881,7 +881,26 @@ const LISTS = [
   ["grov","coarse, rough; serious","grovt · grova. grovt bröd (wholegrain bread) · ett grovt brott (a serious crime)","adjective"],
   ["en underskrift","a signature (handwritten)","underskriften, underskrifter. Du behöver din underskrift här."],["en namnteckning","a signature (more formal)","namnteckningen, namnteckningar. Often on forms: Namnteckning: ______"],
   ["en signatur","a signature; an email signature","signaturen, signaturer. e-postsignatur = email signature"],
-  ["tursam","lucky","tursamt · tursamma. Mer vanligt: Jag hade tur! (I was lucky)","adjective"]]}
+  ["tursam","lucky","tursamt · tursamma. Mer vanligt: Jag hade tur! (I was lucky)","adjective"]]},
+ {key:"Reading", group:"Från läsningen (from my reading)", type:"other", items:[
+  ["galen","crazy, mad","galet · galna. Jag är inte galen! · den galne mannen (old -e form)","adjective"],
+  ["hemsk","terrible, awful","hemskt · hemska. Det var hemskt! · hemskt ledsen = terribly sorry","adjective"],
+  ["ännu","yet; still; even (+ comparative)","Jag har inte ätit ännu. · ännu bättre = even better","adverb"],
+  ["skärpa","to sharpen","skärper · skärpte · skärpt. Mina sinnen skärptes. · Skärp dig! = Get a grip!","verb"],
+  ["ett sinne","a sense; a mind","sinnet, sinnen, sinnena. de fem sinnena = the five senses","noun"],
+  ["en gam","a vulture","gamen, gamar. ett gamöga = a vulture's eye","noun"],
+  ["rysa","to shudder, shiver","ryser · ryste · rysit. Jag ryste av rädsla.","verb"],
+  ["komma fram till","to arrive at, to conclude","kom fram till · har kommit fram till. Till slut kom jag fram till att …","partikelverb"],
+  ["listig","cunning, sly","listigt · listiga. listigt = cunningly: Jag gick listigt till väga.","adjective"],
+  ["gå till väga","to go about (doing) something","gick till väga. Hur ska vi gå till väga? = How should we go about it?","phrase"],
+  ["försiktigt","carefully","From försiktig (careful). Han öppnade dörren försiktigt.","adverb"],
+  ["en lucka","a hatch, shutter; a gap","luckan, luckor. fyll i luckan = fill in the gap","noun"],
+  ["en lykta","a lantern","lyktan, lyktor. en ficklampa = a torch","noun"],
+  ["en ljusstråle","a ray of light","ljusstrålen, ljusstrålar. ljus (light) + stråle (ray)","noun"],
+  ["störa","to disturb, bother","stör · störde · stört. Förlåt att jag stör! · Det störde mig.","verb"],
+  ["ana","to suspect, sense, guess","anar · anade · anat. Han kunde aldrig ana att … · Jag anade det! = I knew it!","verb"],
+  ["tydlig","clear","tydligt · tydliga. tydligt = clearly: Jag hörde det tydligt.","adjective"],
+  ["uppfylld","fulfilled; filled (with)","uppfyllt · uppfyllda. From uppfylla. Min dröm är uppfylld. · uppfylld av skräck = filled with terror","adjective"]]}
 ];
 const BUILT = []; const BBY = {};
 for(const L of LISTS) for(const it of L.items){ const id="b:"+(L.key||L.group)+":"+it[0]; const e={id,sv:it[0],en:it[1],note:it[2]||"",type:it[3]||L.type,group:L.group}; BUILT.push(e); BBY[id]=e }
